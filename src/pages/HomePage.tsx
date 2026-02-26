@@ -9,6 +9,7 @@ import Testimonials from '../components/Testimonials'
 import { FAQChat } from '../components/FAQChat'
 import { BlogInsights } from '../components/BlogInsights'
 import { CTASection } from '../components/CTASection'
+import { ServiceCTASection } from '../components/ServiceCTASection'
 
 const HomePage = () => {
   return (
@@ -30,7 +31,12 @@ const HomePage = () => {
         { question: "What happens after the MVP is launched?", answer: "After launch, we help with V2 planning, scaling, performance improvements, and ongoing support or team extension as needed." },
       ]} />
       <BlogInsights />
-      <CTASection />
+      <ServiceCTASection
+        heading={<>Let's ship something that works.</>}
+        description="Fast delivery, clean code, and a team that owns the outcome, from build to support."
+        ctaLabel="Book a Discovery Call"
+        subtext="5-minute call. Clear scope. Real timelines."
+      />
     </>
   )
 }
