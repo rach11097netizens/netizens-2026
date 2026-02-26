@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Sora:wght@100..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sora', sans-serif;
+}
+
+/* Custom button gradient */
+.bg-button-gradient {
+  background: radial-gradient(64.25% 75% at 53.5% 0.93%, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.00) 100%), #0E3572 !important;
+}
+
+.bg-button-gradient:hover {
+  background: radial-gradient(64.25% 75% at 53.5% 10%, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.00) 100%), #0E3572 !important;
+}
+
+.shadow-inset-custom {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 15px 30px -12px inset, rgba(0, 0, 0, 0.3) 0px 9px 18px -18px inset;
+}
+
+/* Marquee Animation Styles */
+.marquee-viewport {
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  /* height: 720px; */
+  height: 650px;
+  width: 100%;
+  max-width: max-content;
+  margin: 0 auto;
+  /* Stronger mask at top to hide loop transition, fade at bottom */
+  mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+
+.marquee-track {
+  display: grid;
+  grid-template-columns: repeat(6, 80px);
+  grid-gap: 0; /* Ensure no gaps between cells */
+  gap: 0; /* Ensure no gaps between cells */
+  background-image: 
+    linear-gradient(#f1f1f1 1.5px, transparent 1.5px),
+    linear-gradient(90deg, #f1f1f1 1.5px, transparent 1.5px);
+  background-size: 80px 80px;
+  background-position: 0 0; /* Align pattern to top-left */
+  will-change: transform;
+  transform: translateY(0);
+  border-right: 1px solid #f1f1f1;
+}
+
+.marquee-cell {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0; /* Remove any default margins */
+  padding: 0; /* Remove any default padding */
+}
+
+.marquee-block-fill {
+  width: calc(100% - 1.5px);
+  height: calc(100% - 1.5px);
+  background-color: #f9f9f9;
+  position: absolute;
+  top: 0.75px;
+  left: 0.75px;
+  box-sizing: border-box;
+}
+
+.icon-card {
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 1);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  z-index: 10;
+  padding: 8px;
+}
+
+.icon-card:hover {
+  transform: scale(1.3) translateY(-8px);
+  background: #ffffff;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+}
+
+.icon-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 1;
+  filter: none;
+}
+
+/* Card Deck - Chip Drop Animation */
+/* Rotation is on an inner div, so translateY on the wrapper won't conflict */
+.deck-card .deck-chip {
+  opacity: 0;
+  transform-origin: center center;
+}
+
+.deck-card.is-active .deck-chip {
+  animation: chipDrop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes chipDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Card Reveal Transition: Dark → White on is-active ===== */
+/* Cards 1-3 start with dark blue bg and white text */
+.deck-card-reveal .deck-card-inner {
+  background-color: #0E3572;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.deck-card-reveal .deck-card-title {
+  color: #FFFAFA;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.deck-card-reveal .deck-card-desc {
+  color: rgba(255, 250, 250, 0.75);
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When card becomes active: transition to white bg + dark text */
+.deck-card-reveal.is-active .deck-card-inner {
+  background-color: #ffffff;
+}
+
+.deck-card-reveal.is-active .deck-card-title {
+  color: #16181B;
+}
+
+.deck-card-reveal.is-active .deck-card-desc {
+  color: rgba(88, 89, 91, 0.75);
+}
+
+/* Separator Pattern Border - matches Figma design with infinite repeat */
+.separator-pattern {
+  background-color: #FFFAFA;
+  border-top: 1px solid rgba(14, 53, 114, 0.1);
+  border-bottom: 1px solid rgba(14, 53, 114, 0.1);
+  height: 30px;
+  position: relative;
+  /* Infinite repeating pattern: 1px line + 15px gap = 16px repeat */
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 15px,
+    rgba(14, 53, 114, 0.1) 15px,
+    rgba(14, 53, 114, 0.1) 16px
+  );
+  background-size: 16px 100%;
+  background-position: 0 0;
+  background-repeat: repeat-x;
+  margin-bottom: 18px;
+}
