@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { SidePattern } from "./SidePattern";
-import { Button } from "./Button";
 
 interface ProcessStep {
     title: string;

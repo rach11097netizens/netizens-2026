@@ -1,4 +1,3 @@
-import { Button } from "./Button";
 import imgSeparatorPattern from "../assets/images/pattern.png";
 import { SidePattern } from "./SidePattern";
 

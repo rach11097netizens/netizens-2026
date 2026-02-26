@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Footer } from '../components/Footer';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SeparatorPattern } from '../components/SeparatorPattern';
 import { ServiceCTASection } from '../components/ServiceCTASection';
