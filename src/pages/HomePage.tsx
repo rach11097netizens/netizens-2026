@@ -8,7 +8,6 @@ import ForBuildersSection from '../components/ForBuildersSection'
 import Testimonials from '../components/Testimonials'
 import { FAQChat } from '../components/FAQChat'
 import { BlogInsights } from '../components/BlogInsights'
-import { CTASection } from '../components/CTASection'
 import { ServiceCTASection } from '../components/ServiceCTASection'
 
 const HomePage = () => {
