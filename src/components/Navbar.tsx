@@ -277,14 +277,25 @@ const Navbar = () => {
                             {companyOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
                                     {company.map((item, index) => (
-                                        <a
-                                            key={index}
-                                            href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                                            className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-black transition-colors"
-                                            onClick={() => setCompanyOpen(false)}
-                                        >
-                                            {item}
-                                        </a>
+                                        item === 'About' ? (
+                                            <Link
+                                                key={index}
+                                                to="/about-us"
+                                                className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-black transition-colors"
+                                                onClick={() => setCompanyOpen(false)}
+                                            >
+                                                About Us
+                                            </Link>
+                                        ) : (
+                                            <a
+                                                key={index}
+                                                href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                                                className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-black transition-colors"
+                                                onClick={() => setCompanyOpen(false)}
+                                            >
+                                                {item}
+                                            </a>
+                                        )
                                     ))}
                                 </div>
                             )}
@@ -355,30 +366,44 @@ const Navbar = () => {
                                 {mobileCompanyOpen && (
                                     <div className="pl-4 mt-2 space-y-2">
                                         {company.map((item, index) => (
-                                            <a
-                                                key={index}
-                                                href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                                                className="block text-gray-600 hover:text-black text-sm"
-                                                onClick={() => {
-                                                    setMobileCompanyOpen(false)
-                                                    setIsMobileMenuOpen(false)
-                                                }}
-                                            >
-                                                {item}
-                                            </a>
+                                            item === 'About' ? (
+                                                <Link
+                                                    key={index}
+                                                    to="/about-us"
+                                                    className="block text-gray-600 hover:text-black text-sm"
+                                                    onClick={() => {
+                                                        setMobileCompanyOpen(false)
+                                                        setIsMobileMenuOpen(false)
+                                                    }}
+                                                >
+                                                    About Us
+                                                </Link>
+                                            ) : (
+                                                <a
+                                                    key={index}
+                                                    href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                                                    className="block text-gray-600 hover:text-black text-sm"
+                                                    onClick={() => {
+                                                        setMobileCompanyOpen(false)
+                                                        setIsMobileMenuOpen(false)
+                                                    }}
+                                                >
+                                                    {item}
+                                                </a>
+                                            )
                                         ))}
                                     </div>
                                 )}
                             </div>
 
                             {/* Regular Menu Items */}
-                            <a
-                                href="#work"
+                            <Link
+                                to="/how-we-work"
                                 className="text-gray-700 hover:text-black"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 How We Work
-                            </a>
+                            </Link>
                             <a
                                 href="#case-studies"
                                 className="text-gray-700 hover:text-black"

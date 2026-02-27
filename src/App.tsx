@@ -9,6 +9,8 @@ import WorkflowDigit from './pages/workflow-digit'
 import AiAutomate from './pages/ai-automate'
 import HowWeWork from './pages/how-we-work'
 import BookCall from './pages/book-call'
+import AboutUs from './pages/about-us'
+
 
 function App() {
   useEffect(() => {
@@ -36,6 +38,7 @@ function App() {
           <Route path="/ai-consulting" element={<AiAutomate />} />
           <Route path="/how-we-work" element={<HowWeWork />} />
           <Route path="/book-call" element={<BookCall />} />
+          <Route path="/about-us" element={<AboutUs />} />
         </Route>
 
         {/* Pages without Navbar/Footer (e.g. 404) can go outside the layout:
