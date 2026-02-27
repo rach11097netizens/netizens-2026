@@ -9,10 +9,12 @@ import Testimonials from '../components/Testimonials'
 import { FAQChat } from '../components/FAQChat'
 import { BlogInsights } from '../components/BlogInsights'
 import { ServiceCTASection } from '../components/ServiceCTASection'
+import { HomePageSEO } from '../components/SEO/HomePageSEO'
 
 const HomePage = () => {
   return (
     <>
+      <HomePageSEO />
       <Hero />
       <ClientLogos />
       <WhatWeHelp />

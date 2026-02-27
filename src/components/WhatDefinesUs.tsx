@@ -1,4 +1,5 @@
 import iconNavyTick from "../assets/images/navy-dark-tick.svg";
+import imgWhatDefinesUs from "../assets/images/what-defines-us-img.svg";
 
 const services = [
   "MVP design & development",
@@ -13,13 +14,13 @@ interface WhatDefinesUsProps {
   imageAlt?: string;
 }
 
-export function WhatDefinesUs({ image, imageAlt = "Netizens team at work" }: WhatDefinesUsProps) {
+export function WhatDefinesUs({ image = imgWhatDefinesUs, imageAlt = "Netizens team at work" }: WhatDefinesUsProps) {
   return (
-    <section className="w-full bg-[#FFFFFF] py-16 md:py-24">
+    <section className="w-full bg-[#FFFFFF] py-16 md:py-24 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-center">
-          {/* Left: Image / Media placeholder */}
-          <div className="relative w-full aspect-[1/1] lg:aspect-[1/1] lg:min-h-[400px] rounded-[12px] overflow-hidden bg-[#E8ECF0]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          {/* Left: Image / Media */}
+          <div className="relative w-full aspect-[4/3] lg:aspect-auto lg:min-h-[500px] overflow-hidden">
             {image ? (
               <img
                 src={image}
@@ -36,7 +37,7 @@ export function WhatDefinesUs({ image, imageAlt = "Netizens team at work" }: Wha
           </div>
 
           {/* Right: Content */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6">
             <div className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-[#0E3572]/10 border border-[#0E3572]/15 w-fit">
               <span className="font-sans font-semibold text-[12px] text-regal-navy uppercase tracking-wide">
                 What defines us
@@ -51,7 +52,7 @@ export function WhatDefinesUs({ image, imageAlt = "Netizens team at work" }: Wha
               Netizens started as a product-focused engineering company. Over the years, we evolved into a full-stack software development and IT solutions partner for businesses that need more than outsourced coding.
             </p>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 mt-2">
               <h3 className="font-sans font-semibold text-[16px] md:text-[18px] text-carbon-black">
                 We work across:
               </h3>
@@ -70,7 +71,7 @@ export function WhatDefinesUs({ image, imageAlt = "Netizens team at work" }: Wha
               </div>
             </div>
 
-            <p className="font-sans text-[15px] md:text-base leading-[26px] text-carbon-black/90">
+            <p className="font-sans text-[15px] md:text-base leading-[26px] text-carbon-black/90 mt-2">
               Our approach blends technical depth with product thinking. Every engagement is structured around outcomes, not just deliverables.
             </p>
           </div>

@@ -91,58 +91,38 @@ const DELIVERY_MODELS: DeliveryModel[] = [
     },
 ];
 
-export function FlexibleDeliverySection() {
-    const [activeId, setActiveId] = useState<string>('sprint'); // default open for accordion on mobile
-    const active = DELIVERY_MODELS.find((m) => m.id === activeId) ?? DELIVERY_MODELS[0];
-    const rightPanelRef = useRef<HTMLDivElement>(null);
-
+// Animate the right panel content whenever active model changes (desktop)
+function useRightPanelAnimation(activeId: string, ref: React.RefObject<HTMLDivElement>) {
     useEffect(() => {
-        const panel = rightPanelRef.current;
+        const panel = ref.current;
         if (!panel) return;
+        gsap.fromTo(panel, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+        panel.querySelectorAll('[data-delivery-tag]').forEach((el, i) => {
+            gsap.fromTo(el, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.28, ease: 'back.out(1.3)', delay: 0.08 + i * 0.035 });
+        });
+        panel.querySelectorAll('[data-delivery-list-item]').forEach((el, i) => {
+            gsap.fromTo(el, { opacity: 0, x: -6 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', delay: 0.15 + i * 0.04 });
+        });
+        panel.querySelectorAll('[data-delivery-step]').forEach((el, i) => {
+            gsap.fromTo(el, { opacity: 0, x: -6 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', delay: 0.2 + i * 0.04 });
+        });
+    }, [activeId, ref]);
+}
 
-        const content = panel.querySelector('[data-delivery-content]');
-        const tags = panel.querySelectorAll('[data-delivery-tag]');
-        const listItems = panel.querySelectorAll('[data-delivery-list-item]');
-        const steps = panel.querySelectorAll('[data-delivery-step]');
+export function FlexibleDeliverySection() {
+    const [activeId, setActiveId] = useState<string>('sprint');
+    const rightPanelRef = useRef<HTMLDivElement>(null);
+    useRightPanelAnimation(activeId, rightPanelRef);
 
-        gsap.fromTo(
-            panel,
-            { opacity: 0 },
-            { opacity: 1, duration: 0.3, ease: 'power2.out' }
-        );
-        if (content) {
-            gsap.fromTo(
-                content,
-                { opacity: 0, y: 10 },
-                { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.05 }
-            );
-        }
-        tags.forEach((tag, i) => {
-            gsap.fromTo(
-                tag,
-                { opacity: 0, scale: 0.92 },
-                { opacity: 1, scale: 1, duration: 0.28, ease: 'back.out(1.3)', delay: 0.08 + i * 0.035 }
-            );
-        });
-        listItems.forEach((li, i) => {
-            gsap.fromTo(
-                li,
-                { opacity: 0, x: -6 },
-                { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', delay: 0.15 + i * 0.04 }
-            );
-        });
-        steps.forEach((step, i) => {
-            gsap.fromTo(
-                step,
-                { opacity: 0, x: -6 },
-                { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', delay: 0.2 + i * 0.04 }
-            );
-        });
-    }, [activeId]);
+    const active = DELIVERY_MODELS.find((m) => m.id === activeId) ?? DELIVERY_MODELS[0];
+
+    const toggle = (id: string) => setActiveId((prev) => (prev === id ? '' : id));
 
     return (
         <section className="relative w-full bg-white py-16 md:py-14">
             <div className="w-full max-w-7xl mx-auto px-4 flex flex-col gap-10">
+
+                {/* Header */}
                 <div className="flex flex-col items-center justify-center gap-4 text-center">
                     <div className="flex items-center justify-center px-4 py-2 bg-regal-navy/5 border border-regal-navy/10 rounded">
                         <span className="font-sans text-xs font-semibold text-regal-navy uppercase tracking-wide">
@@ -157,45 +137,58 @@ export function FlexibleDeliverySection() {
                     </p>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
-                    {/* Mobile: Accordion */}
-                    <div className="lg:hidden w-full flex flex-col gap-3">
-                        {DELIVERY_MODELS.map((model) => (
-                            <div
-                                key={model.id}
-                                className={`rounded-lg overflow-hidden border border-[#e5e7eb] transition-all duration-300 ${activeId === model.id ? 'bg-white shadow-md' : 'bg-[#FAF5F5] shadow-none'
+                {/*
+                  ─── Layout shell ────────────────────────────────────────────────
+                  Mobile  (<lg): flex-col  → models render as accordion items
+                  Desktop (≥lg): flex-row  → left tab strip + right detail panel
+
+                  Each model is ONE element in the DOM. CSS drives how it looks.
+                  ─────────────────────────────────────────────────────────────────
+                */}
+                <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 w-full">
+
+                    {/* ── Left strip (tab buttons on desktop, accordion headers on mobile) ── */}
+                    <div className="flex flex-col gap-3 w-full lg:w-[280px] lg:shrink-0">
+                        {DELIVERY_MODELS.map((model) => {
+                            const isActive = activeId === model.id;
+                            return (
+                                <div
+                                    key={model.id}
+                                    className={`rounded-lg border overflow-hidden transition-all duration-300 ${
+                                        isActive
+                                            ? 'bg-white border-regal-navy/25 shadow-md shadow-regal-navy/5 ring-1 ring-regal-navy/10'
+                                            : 'bg-[#FAF5F5] border-[#e5e7eb] shadow-none'
                                     }`}
-                            >
-                                <button
-                                    onClick={() => setActiveId(activeId === model.id ? '' : model.id)}
-                                    className={`w-full flex items-center justify-between px-5 py-4 text-left font-sans font-semibold text-sm transition-colors ${activeId === model.id ? 'text-carbon-black' : 'text-carbon-black hover:bg-white/50'
-                                        }`}
                                 >
-                                    {model.title}
-                                    <ChevronDown
-                                        className={`w-5 h-5 text-gray-600 shrink-0 transition-transform duration-200 ${activeId === model.id ? 'rotate-180' : ''
+                                    {/* Tab / accordion trigger — shared */}
+                                    <button
+                                        onClick={() => toggle(model.id)}
+                                        className={`w-full text-left px-5 py-4 flex items-center justify-between font-sans font-semibold text-sm transition-colors ${
+                                            isActive ? 'text-carbon-black' : 'text-gray-600 hover:bg-white/50 hover:text-carbon-black'
+                                        }`}
+                                    >
+                                        {model.title}
+                                        {/* Chevron: visible on mobile as accordion indicator; hidden on desktop */}
+                                        <ChevronDown
+                                            className={`lg:hidden w-5 h-5 text-gray-600 shrink-0 transition-transform duration-200 ${
+                                                isActive ? 'rotate-180' : ''
                                             }`}
-                                    />
-                                </button>
-                                {activeId === model.id && (
-                                    <div className="px-5 pb-5 pt-0 border-t border-[#e5e7eb] animate-fade-in-down">
-                                        <div className="pt-4 space-y-5">
-                                            <div>
-                                                <p className="font-sans font-semibold text-xs text-regal-navy mb-2">Best for</p>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {model.bestFor.map((tag) => (
-                                                        <span
-                                                            key={tag}
-                                                            className="inline-flex px-3 py-1.5 bg-regal-navy/10 text-regal-navy rounded-full font-sans font-medium text-xs"
-                                                        >
-                                                            {tag}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h3 className="font-headings font-semibold text-carbon-black text-sm mb-3">What you get:</h3>
-                                                <ul className="flex flex-col gap-2">
+                                        />
+                                    </button>
+
+                                    {/*
+                                      "What you get" list:
+                                      - On desktop: shown inline inside the active tab button (left panel)
+                                      - On mobile: part of the full accordion body below
+                                      We render it here (inside the left strip) for desktop, hidden on mobile.
+                                    */}
+                                    {isActive && (
+                                        <div className="hidden lg:block px-5 pb-5 pt-0 border-t border-regal-navy/10 animate-fade-in-down">
+                                            <div className="pt-4">
+                                                <h3 className="font-headings font-semibold text-carbon-black text-base mb-4">
+                                                    What you get:
+                                                </h3>
+                                                <ul className="flex flex-col gap-3">
                                                     {model.whatYouGet.map((item, i) => (
                                                         <li key={i} className="flex items-start gap-3">
                                                             <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
@@ -204,73 +197,94 @@ export function FlexibleDeliverySection() {
                                                     ))}
                                                 </ul>
                                             </div>
-                                            <div>
-                                                <h3 className="font-headings font-semibold text-carbon-black text-sm mb-3">When to choose this?</h3>
-                                                <ul className="flex flex-col gap-2">
-                                                    {model.whenToChoose.map((item, i) => (
-                                                        <li key={i} className="flex items-start gap-3">
-                                                            <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
-                                                            <span className="font-sans text-sm text-gray-600 leading-[22px]">{item}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <h3 className="font-headings font-semibold text-carbon-black text-sm mb-3">How it works?</h3>
-                                                <ol className="flex flex-col gap-3">
-                                                    {model.howItWorks.map((item, i) => (
-                                                        <li key={i} className="flex gap-3">
-                                                            <span className="shrink-0 font-headings font-bold text-regal-navy text-sm">{i + 1}.</span>
-                                                            <div>
-                                                                <p className="font-headings font-semibold text-carbon-black text-sm">{item.step}</p>
-                                                                <p className="font-sans text-sm text-gray-600 leading-[22px] mt-0.5">{item.description}</p>
-                                                            </div>
-                                                        </li>
-                                                    ))}
-                                                </ol>
+                                        </div>
+                                    )}
+
+                                    {/*
+                                      Full accordion body — mobile only (lg:hidden).
+                                      Contains ALL content sections so nothing is duplicated on mobile.
+                                    */}
+                                    {isActive && (
+                                        <div className="lg:hidden px-5 pb-5 pt-0 border-t border-[#e5e7eb] animate-fade-in-down">
+                                            <div className="pt-4 space-y-5">
+
+                                                {/* Best for */}
+                                                <div>
+                                                    <p className="font-sans font-semibold text-xs text-regal-navy mb-2">Best for</p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {model.bestFor.map((tag) => (
+                                                            <span
+                                                                key={tag}
+                                                                className="inline-flex px-3 py-1.5 bg-regal-navy/10 text-regal-navy rounded-full font-sans font-medium text-xs"
+                                                            >
+                                                                {tag}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                {/* What you get */}
+                                                <div>
+                                                    <h3 className="font-headings font-semibold text-carbon-black text-sm mb-3">What you get:</h3>
+                                                    <ul className="flex flex-col gap-2">
+                                                        {model.whatYouGet.map((item, i) => (
+                                                            <li key={i} className="flex items-start gap-3">
+                                                                <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
+                                                                <span className="font-sans text-sm text-gray-600 leading-[22px]">{item}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+
+                                                {/* When to choose */}
+                                                <div>
+                                                    <h3 className="font-headings font-semibold text-carbon-black text-sm mb-3">When to choose this?</h3>
+                                                    <ul className="flex flex-col gap-2">
+                                                        {model.whenToChoose.map((item, i) => (
+                                                            <li key={i} className="flex items-start gap-3">
+                                                                <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
+                                                                <span className="font-sans text-sm text-gray-600 leading-[22px]">{item}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+
+                                                {/* How it works */}
+                                                <div>
+                                                    <h3 className="font-headings font-semibold text-carbon-black text-sm mb-3">How it works?</h3>
+                                                    <ol className="flex flex-col gap-3">
+                                                        {model.howItWorks.map((item, i) => (
+                                                            <li key={i} className="flex gap-3">
+                                                                <span className="shrink-0 font-headings font-bold text-regal-navy text-sm">{i + 1}.</span>
+                                                                <div>
+                                                                    <p className="font-headings font-semibold text-carbon-black text-sm">{item.step}</p>
+                                                                    <p className="font-sans text-sm text-gray-600 leading-[22px] mt-0.5">{item.description}</p>
+                                                                </div>
+                                                            </li>
+                                                        ))}
+                                                    </ol>
+                                                </div>
+
                                             </div>
                                         </div>
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
 
-                    {/* Desktop: Left panel - delivery model tabs */}
-                    <div className="hidden lg:flex flex-col gap-3 w-[280px] shrink-0">
-                        {DELIVERY_MODELS.map((model) => (
-                            <button
-                                key={model.id}
-                                onClick={() => setActiveId(model.id)}
-                                className={`w-full text-left px-5 py-4 rounded-lg border font-sans font-semibold text-sm md:text-base transition-all duration-300 ease-out ${activeId === model.id
-                                    ? 'bg-white border-regal-navy/25 text-carbon-black shadow-md shadow-regal-navy/5 ring-1 ring-regal-navy/10'
-                                    : 'bg-[#FAF5F5] border-[#e5e7eb] text-gray-600 shadow-none hover:bg-[#f5f0f0] hover:border-regal-navy/10 active:scale-[0.995]'
-                                    }`}
-                            >
-                                {model.title}
-                                {activeId === model.id && (
-                                    <div className="mt-4 pt-4 border-t border-regal-navy/10 animate-fade-in-down">
-                                        <h3 className="font-headings font-semibold text-carbon-black text-base mb-4">
-                                            What you get:
-                                        </h3>
-                                        <ul className="flex flex-col gap-3">
-                                            {model.whatYouGet.map((item, i) => (
-                                                <li key={i} className="flex items-start gap-3">
-                                                    <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
-                                                    <span className="font-sans text-sm text-gray-600 leading-[22px]">
-                                                        {item}
-                                                    </span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Right panel - content (desktop only) */}
-                    <div ref={rightPanelRef} className="hidden lg:block flex-1 min-w-0 bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-sm transition-shadow duration-300 hover:shadow-md">
+                    {/* ── Right detail panel — desktop only ── */}
+                    {/*
+                      This panel renders the active model's full detail.
+                      It is hidden on mobile (lg:block), so content only exists
+                      in the accordion bodies above at smaller breakpoints.
+                      Each model's content therefore appears exactly once in the DOM
+                      at any given breakpoint.
+                    */}
+                    <div
+                        ref={rightPanelRef}
+                        className="hidden lg:block flex-1 min-w-0 bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                    >
                         {/* Best for banner */}
                         <div className="relative bg-regal-navy px-6 py-4 overflow-hidden">
                             <div className="absolute inset-0 pointer-events-none opacity-10">
@@ -297,7 +311,7 @@ export function FlexibleDeliverySection() {
                                     <span
                                         key={tag}
                                         data-delivery-tag
-                                        className="inline-flex items-center px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/10 text-white rounded-[84px] font-sans font-medium text-xs md:text-sm transition-transform duration-200 hover:scale-105 shadow-sm"
+                                        className="inline-flex items-center px-3 py-1.5 bg-white/10 backdrop-blur-md border border-white/10 text-white rounded-[84px] font-sans font-medium text-xs md:text-sm hover:scale-105 transition-transform duration-200 shadow-sm"
                                     >
                                         {tag}
                                     </span>
@@ -305,45 +319,28 @@ export function FlexibleDeliverySection() {
                             </div>
                         </div>
 
-                        {/* Content columns */}
+                        {/* When to choose + How it works */}
                         <div data-delivery-content className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                            {/* Left column */}
-                            <div className="flex flex-col gap-6">
-                                <div>
-                                    <h3 className="font-headings font-semibold text-carbon-black text-base mb-4">
-                                        When to choose this?
-                                    </h3>
-                                    <ul className="flex flex-col gap-3">
-                                        {active.whenToChoose.map((item, i) => (
-                                            <li key={i} data-delivery-list-item className="flex items-start gap-3">
-                                                <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
-                                                <span className="font-sans text-sm text-gray-600 leading-[22px]">
-                                                    {item}
-                                                </span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-
-                            {/* Right column */}
                             <div>
-                                <h3 className="font-headings font-semibold text-carbon-black text-base mb-4">
-                                    How it works?
-                                </h3>
+                                <h3 className="font-headings font-semibold text-carbon-black text-base mb-4">When to choose this?</h3>
+                                <ul className="flex flex-col gap-3">
+                                    {active.whenToChoose.map((item, i) => (
+                                        <li key={i} data-delivery-list-item className="flex items-start gap-3">
+                                            <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
+                                            <span className="font-sans text-sm text-gray-600 leading-[22px]">{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 className="font-headings font-semibold text-carbon-black text-base mb-4">How it works?</h3>
                                 <ol className="flex flex-col gap-4">
                                     {active.howItWorks.map((item, i) => (
                                         <li key={i} data-delivery-step className="flex gap-4">
-                                            <span className="shrink-0 font-headings font-bold text-regal-navy text-base">
-                                                {i + 1}.
-                                            </span>
+                                            <span className="shrink-0 font-headings font-bold text-regal-navy text-base">{i + 1}.</span>
                                             <div>
-                                                <p className="font-headings font-semibold text-carbon-black text-sm">
-                                                    {item.step}
-                                                </p>
-                                                <p className="font-sans text-sm text-gray-600 leading-[22px] mt-1">
-                                                    {item.description}
-                                                </p>
+                                                <p className="font-headings font-semibold text-carbon-black text-sm">{item.step}</p>
+                                                <p className="font-sans text-sm text-gray-600 leading-[22px] mt-1">{item.description}</p>
                                             </div>
                                         </li>
                                     ))}
@@ -351,6 +348,7 @@ export function FlexibleDeliverySection() {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>

@@ -10,6 +10,8 @@ import AiAutomate from './pages/ai-automate'
 import HowWeWork from './pages/how-we-work'
 import BookCall from './pages/book-call'
 import AboutUs from './pages/about-us'
+import { ScrollToTop } from './components/ScrollToTop'
+import FAQpage from './pages/faq'
 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* All pages share Navbar + Footer via MainLayout */}
         <Route element={<MainLayout />}>
@@ -39,6 +42,7 @@ function App() {
           <Route path="/how-we-work" element={<HowWeWork />} />
           <Route path="/book-call" element={<BookCall />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/faq" element={<FAQpage />} />
         </Route>
 
         {/* Pages without Navbar/Footer (e.g. 404) can go outside the layout:

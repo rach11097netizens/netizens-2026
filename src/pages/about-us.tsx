@@ -9,6 +9,7 @@ import { HowWeThinkPartnerships } from '../components/HowWeThinkPartnerships';
 import { JoinTheTeamSection } from '../components/JoinTheTeamSection';
 import { SeparatorPattern } from '../components/SeparatorPattern';
 import { ServiceCTASection } from '../components/ServiceCTASection';
+import { AboutUsPageSEO } from '../components/SEO/AboutUsPageSEO';
 
 const AboutUs: React.FC = () => {
     useEffect(() => {
@@ -29,6 +30,7 @@ const AboutUs: React.FC = () => {
                 className="pt-[96px] max-w-7xl mx-auto px-4"
             />
             <main>
+                <AboutUsPageSEO />
                 <AboutHero
                     badge="About Netizens"
                     heading="An Engineering-Led Software Development Company Built For Long-Term Product Growth."

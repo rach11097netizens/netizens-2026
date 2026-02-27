@@ -8,44 +8,6 @@
     overflow: visible;
 }
 
-.journey-ruler__pattern {
-    position: absolute;
-    inset: 0;
-    /* Major ticks every 64px */
-    background-image:
-        repeating-linear-gradient(90deg,
-            rgba(255, 250, 250, 0.25) 0px,
-            rgba(255, 250, 250, 0.25) 1px,
-            transparent 1px,
-            transparent 64px);
-    background-size: 64px 100%;
-}
-
-.journey-ruler__minor {
-    position: absolute;
-    inset: 0;
-    /* Minor ticks every 16px, half height */
-    background-image:
-        repeating-linear-gradient(90deg,
-            rgba(255, 250, 250, 0.12) 0px,
-            rgba(255, 250, 250, 0.12) 1px,
-            transparent 1px,
-            transparent 16px);
-    background-size: 16px 50%;
-    background-position: 0 100%;
-    background-repeat: repeat-x;
-}
-
-/* Horizontal baseline */
-.journey-ruler__baseline {
-    position: absolute;
-    bottom: 50%;
-    left: -200px;
-    right: -200px;
-    height: 1px;
-    background: rgba(255, 250, 250, 0.18);
-}
-
 /* Year trigger points */
 .journey-year {
     position: absolute;

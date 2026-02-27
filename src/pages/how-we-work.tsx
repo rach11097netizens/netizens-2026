@@ -10,6 +10,7 @@ import { WhereToStartSection } from '../components/WhereToStartSection';
 import { ServiceModelsSection } from '../components/ServiceModelsSection';
 import heroImg from '../assets/images/how-we-work-hero-img.svg';
 import { Hero } from '../components/ServicesHero';
+import { HowWeWorkPageSEO } from '../components/SEO/HowWeWorkPageSEO';
 const HowWeWork: React.FC = () => {
     useEffect(() => {
         document.title = "How Netizens Delivers: Agile Sprints, Projects & Retainer Teams";
@@ -30,6 +31,7 @@ const HowWeWork: React.FC = () => {
                 className="pt-[96px] max-w-7xl mx-auto px-4"
             />
             <main>
+                <HowWeWorkPageSEO />
                 <Hero
                     badge="How We Deliver"
                     heading="Agile Sprints When You Need Speed. Retainers When You Need Stability."

@@ -47,13 +47,13 @@ export function QualityGuarantee(props: QualityGuaranteeProps) {
     const items = props.items ?? defaults.items;
     const chips = props.chips ?? defaults.chips;
 
-    const leftItems = items.slice(0, 2);
-    const rightItems = items.slice(2, 4);
+    const lineWidths = ["w-[110px]", "w-[160px]"];
 
     return (
-        <section className="relative w-full bg-white py-16 md:py-20 overflow-hidden">
+        <section className="relative w-full bg-white py-16 lg:py-20 overflow-hidden">
             <SidePattern invert />
-            <div className="max-w-[1200px] mx-auto px-4 flex flex-col items-center gap-8 md:gap-10 relative z-10">
+
+            <div className="max-w-[1200px] mx-auto px-4 flex flex-col items-center gap-8 lg:gap-10 relative z-10">
                 {/* Header */}
                 <div className="flex flex-col items-center gap-2 text-center">
                     <div className="bg-regal-navy/5 border border-regal-navy/10 flex items-center justify-center px-[18px] py-[8px] rounded-[4px]">
@@ -61,41 +61,86 @@ export function QualityGuarantee(props: QualityGuaranteeProps) {
                             {badge}
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-carbon-black">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black">
                         {heading}
                     </h2>
                 </div>
 
-                {/* Mobile layout: stacked cards + shield */}
-                <div className="flex flex-col items-center gap-6 md:hidden w-full">
-                    {/* Shield */}
-                    <div className="relative flex flex-col items-center">
+                {/*
+                  Layout wrapper:
+                  < 1024px → flex-col  (shield on top, then 2-col card grid)
+                  ≥ 1024px → flex-row  (left cards | shield | right cards)
+                */}
+                <div className="flex flex-col items-center gap-6 w-full lg:flex-row lg:items-center lg:justify-center lg:gap-0">
+
+                    {/* Left cards — ≥1024px only */}
+                    <div className="hidden lg:flex flex-col gap-14 items-end shrink-0">
+                        {items.slice(0, 2).map((item, i) => (
+                            <div key={i} className="flex items-center">
+                                <div className="bg-white border border-regal-navy/60 rounded-[6px] p-[18px] flex flex-col gap-2 w-[280px]">
+                                    <div className="flex items-center gap-2">
+                                        <CheckBadge />
+                                        <span className="font-sans font-medium text-base text-regal-navy leading-[22px]">
+                                            {item.title}
+                                        </span>
+                                    </div>
+                                    <p className="font-sans font-medium text-sm text-carbon-black/70 leading-[22px]">
+                                        {item.description}
+                                    </p>
+                                </div>
+                                <div className={`h-px bg-regal-navy/20 ${lineWidths[i]}`} />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Center shield — always rendered once */}
+                    <div className="relative flex flex-col items-center shrink-0 lg:mx-[-40px]">
                         {chips[0] && (
-                            <div className="absolute -top-3 right-0 bg-white/30 backdrop-blur-sm shadow-[0_8px_24px_rgba(14,53,114,0.31)] rounded-full px-4 py-2 z-10">
+                            <div className="absolute -top-3 right-0 lg:-top-2 lg:right-[-30px] bg-white/30 backdrop-blur-sm shadow-[0_8px_24px_rgba(14,53,114,0.31)] rounded-full px-4 py-2 z-10">
                                 <span className="font-sans text-[13px] text-carbon-black">{chips[0]}</span>
                             </div>
                         )}
-                        <div className="relative w-[200px] h-[240px] flex items-center justify-center">
+                        <div className="relative w-[200px] h-[240px] lg:w-[250px] lg:h-[300px] flex items-center justify-center">
                             <img src={shieldVector} alt="" className="absolute inset-0 w-full h-full object-contain" />
-                            <div className="relative flex flex-col items-center gap-2 px-4 -mt-7">
-                                <img src={tickIcon} alt="" className="w-10 h-10" />
-                                <h3 className="font-headings font-normal text-base text-white text-center leading-snug">
+                            <div className="relative flex flex-col items-center gap-2 lg:gap-3 px-4 -mt-7 lg:-mt-10">
+                                <img src={tickIcon} alt="" className="w-10 h-10 lg:w-[50px] lg:h-[50px]" />
+                                <h3 className="font-headings font-normal text-base lg:text-lg text-white text-center leading-snug lg:leading-[25px]">
                                     {centerTitle}
                                 </h3>
-                                <p className="font-sans font-medium text-xs text-white/75 text-center leading-relaxed">
+                                <p className="font-sans font-medium text-xs lg:text-sm text-white/75 text-center leading-relaxed lg:leading-[22px]">
                                     {centerDescription}
                                 </p>
                             </div>
                         </div>
                         {chips[1] && (
-                            <div className="absolute -bottom-3 left-0 bg-white/30 backdrop-blur-sm shadow-[0_8px_24px_rgba(14,53,114,0.31)] rounded-full px-4 py-2 z-10">
+                            <div className="absolute -bottom-3 left-0 lg:-bottom-2 lg:left-[-10px] bg-white/30 backdrop-blur-sm shadow-[0_8px_24px_rgba(14,53,114,0.31)] rounded-full px-4 py-2 z-10">
                                 <span className="font-sans text-[13px] text-carbon-black">{chips[1]}</span>
                             </div>
                         )}
                     </div>
 
-                    {/* Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                    {/* Right cards — ≥1024px only */}
+                    <div className="hidden lg:flex flex-col gap-14 items-start shrink-0">
+                        {items.slice(2, 4).map((item, i) => (
+                            <div key={i} className="flex items-center">
+                                <div className={`h-px bg-regal-navy/20 ${lineWidths[i]}`} />
+                                <div className="bg-white border border-regal-navy/60 rounded-[6px] p-[18px] flex flex-col gap-2 w-[280px]">
+                                    <div className="flex items-center gap-2">
+                                        <CheckBadge />
+                                        <span className="font-sans font-medium text-base text-regal-navy leading-[22px]">
+                                            {item.title}
+                                        </span>
+                                    </div>
+                                    <p className="font-sans font-medium text-sm text-carbon-black/70 leading-[22px]">
+                                        {item.description}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Mobile + tablet card grid — hidden at ≥1024px */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full lg:hidden">
                         {items.map((item, i) => (
                             <div
                                 key={i}
@@ -113,75 +158,7 @@ export function QualityGuarantee(props: QualityGuaranteeProps) {
                             </div>
                         ))}
                     </div>
-                </div>
 
-                {/* Desktop layout: cards — lines — shield — lines — cards */}
-                <div className="hidden md:flex items-center justify-center w-full">
-                    {/* Left cards */}
-                    <div className="flex flex-col gap-14 items-end shrink-0">
-                        {leftItems.map((item, i) => (
-                            <div key={i} className="flex items-center">
-                                <div className="bg-white border border-regal-navy/60 rounded-[6px] p-[18px] flex flex-col gap-2 w-[280px]">
-                                    <div className="flex items-center gap-2">
-                                        <CheckBadge />
-                                        <span className="font-sans font-medium text-base text-regal-navy leading-[22px]">
-                                            {item.title}
-                                        </span>
-                                    </div>
-                                    <p className="font-sans font-medium text-sm text-carbon-black/70 leading-[22px]">
-                                        {item.description}
-                                    </p>
-                                </div>
-                                <div className={`h-px bg-regal-navy/20 ${i === 0 ? "w-[110px]" : "w-[160px]"}`} />
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Center shield */}
-                    <div className="relative flex flex-col items-center shrink-0 mx-[-40px]">
-                        {chips[0] && (
-                            <div className="absolute -top-2 right-[-30px] bg-white/30 backdrop-blur-sm shadow-[0_8px_24px_rgba(14,53,114,0.31)] rounded-full px-4 py-2 z-10">
-                                <span className="font-sans text-[13px] text-carbon-black">{chips[0]}</span>
-                            </div>
-                        )}
-                        <div className="relative w-[250px] h-[300px] flex items-center justify-center">
-                            <img src={shieldVector} alt="" className="absolute inset-0 w-full h-full object-contain" />
-                            <div className="relative flex flex-col items-center gap-3 px-4 -mt-10">
-                                <img src={tickIcon} alt="" className="w-[50px] h-[50px]" />
-                                <h3 className="font-headings font-normal text-lg text-white text-center leading-[25px]">
-                                    {centerTitle}
-                                </h3>
-                                <p className="font-sans font-medium text-sm text-white/75 text-center leading-[22px]">
-                                    {centerDescription}
-                                </p>
-                            </div>
-                        </div>
-                        {chips[1] && (
-                            <div className="absolute -bottom-2 left-[-10px] bg-white/30 backdrop-blur-sm shadow-[0_8px_24px_rgba(14,53,114,0.31)] rounded-full px-4 py-2 z-10">
-                                <span className="font-sans text-[13px] text-carbon-black">{chips[1]}</span>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Right cards */}
-                    <div className="flex flex-col gap-14 items-start shrink-0">
-                        {rightItems.map((item, i) => (
-                            <div key={i} className="flex items-center">
-                                <div className={`h-px bg-regal-navy/20 ${i === 0 ? "w-[110px]" : "w-[160px]"}`} />
-                                <div className="bg-white border border-regal-navy/60 rounded-[6px] p-[18px] flex flex-col gap-2 w-[280px]">
-                                    <div className="flex items-center gap-2">
-                                        <CheckBadge />
-                                        <span className="font-sans font-medium text-base text-regal-navy leading-[22px]">
-                                            {item.title}
-                                        </span>
-                                    </div>
-                                    <p className="font-sans font-medium text-sm text-carbon-black/70 leading-[22px]">
-                                        {item.description}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
                 </div>
             </div>
         </section>

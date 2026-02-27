@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import logo from "../assets/images/logo.svg";
+import { Link } from "react-router-dom";
 
 const FacebookIcon = () => (
     <svg width="11" height="18" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.5957 10.125L10.0845 6.86742H7.02823V4.75348C7.02823 3.86227 7.45517 2.99355 8.82398 2.99355H10.2134V0.220078C10.2134 0.220078 8.95255 0 7.74702 0C5.23008 0 3.58489 1.56023 3.58489 4.38469V6.86742H0.787109V10.125H3.58489V18H7.02823V10.125H9.5957Z" fill="currentColor" /></svg>
@@ -27,17 +28,26 @@ const NewsletterArrow = () => (
 );
 
 const EmailIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7C3 6.46957 3.21071 5.96086 3.58579 5.58579C3.96086 5.21071 4.46957 5 5 5H19C19.5304 5 20.0391 5.21071 20.4142 5.58579C20.7893 5.96086 21 6.46957 21 7V17C21 17.5304 20.7893 18.0391 20.4142 18.4142C20.0391 18.7893 19.5304 19 19 19H5C4.46957 19 3.96086 18.7893 3.58579 18.4142C3.21071 18.0391 3 17.5304 3 17V7Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /><path d="M3 7L12 13L21 7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7C3 6.46957 3.21071 5.96086 3.58579 5.58579C3.96086 5.21071 4.46957 5 5 5H19C19.5304 5 20.0391 5.21071 20.4142 5.58579C20.7893 5.96086 21 6.46957 21 7V17C21 17.5304 20.7893 18.0391 20.4142 18.4142C20.0391 18.7893 19.5304 19 19 19H5C4.46957 19 3.96086 18.7893 3.58579 18.4142C3.21071 18.0391 3 17.5304 3 17V7Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" /><path d="M3 7L12 13L21 7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
 
 const PhoneIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4H9L11 9L8.5 10.5C9.57096 12.6715 11.3285 14.429 13.5 15.5L15 13L20 15V19C20 19.5304 19.7893 20.0391 19.4142 20.4142C19.0391 20.7893 18.5304 21 18 21C14.0993 20.763 10.4202 19.1065 7.65683 16.3432C4.8935 13.5798 3.23705 9.90074 3 6C3 5.46957 3.21071 4.96086 3.58579 4.58579C3.96086 4.21071 4.46957 4 5 4Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4H9L11 9L8.5 10.5C9.57096 12.6715 11.3285 14.429 13.5 15.5L15 13L20 15V19C20 19.5304 19.7893 20.0391 19.4142 20.4142C19.0391 20.7893 18.5304 21 18 21C14.0993 20.763 10.4202 19.1065 7.65683 16.3432C4.8935 13.5798 3.23705 9.90074 3 6C3 5.46957 3.21071 4.96086 3.58579 4.58579C3.96086 4.21071 4.46957 4 5 4Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
 
 const WhatsappIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21L4.65 17.2C3.38766 15.4081 2.82267 13.217 3.06104 11.0381C3.29942 8.85918 4.32479 6.84214 5.94471 5.36552C7.56463 3.8889 9.66775 3.05421 11.8594 3.0181C14.051 2.98198 16.1805 3.74693 17.8482 5.16937C19.5159 6.59182 20.6071 8.57398 20.9172 10.7439C21.2272 12.9138 20.7347 15.1222 19.5321 16.9548C18.3295 18.7873 16.4994 20.118 14.3854 20.6971C12.2713 21.2762 10.0186 21.0639 8.05 20.1L3 21Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /><path d="M9 10C9 10.1326 9.05268 10.2598 9.14645 10.3536C9.24021 10.4473 9.36739 10.5 9.5 10.5C9.63261 10.5 9.75979 10.4473 9.85355 10.3536C9.94732 10.2598 10 10.1326 10 10V9C10 8.86739 9.94732 8.74021 9.85355 8.64645C9.75979 8.55268 9.63261 8.5 9.5 8.5C9.36739 8.5 9.24021 8.55268 9.14645 8.64645C9.05268 8.74021 9 8.86739 9 9V10ZM9 10C9 11.3261 9.52678 12.5979 10.4645 13.5355C11.4021 14.4732 12.6739 15 14 15M14 15H15C15.1326 15 15.2598 14.9473 15.3536 14.8536C15.4473 14.7598 15.5 14.6326 15.5 14.5C15.5 14.3674 15.4473 14.2402 15.3536 14.1464C15.2598 14.0527 15.1326 14 15 14H14C13.8674 14 13.7402 14.0527 13.6464 14.1464C13.5527 14.2402 13.5 14.3674 13.5 14.5C13.5 14.6326 13.5527 14.7598 13.6464 14.8536C13.7402 14.9473 13.8674 15 14 15Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21L4.65 17.2C3.38766 15.4081 2.82267 13.217 3.06104 11.0381C3.29942 8.85918 4.32479 6.84214 5.94471 5.36552C7.56463 3.8889 9.66775 3.05421 11.8594 3.0181C14.051 2.98198 16.1805 3.74693 17.8482 5.16937C19.5159 6.59182 20.6071 8.57398 20.9172 10.7439C21.2272 12.9138 20.7347 15.1222 19.5321 16.9548C18.3295 18.7873 16.4994 20.118 14.3854 20.6971C12.2713 21.2762 10.0186 21.0639 8.05 20.1L3 21Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" /><path d="M9 10C9 10.1326 9.05268 10.2598 9.14645 10.3536C9.24021 10.4473 9.36739 10.5 9.5 10.5C9.63261 10.5 9.75979 10.4473 9.85355 10.3536C9.94732 10.2598 10 10.1326 10 10V9C10 8.86739 9.94732 8.74021 9.85355 8.64645C9.75979 8.55268 9.63261 8.5 9.5 8.5C9.36739 8.5 9.24021 8.55268 9.14645 8.64645C9.05268 8.74021 9 8.86739 9 9V10ZM9 10C9 11.3261 9.52678 12.5979 10.4645 13.5355C11.4021 14.4732 12.6739 15 14 15M14 15H15C15.1326 15 15.2598 14.9473 15.3536 14.8536C15.4473 14.7598 15.5 14.6326 15.5 14.5C15.5 14.3674 15.4473 14.2402 15.3536 14.1464C15.2598 14.0527 15.1326 14 15 14H14C13.8674 14 13.7402 14.0527 13.6464 14.1464C13.5527 14.2402 13.5 14.3674 13.5 14.5C13.5 14.6326 13.5527 14.7598 13.6464 14.8536C13.7402 14.9473 13.8674 15 14 15Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
 
+/*
+  AccordionSection — single heading element, dual behaviour.
+
+  The heading is rendered as ONE <h4> in the DOM.
+  On mobile it wraps in a <button>-like row (pointer cursor, onClick).
+  On desktop the click handler is a no-op and the chevron is hidden.
+  Content visibility is controlled purely by CSS: always visible on md+
+  via `md:max-h-none md:opacity-100`, toggled by state on mobile.
+*/
 const AccordionSection = ({
     title,
     children,
@@ -50,24 +60,28 @@ const AccordionSection = ({
     onToggle: () => void;
 }) => (
     <div className="flex flex-col">
-        {/* Mobile: clickable header with chevron */}
-        <button
+        {/* Single heading row — acts as accordion trigger on mobile, static on desktop */}
+        <div
+            role="button"
+            tabIndex={0}
             onClick={onToggle}
-            className="md:hidden flex items-center justify-between w-full py-3 border-b border-carbon-black/10"
+            onKeyDown={(e) => e.key === 'Enter' && onToggle()}
+            className="flex items-center justify-between w-full py-3 border-b border-carbon-black/10 cursor-pointer md:cursor-default md:border-none md:pb-0 md:mb-4"
         >
             <h4 className="font-sans font-bold text-sm text-[#0e3572]">{title}</h4>
+            {/* Chevron — decorative on mobile, hidden on desktop */}
             <ChevronDown
                 size={18}
-                className={`text-[#0e3572] transition-transform duration-300 ${isOpen ? "rotate-180" : ""
-                    }`}
+                aria-hidden="true"
+                className={`md:hidden text-[#0e3572] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
             />
-        </button>
-        {/* Desktop: static header */}
-        <h4 className="hidden md:block font-sans font-bold text-sm text-[#0e3572] mb-4">{title}</h4>
-        {/* Content: hidden on mobile unless open, always visible on lg+ */}
+        </div>
+
+        {/* Content — CSS-toggled on mobile, always visible on md+ */}
         <div
-            className={`overflow-hidden transition-all duration-300 ease-in-out md:!max-h-none md:!opacity-100 ${isOpen ? "max-h-96 opacity-100 mt-3 md:mt-0" : "max-h-0 opacity-0"
-                }`}
+            className={`overflow-hidden transition-all duration-300 ease-in-out
+                md:!max-h-none md:!opacity-100 md:overflow-visible
+                ${isOpen ? "max-h-96 opacity-100 mt-3 md:mt-0" : "max-h-0 opacity-0"}`}
         >
             {children}
         </div>
@@ -91,7 +105,9 @@ export const Footer = () => {
                     {/* Left: Branding & Newsletter */}
                     <div className="flex flex-col gap-8 w-full max-w-xs md:max-w-sm mx-auto">
                         <div className="h-[82px] w-[276px] overflow-hidden">
-                            <img src={logo} alt="Netizens" className="w-full h-auto max-h-[82px] object-contain object-left" />
+                            <Link to="/">
+                                <img src={logo} alt="Netizens" className="w-full h-auto max-h-[82px] object-contain object-left" />
+                            </Link>
                         </div>
                         <div className="flex flex-col gap-2 w-full">
                             <p className="font-sans font-bold text-sm text-[#0e3572]">
@@ -110,7 +126,7 @@ export const Footer = () => {
                         </div>
                     </div>
 
-                    {/* Middle: Links Grid — accordion on mobile, always open on md+ */}
+                    {/* Middle: Links Grid */}
                     <div className="flex flex-col md:flex-row gap-0 md:gap-8 xl:gap-16 w-full max-w-xs md:max-w-full mx-auto">
                         <AccordionSection
                             title="Services"
@@ -118,11 +134,11 @@ export const Footer = () => {
                             onToggle={() => toggleAccordion('services')}
                         >
                             <div className="flex flex-col gap-3 font-sans font-normal text-sm text-carbon-black opacity-80 pb-2 md:pb-0">
-                                <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Product Development</a>
-                                <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Staff Augmentation</a>
-                                <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">AI Consulting & Automation</a>
-                                <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Workflow Digitization</a>
-                                <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Support & Scale</a>
+                                <a href="/mvp-development" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Product Development</a>
+                                <a href="/staff-augmentation" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Staff Augmentation</a>
+                                <a href="/ai-consulting" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">AI Consulting & Automation</a>
+                                <a href="/workflow-digitization" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Workflow Digitization</a>
+                                <a href="/support-and-scale" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Support & Scale</a>
                             </div>
                         </AccordionSection>
 
@@ -132,9 +148,9 @@ export const Footer = () => {
                             onToggle={() => toggleAccordion('company')}
                         >
                             <div className="flex flex-col gap-3 font-sans font-normal text-sm text-carbon-black opacity-80 pb-2 md:pb-0">
-                                <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">About</a>
+                                <a href="/about-us" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">About</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Case Studies</a>
-                                <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">How We Work</a>
+                                <a href="/how-we-work" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">How We Work</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Insights</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Careers</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Contact</a>
@@ -194,25 +210,16 @@ export const Footer = () => {
                 </div>
             </div>
 
-            {/* Bottom Navy Section (Footnote) */}
+            {/* Bottom Navy Section */}
             <div className="w-full bg-[#0B2A5B] py-4 px-4 md:px-8">
                 <div className="max-w-[1320px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-                    {/* Copyright info */}
                     <p className="font-sans text-xs md:text-sm text-[#FFFAFA] opacity-90 text-center md:text-left">
                         Copyright © {currentYear} netizenstechnologies.com - All rights reserved.
                     </p>
-
-                    {/* Policy Links */}
                     <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 font-sans text-xs md:text-sm text-[#FFFAFA] opacity-90">
-                        <a href="#" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">
-                            Privacy Policy
-                        </a>
-                        <a href="#" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">
-                            Terms & Conditions
-                        </a>
-                        <a href="#" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">
-                            Cookie Policy
-                        </a>
+                        <a href="#" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">Privacy Policy</a>
+                        <a href="#" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">Terms & Conditions</a>
+                        <a href="#" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">Cookie Policy</a>
                     </div>
                 </div>
             </div>

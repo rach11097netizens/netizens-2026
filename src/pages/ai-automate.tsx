@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Footer } from '../components/Footer';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SeparatorPattern } from '../components/SeparatorPattern';
 import { ServiceCTASection } from '../components/ServiceCTASection';
@@ -20,6 +19,7 @@ import { AICrossServiceCTA } from '../components/AICrossServiceCTA';
 import { Hero } from '../components/ServicesHero';
 import ClientLogos from '../components/ClientLogos';
 import Testimonials from '../components/Testimonials';
+import { AIConsultingPageSEO } from '../components/SEO/AIConsultingPageSEO';
 
 const AiAutomate: React.FC = () => {
     useEffect(() => {
@@ -41,6 +41,7 @@ const AiAutomate: React.FC = () => {
                 className="pt-[96px] max-w-7xl mx-auto px-4"
             />
             <main>
+                <AIConsultingPageSEO />
                 {/* Sections will be added here */}
                 <Hero
                     badge="Applied AI, delivered"
@@ -51,7 +52,6 @@ const AiAutomate: React.FC = () => {
                     image={heroImg}
                     imageAlt="AI Consulting & Automation"
                 />
-                <SeparatorPattern />
                 <ClientLogos />
                 <RightFit
                     theme="light"
@@ -124,7 +124,6 @@ const AiAutomate: React.FC = () => {
                     subtext="Start small. Scale what works."
                 />
             </main>
-            <Footer />
         </div>
     );
 };

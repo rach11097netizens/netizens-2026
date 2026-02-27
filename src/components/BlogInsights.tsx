@@ -149,8 +149,8 @@ export const BlogInsights = () => {
                 </div>
 
                 {/* Bottom row: title + CTA */}
-                <div className="flex items-center justify-between mt-6">
-                    <p className="font-['Sora'] font-normal text-[18px] lg:text-[24px] text-[#58595b] leading-normal overflow-hidden text-ellipsis whitespace-nowrap max-w-[70%]">
+                <div className="flex flex-col sm:flex-row items-center justify-between mt-6 gap-3">
+                    <p className="font-['Sora'] font-normal text-center sm:text-left text-[18px] lg:text-[24px] text-[#58595b] leading-normal overflow-hidden sm:text-ellipsis sm:whitespace-nowrap sm:max-w-[70%]">
                         {blogPosts[activeIndex].title}
                     </p>
                     <button className="flex-shrink-0 bg-white border border-[rgba(22,24,27,0.4)] rounded-[4px] px-[34px] py-[18px] font-['Plus_Jakarta_Sans'] text-[14px] text-[#16181b] hover:bg-[#f5f5f5] transition-colors">

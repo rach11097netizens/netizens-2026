@@ -15,21 +15,23 @@ const Navbar = () => {
     const servicesDropdownRef = useRef<HTMLDivElement>(null)
     const companyDropdownRef = useRef<HTMLDivElement>(null)
 
+    const closeMenus = () => {
+        setServicesOpen(false)
+        setCompanyOpen(false)
+    }
+
     const services = [
-        'Product Development',
-        'Staff Augmentation',
-        'AI Consulting & Automation',
-        'Workflow Digitization',
-        'Support & Scale',
+        { label: "Product Development", href: "/mvp-development" },
+        { label: "Staff Augmentation", href: "/staff-augmentation" },
+        { label: "AI Consulting & Automation", href: "/ai-consulting" },
+        { label: "Workflow Digitization", href: "/workflow-digitization" },
+        { label: "Support & Scale", href: "/support-and-scale" },
     ]
 
     const company = [
-        'About',
-        'Case Studies',
-        'How We Work',
-        'Insights',
-        'Careers',
-        'Contact',
+        { label: "About", href: "/about-us" },
+        { label: "Careers", href: "#careers" },
+        { label: "FAQ", href: "/faq" },
     ]
 
     useEffect(() => {
@@ -42,20 +44,30 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(event.target as Node)) {
+            const target = event.target as Node
+
+            if (
+                servicesDropdownRef.current &&
+                !servicesDropdownRef.current.contains(target)
+            ) {
                 setServicesOpen(false)
             }
-            if (companyDropdownRef.current && !companyDropdownRef.current.contains(event.target as Node)) {
+
+            if (
+                companyDropdownRef.current &&
+                !companyDropdownRef.current.contains(target)
+            ) {
                 setCompanyOpen(false)
             }
         }
 
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
+        document.addEventListener("mousedown", handleClickOutside)
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside)
     }, [])
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-gray-200 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
+        <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-gray-200 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md' : 'bg-white'
             }`}>
             <div className="max-w-[1400px] mx-auto px-5 md:px-10">
                 <div className="flex items-center justify-between h-16 md:h-20 gap-2">
@@ -100,7 +112,7 @@ const Navbar = () => {
                                 // </div>
                                 <div className="absolute top-[65px] left-1/2 -translate-x-1/2 w-[1320px] lg:w-[1320px] bg-gray-100 border-[1.5px] border-[rgba(14,53,114,0.2)] shadow-[0px_20px_40px_rgba(0,0,0,0.08)] rounded-[18px] overflow-hidden grid grid-cols-3 grid-rows-2 gap-[1px] z-50">
                                     {/* Category 1 */}
-                                    <Link to="/mvp-development" className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
+                                    <Link to="/mvp-development" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
                                         <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             Product Development
                                         </h3>
@@ -125,7 +137,7 @@ const Navbar = () => {
                                     </Link>
 
                                     {/* Category 2 */}
-                                    <Link to="/workflow-digitization" className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
+                                    <Link to="/workflow-digitization" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
                                         <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             Workflow Digitization
                                         </h3>
@@ -150,7 +162,7 @@ const Navbar = () => {
                                     </Link>
 
                                     {/* Category 3 */}
-                                    <Link to="/support-and-scale" className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
+                                    <Link to="/support-and-scale" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
                                         <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             Support & Scale
                                         </h3>
@@ -175,7 +187,7 @@ const Navbar = () => {
                                     </Link>
 
                                     {/* Category 4 */}
-                                    <Link to="/staff-augmentation" className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
+                                    <Link to="/staff-augmentation" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
                                         <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             Staff Augmentation
                                         </h3>
@@ -200,7 +212,7 @@ const Navbar = () => {
                                     </Link>
 
                                     {/* Category 5 */}
-                                    <Link to="/ai-consulting" className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
+                                    <Link to="/ai-consulting" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
                                         <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             AI Consulting & Automation
                                         </h3>
@@ -277,23 +289,26 @@ const Navbar = () => {
                             {companyOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
                                     {company.map((item, index) => (
-                                        item === 'About' ? (
+                                        item.label === 'About' ? (
                                             <Link
                                                 key={index}
                                                 to="/about-us"
                                                 className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-black transition-colors"
-                                                onClick={() => setCompanyOpen(false)}
+                                                onClick={() => { setCompanyOpen(false); closeMenus() }}
                                             >
                                                 About Us
                                             </Link>
                                         ) : (
                                             <a
                                                 key={index}
-                                                href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                                                href={item.href}
                                                 className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-black transition-colors"
-                                                onClick={() => setCompanyOpen(false)}
+                                                onClick={() => {
+                                                    setCompanyOpen(false);
+                                                    closeMenus();
+                                                }}
                                             >
-                                                {item}
+                                                {item.label}
                                             </a>
                                         )
                                     ))}
@@ -303,7 +318,7 @@ const Navbar = () => {
                     </div>
 
                     <Link to="/book-call" className="px-2.5 lg:px-6 py-2.5 ml-auto lg:ml-0 bg-button-gradient text-sm text-white rounded-button transition-colors">
-                        <span className="hidden md:block">Book Discovery Call</span>
+                        <span className="hidden md:block">Book a Discovery Call</span>
                         <span className="block md:hidden"><PhoneIncoming size={16} /></span>
                     </Link>
 
@@ -318,7 +333,7 @@ const Navbar = () => {
 
                 {/* Mobile Menu */}
                 {isMobileMenuOpen && (
-                    <div className="md:hidden py-4 border-t border-gray-200 bg-white">
+                    <div className="lg:hidden py-4 border-t border-gray-200 bg-white">
                         <div className="flex flex-col space-y-4">
                             {/* Mobile Services Dropdown */}
                             <div>
@@ -337,14 +352,15 @@ const Navbar = () => {
                                         {services.map((service, index) => (
                                             <a
                                                 key={index}
-                                                href={`#${service.toLowerCase().replace(/\s+/g, '-')}`}
+                                                href={service.href}
                                                 className="block text-gray-600 hover:text-black text-sm"
                                                 onClick={() => {
                                                     setMobileServicesOpen(false)
                                                     setIsMobileMenuOpen(false)
+                                                    closeMenus()
                                                 }}
                                             >
-                                                {service}
+                                                {service.label}
                                             </a>
                                         ))}
                                     </div>
@@ -366,7 +382,7 @@ const Navbar = () => {
                                 {mobileCompanyOpen && (
                                     <div className="pl-4 mt-2 space-y-2">
                                         {company.map((item, index) => (
-                                            item === 'About' ? (
+                                            item.label === 'About' ? (
                                                 <Link
                                                     key={index}
                                                     to="/about-us"
@@ -374,6 +390,7 @@ const Navbar = () => {
                                                     onClick={() => {
                                                         setMobileCompanyOpen(false)
                                                         setIsMobileMenuOpen(false)
+                                                        closeMenus()
                                                     }}
                                                 >
                                                     About Us
@@ -381,14 +398,15 @@ const Navbar = () => {
                                             ) : (
                                                 <a
                                                     key={index}
-                                                    href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                                                    href={item.href}
                                                     className="block text-gray-600 hover:text-black text-sm"
                                                     onClick={() => {
                                                         setMobileCompanyOpen(false)
                                                         setIsMobileMenuOpen(false)
+                                                        closeMenus()
                                                     }}
                                                 >
-                                                    {item}
+                                                    {item.label}
                                                 </a>
                                             )
                                         ))}
@@ -420,7 +438,7 @@ const Navbar = () => {
                             </a>
 
                             <Link to="/book-call" className="px-6 py-2.5 bg-button-gradient text-white rounded-button w-full text-left inline-block">
-                                Book Discovery Call
+                                Book a Discovery Call
                             </Link>
                         </div>
                     </div>

@@ -18,6 +18,7 @@ import { ServiceCTASection } from '../components/ServiceCTASection';
 import Testimonials from '../components/Testimonials';
 import { BuildToLaunch } from '../components/BuildToLaunch';
 import { RightFit } from '../components/RightFit';
+import { ProductDevelopmentPageSEO } from '../components/SEO/ProductDevelopmentPageSEO';
 
 const MvpDev: React.FC = () => {
     useEffect(() => {
@@ -39,6 +40,7 @@ const MvpDev: React.FC = () => {
                 className="pt-[96px] max-w-7xl mx-auto px-4"
             />
             <main>
+                <ProductDevelopmentPageSEO />
                 <Hero
                     badge="Build → Validate → Scale"
                     heading="An MVP Development Company Built For Speed And Scale"

@@ -16,11 +16,11 @@ interface ProcessTimelineProps {
 
 export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTimelineProps) {
     const [activeIndex, setActiveIndex] = useState(0);
-    const sectionRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
     const circlesRef = useRef<(HTMLDivElement | null)[]>([]);
-    const progressLineRef = useRef<HTMLDivElement>(null);
     const tlRef = useRef<gsap.core.Timeline | null>(null);
+    const progressLineRef = useRef<HTMLDivElement | null>(null);
+    const sectionRef = useRef<HTMLElement | null>(null);
     const activeIndexRef = useRef(0);
 
     const activateStep = (index: number) => {
@@ -31,12 +31,12 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
             if (!card) return;
             gsap.to(card, {
                 y: i === index ? -4 : 0,
-                boxShadow: i === index
-                    ? "0 8px 30px rgba(0,0,0,0.08)"
-                    : "0 1px 3px rgba(0,0,0,0.04)",
-                borderColor: i === index
-                    ? "rgba(14, 53, 114, 0.2)"
-                    : "rgba(0,0,0,0.06)",
+                boxShadow:
+                    i === index
+                        ? "0 8px 30px rgba(0,0,0,0.08)"
+                        : "0 1px 3px rgba(0,0,0,0.04)",
+                borderColor:
+                    i === index ? "rgba(14, 53, 114, 0.2)" : "rgba(0,0,0,0.06)",
                 duration: 0.4,
                 ease: "power2.out",
             });
@@ -65,11 +65,7 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
             tl.fromTo(
                 progressLineRef.current,
                 { width: "0%" },
-                {
-                    width: "100%",
-                    duration: totalDuration,
-                    ease: "none",
-                }
+                { width: "100%", duration: totalDuration, ease: "none" }
             );
 
             steps.forEach((_, i) => {
@@ -77,20 +73,32 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
                 tl.call(() => activateStep(i), [], triggerTime);
             });
 
-            tl.call(() => {
-                gsap.delayedCall(1, () => {
-                    cardsRef.current.forEach((card) => {
-                        if (!card) return;
-                        gsap.set(card, { y: 0, boxShadow: "0 1px 3px rgba(0,0,0,0.04)", borderColor: "rgba(0,0,0,0.06)" });
+            tl.call(
+                () => {
+                    gsap.delayedCall(1, () => {
+                        cardsRef.current.forEach((card) => {
+                            if (!card) return;
+                            gsap.set(card, {
+                                y: 0,
+                                boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+                                borderColor: "rgba(0,0,0,0.06)",
+                            });
+                        });
+                        circlesRef.current.forEach((circle) => {
+                            if (!circle) return;
+                            gsap.set(circle, {
+                                scale: 1,
+                                backgroundColor: "#ffffff",
+                                borderColor: "#d1d5db",
+                            });
+                        });
+                        activeIndexRef.current = -1;
+                        setActiveIndex(0);
                     });
-                    circlesRef.current.forEach((circle) => {
-                        if (!circle) return;
-                        gsap.set(circle, { scale: 1, backgroundColor: "#ffffff", borderColor: "#d1d5db" });
-                    });
-                    activeIndexRef.current = -1;
-                    setActiveIndex(0);
-                });
-            }, [], totalDuration + 0.01);
+                },
+                [],
+                totalDuration + 0.01
+            );
 
             return () => {
                 tl.kill();
@@ -101,127 +109,126 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
     }, [steps.length]);
 
     return (
-        <section
-            ref={sectionRef}
-            className="w-full bg-white py-12 sm:py-16 md:py-20 flex flex-col items-center overflow-hidden px-4 relative"
-        >
-            <SidePattern invert />
+        <section ref={sectionRef} className="relative py-16 md:py-24 bg-gray-50 overflow-hidden">
+            <SidePattern />
 
-            <div className="w-full max-w-[1200px] mx-auto flex flex-col items-center gap-10 md:gap-14 relative z-10">
-                <div className="flex flex-col items-center justify-center gap-4 text-center">
+            <div className="w-full max-w-[1200px] mx-auto flex flex-col items-center relative z-10 px-2 sm:px-4">
+                {/* Header */}
+                <div className="flex flex-col items-center justify-center gap-4 text-center mb-10 md:mb-14">
                     <div className="bg-regal-navy/5 border border-regal-navy/10 flex items-center justify-center px-[18px] py-[8px] rounded-[4px]">
                         <span className="font-sans text-[12px] text-regal-navy text-center">
                             {badge}
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-carbon-black max-w-[800px]">
+                    <h2 className="font-headings font-normal text-2xl md:text-[30px] leading-snug text-carbon-black max-w-[1200px]">
                         {heading}
                     </h2>
                 </div>
 
-                {/* Desktop: horizontal timeline */}
-                <div className="hidden md:flex flex-col w-full gap-0">
-                    {/* Timeline track */}
-                    <div className="relative w-full">
-                        <div className="flex justify-between items-center relative">
-                            {/* Base gray line */}
-                            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[2px] bg-gray-200" />
-                            {/* Animated navy progress line */}
-                            <div
-                                ref={progressLineRef}
-                                className="absolute left-0 top-1/2 -translate-y-1/2 h-[2px] bg-regal-navy"
-                                style={{ width: "0%" }}
-                            />
-                            {/* Dashed leader extending from active circle */}
-                            {activeIndex < steps.length - 1 && (
-                                <div
-                                    className="absolute top-1/2 -translate-y-1/2 h-[2px] border-t-2 border-dashed border-regal-navy pointer-events-none"
-                                    style={{
-                                        left: `calc(${(activeIndex / (steps.length - 1)) * 100}% + 10px)`,
-                                        width: "36px",
-                                    }}
-                                />
-                            )}
+                {/* ─── Desktop timeline track (md+) ─── */}
+                <div className="hidden md:block relative mb-6 w-full">
+                    {/* Base gray line */}
+                    <div className="absolute top-[6px] left-0 right-0 h-[2px] bg-gray-200" />
 
-                            {steps.map((_, i) => (
-                                <div
-                                    key={i}
-                                    ref={(el) => { circlesRef.current[i] = el; }}
-                                    className="w-[14px] h-[14px] rounded-full border-2 border-gray-300 bg-white cursor-pointer relative z-10"
-                                    onClick={() => setActiveIndex(i)}
-                                />
-                            ))}
-                        </div>
-                    </div>
+                    {/* Animated navy progress line */}
+                    <div
+                        ref={progressLineRef}
+                        className="absolute top-[6px] left-0 h-[2px] bg-[#0E3572]"
+                        style={{ width: "0%" }}
+                    />
 
-                    {/* Cards row */}
-                    <div className="grid mt-6" style={{ gridTemplateColumns: `repeat(${steps.length}, 1fr)`, gap: "12px" }}>
-                        {steps.map((step, i) => (
+                    {/* Dashed leader extending from active circle */}
+                    {activeIndex < steps.length - 1 && (
+                        <div
+                            className="absolute top-[6px] h-[2px]"
+                            style={{
+                                left: `${(activeIndex / (steps.length - 1)) * 100}%`,
+                                right: `${100 - ((activeIndex + 1) / (steps.length - 1)) * 100}%`,
+                                backgroundImage:
+                                    "repeating-linear-gradient(90deg, #0E3572 0, #0E3572 6px, transparent 6px, transparent 12px)",
+                                opacity: 0.4,
+                            }}
+                        />
+                    )}
+
+                    {/* Step circles */}
+                    <div className="relative flex justify-between">
+                        {steps.map((_, i) => (
                             <div
                                 key={i}
-                                ref={(el) => { cardsRef.current[i] = el; }}
-                                className="bg-white rounded-lg border border-transparent p-5 md:p-6 flex flex-col gap-3 cursor-pointer transition-colors"
+                                ref={(el) => { circlesRef.current[i] = el; }}
+                                className="w-[14px] h-[14px] rounded-full border-2 border-gray-300 bg-white cursor-pointer relative z-10"
                                 onClick={() => setActiveIndex(i)}
-                                style={{
-                                    boxShadow: i === activeIndex
-                                        ? "0 8px 30px rgba(0,0,0,0.08)"
-                                        : "0 1px 3px rgba(0,0,0,0.04)",
-                                    borderColor: i === activeIndex
-                                        ? "rgba(14, 53, 114, 0.2)"
-                                        : "rgba(0,0,0,0.06)",
-                                }}
-                            >
-                                <span className="font-headings font-normal text-xl text-regal-navy/40">
-                                    {i + 1}.
-                                </span>
-                                <h3 className="font-headings font-semibold text-base text-carbon-black leading-snug">
-                                    {step.title}
-                                </h3>
-                                <p className="font-sans font-medium text-sm text-gray-600/70 leading-relaxed">
-                                    {step.description}
-                                </p>
-                            </div>
+                            />
                         ))}
                     </div>
                 </div>
 
-                {/* Mobile: compact vertical list */}
-                <div className="flex md:hidden flex-col w-full gap-0">
+                {/* ─── Cards — single source of truth for both breakpoints ─── */}
+                {/*
+          On mobile  : flex-col  → vertical stack with left border accent
+          On desktop : flex-row  → horizontal card row (existing design)
+        */}
+                <div className="flex flex-col gap-4 md:flex-row md:gap-2">
                     {steps.map((step, i) => (
-                        <div key={i} className="flex gap-4 items-stretch">
-                            {/* Vertical line + circle */}
-                            <div className="flex flex-col items-center">
-                                <div className="w-[14px] h-[14px] rounded-full border-2 border-regal-navy bg-regal-navy shrink-0 mt-5" />
-                                {i < steps.length - 1 && (
-                                    <div className="w-[2px] bg-regal-navy/20 flex-1 min-h-[20px]" />
-                                )}
+                        <div
+                            key={i}
+                            className={[
+                                // Shared
+                                "flex-1 bg-white rounded-lg border p-3 xl:p-6 cursor-pointer transition-colors",
+                                // Mobile-only: left accent border for active step
+                                i === activeIndex
+                                    ? "border-l-4 border-l-[#0E3572] md:border-l"
+                                    : "border-l-4 border-l-transparent md:border-l",
+                            ].join(" ")}
+                            ref={(el) => { cardsRef.current[i] = el; }}
+                            onClick={() => setActiveIndex(i)}
+                            style={{
+                                boxShadow:
+                                    i === activeIndex
+                                        ? "0 8px 30px rgba(0,0,0,0.08)"
+                                        : "0 1px 3px rgba(0,0,0,0.04)",
+                                borderColor:
+                                    i === activeIndex
+                                        ? "rgba(14, 53, 114, 0.2)"
+                                        : "rgba(0,0,0,0.06)",
+                            }}
+                        >
+                            {/* Mobile: inline circle + number in a row */}
+                            <div className="flex items-center gap-3 md:block">
+                                {/* Circle — visible only on mobile (desktop uses the track above) */}
+                                <div
+                                    className={[
+                                        "md:hidden flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center text-[10px] font-bold transition-colors",
+                                        i === activeIndex
+                                            ? "bg-[#0E3572] border-[#0E3572] text-white"
+                                            : "bg-white border-gray-300 text-gray-400",
+                                    ].join(" ")}
+                                >
+                                    {i + 1}
+                                </div>
+
+                                <span className="hidden md:block text-xs font-bold text-[#0E3572] md:mb-1 md:block">
+                                    {i + 1}.
+                                </span>
                             </div>
 
-                            {/* Card content */}
-                            <div className="flex-1 pb-4">
-                                <div className="bg-white rounded-lg border border-black/6 p-4 shadow-sm">
-                                    <div className="flex items-baseline gap-2 mb-1">
-                                        <span className="font-headings font-normal text-lg text-regal-navy/40">
-                                            {i + 1}.
-                                        </span>
-                                        <h3 className="font-headings font-semibold text-sm text-carbon-black leading-snug">
-                                            {step.title}
-                                        </h3>
-                                    </div>
-                                    <p className="font-sans font-medium text-xs text-gray-600/70 leading-relaxed pl-7">
-                                        {step.description}
-                                    </p>
-                                </div>
-                            </div>
+                            <h3 className="text-sm md:text-base font-semibold text-gray-900 mt-1">
+                                {step.title}
+                            </h3>
+                            <p className="text-xs md:text-sm text-gray-500 mt-1 leading-relaxed">
+                                {step.description}
+                            </p>
                         </div>
                     ))}
                 </div>
 
+                {/* CTA */}
                 {ctaLabel && (
-                    <div className="flex justify-center mt-2">
-                        <a href="#" className="px-8 py-4 bg-button-gradient text-white text-sm rounded-button transition-colors flex items-center justify-center gap-2 font-medium">
+                    <div className="text-center mt-10">
+                        <button className="inline-flex items-center gap-2 bg-[#0E3572] text-white text-sm font-semibold px-6 py-3 rounded-full hover:bg-[#0c2d60] transition-colors">
                             {ctaLabel}
-                        </a>
+                        </button>
                     </div>
                 )}
             </div>

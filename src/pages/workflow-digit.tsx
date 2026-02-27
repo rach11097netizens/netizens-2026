@@ -18,6 +18,7 @@ import ClientLogos from '../components/ClientLogos';
 import Testimonials from '../components/Testimonials';
 import { Problem } from '../components/Problem';
 import { ProcessTimeline } from '../components/ProcessTimeline';
+import { WorkflowDigitizationPageSEO } from '../components/SEO/WorkflowDigitizationPageSEO';
 const WorkflowDigit: React.FC = () => {
     useEffect(() => {
         document.title = "Workflow Digitization & Business Workflow Automation Services";
@@ -38,6 +39,7 @@ const WorkflowDigit: React.FC = () => {
                 className="pt-[96px] max-w-7xl mx-auto px-4"
             />
             <main>
+                <WorkflowDigitizationPageSEO />
                 {/* Sections will be added here */}
                 <Hero
                     badge="Workflow Digitization"

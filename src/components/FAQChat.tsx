@@ -91,8 +91,9 @@ function FAQItemRow({ faq, index, isActive, onToggle }: {
             <button
                 onClick={() => onToggle(index)}
                 className={`
-                    flex items-center gap-[10px] justify-end px-[18px] py-[15px]
-                    rounded-tl-[20px] rounded-tr-[20px] rounded-bl-[20px]
+                    flex items-center gap-[10px] justify-end p-2 sm:px-[18px] sm:py-[15px]
+                    rounded-tl-md rounded-tr-md rounded-bl-md
+                    sm:rounded-tl-[20px] sm:rounded-tr-[20px] sm:rounded-bl-[20px]
                     border border-[rgba(88,89,91,0.1)]
                     transition-all duration-200 cursor-pointer text-left group
                     ${isActive
@@ -101,9 +102,9 @@ function FAQItemRow({ faq, index, isActive, onToggle }: {
                     }
                 `}
             >
-                <p className="font-headings font-normal text-[18px] leading-[25px] text-carbon-black">
+                <h3 className="font-headings font-normal text-xs sm:text-[18px] sm:leading-[25px] text-carbon-black">
                     {faq.question}
-                </p>
+                </h3>
                 {!isActive && <ClickIcon />}
             </button>
 
@@ -117,13 +118,13 @@ function FAQItemRow({ faq, index, isActive, onToggle }: {
             >
                 <div className="flex flex-col gap-[20px] pt-[20px] w-full">
                     {/* Agent answer — left aligned with avatar */}
-                    <div className="flex gap-[17px] items-start w-full">
+                    <div className="flex gap-2 sm:gap-4 items-start w-full">
                         <AgentAvatar />
                         <div className="flex-1 min-h-[44px] flex items-start pt-1">
                             {showTypingDots ? (
                                 <TypingIndicator />
                             ) : (
-                                <p className="font-sans font-medium text-[16px] leading-[22px] text-gray-600">
+                                <p className="font-sans font-medium text-xs sm:text-[16px] leading-[22px] text-gray-600">
                                     {displayedText}
                                     {isTyping && (
                                         <span className="inline-block w-[2px] h-[16px] bg-[#0e3572] ml-[1px] align-middle animate-pulse" />
@@ -186,15 +187,15 @@ export const FAQChat = ({ faqs, theme = 'dark' }: FAQChatProps) => {
 
                 <div className="w-full rounded-[10px] overflow-hidden shadow-[0px_434px_121px_0px_rgba(0,0,0,0),0px_278px_111px_0px_rgba(0,0,0,0.01),0px_156px_94px_0px_rgba(0,0,0,0.03),0px_69px_69px_0px_rgba(0,0,0,0.04),0px_17px_38px_0px_rgba(0,0,0,0.05)]">
                     <div
-                        className="flex items-center gap-[10px] px-[10px] py-[10px] w-full"
+                        className="flex items-center sm:gap-[10px] px-2 sm:px-[10px] py-2 sm:py-[10px] w-full"
                         style={{
                             backgroundImage: 'linear-gradient(90deg, rgba(88,89,91,0.1) 0%, rgba(88,89,91,0.1) 100%), linear-gradient(90deg, #fff 0%, #fff 100%)',
                         }}
                     >
-                        <div className="flex gap-[10px] flex-1 items-center">
-                            <div className="w-[15px] h-[15px] rounded-full bg-[#FF5F56]" />
-                            <div className="w-[15px] h-[15px] rounded-full bg-[#FFBD2E]" />
-                            <div className="w-[15px] h-[15px] rounded-full bg-[#27C93F]" />
+                        <div className="flex gap-1 sm:gap-[10px] flex-1 items-center">
+                            <div className="w-[10px] h-[10px] sm:w-[15px] sm:h-[15px] rounded-full bg-[#FF5F56]" />
+                            <div className="w-[10px] h-[10px] sm:w-[15px] sm:h-[15px] rounded-full bg-[#FFBD2E]" />
+                            <div className="w-[10px] h-[10px] sm:w-[15px] sm:h-[15px] rounded-full bg-[#27C93F]" />
                         </div>
                         <p className="flex-1 text-center font-sans font-bold text-[12px] text-gray-600/75">
                             Simply - Click the question
@@ -202,7 +203,7 @@ export const FAQChat = ({ faqs, theme = 'dark' }: FAQChatProps) => {
                         <div className="flex-1" />
                     </div>
 
-                    <div className="bg-white px-8 md:px-[112px] py-[35px] min-h-[620px]">
+                    <div className="bg-white px-4 sm:px-8 md:px-[112px] py-[35px] min-h-[620px]">
                         <div className="flex flex-col gap-[13px] items-end w-full max-w-[872px] mx-auto">
                             {faqs.map((faq, i) => (
                                 <FAQItemRow

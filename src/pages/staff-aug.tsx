@@ -18,6 +18,7 @@ import { Hero } from '../components/ServicesHero';
 import Testimonials from '../components/Testimonials';
 import { EngagementModels } from '../components/EngagementModels';
 import { QualityGuarantee } from '../components/QualityGuarantee';
+import { StaffAugmentationPageSEO } from '../components/SEO/StaffAugmentationPageSEO';
 
 const StaffAug: React.FC = () => {
     useEffect(() => {
@@ -39,6 +40,7 @@ const StaffAug: React.FC = () => {
                 className="pt-[96px] max-w-7xl mx-auto px-4"
             />
             <main>
+                <StaffAugmentationPageSEO />
                 <Hero
                     badge="Scale delivery. Not headcount."
                     heading="A Staff Augmentation Company For Teams That Need Output Now"

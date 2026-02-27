@@ -21,6 +21,7 @@ import ClientLogos from '../components/ClientLogos';
 import Testimonials from '../components/Testimonials';
 import { DeliveryModel } from '../components/DeliveryModel';
 import { ProductPartner } from '../components/ProductPartner';
+import { SupportAndScalePageSEO } from '../components/SEO/SupportAndScalePageSEO';
 
 const SupportScale: React.FC = () => {
     useEffect(() => {
@@ -42,6 +43,7 @@ const SupportScale: React.FC = () => {
                 className="pt-[96px] max-w-7xl mx-auto px-4"
             />
             <main>
+                <SupportAndScalePageSEO />
                 <Hero
                     badge="Long-Term Product Reliability"
                     heading="Software Maintenance Services For Products That Can't Go Down"

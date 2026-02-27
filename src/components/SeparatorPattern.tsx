@@ -1,7 +1,7 @@
 export const SeparatorPattern = () => {
   return (
     <div
-      className="w-full h-10 md:h-14 lg:h-16 bg-[#FFFAFA] border-y border-[rgba(14,53,114,0.1)] overflow-hidden"
+      className="w-full h-[30px] bg-[#FFFAFA] border-y border-[rgba(14,53,114,0.1)] overflow-hidden"
       aria-hidden="true"
       style={{
         backgroundImage:
