@@ -83,34 +83,34 @@ export function BusinessFirstAI() {
                             <div ref={pillsContainerRef} className="absolute inset-0 overflow-hidden rounded-xl">
                                 <div
                                     ref={(el) => { pillRefs.current[0] = el; }}
-                                    className="absolute bg-white/12 backdrop-blur-sm border border-white/15 rounded-full px-7 py-3.5 shadow-lg"
+                                    className="absolute bg-white/12 backdrop-blur-sm border border-white/15 rounded-full py-1 px-2 sm:px-7 sm:py-3.5 shadow-lg"
                                     style={{ top: "59%", left: "-11.5%" }}
                                 >
-                                    <span className="font-sans font-medium text-[15px] text-white whitespace-nowrap">Business-first thinking</span>
+                                    <span className="font-sans font-medium text-xs sm:text-[15px] text-white whitespace-nowrap">Business-first thinking</span>
                                 </div>
 
                                 <div
                                     ref={(el) => { pillRefs.current[1] = el; }}
-                                    className="absolute bg-white/12 backdrop-blur-sm border border-white/15 rounded-full px-7 py-3.5 shadow-lg"
+                                    className="absolute bg-white/12 backdrop-blur-sm border border-white/15 rounded-full py-1 px-2 sm:px-7 sm:py-3.5 shadow-lg"
                                     style={{ top: "68%", left: "10%" }}
                                 >
-                                    <span className="font-sans font-medium text-[15px] text-white whitespace-nowrap">Production-ready delivery</span>
+                                    <span className="font-sans font-medium text-xs sm:text-[15px] text-white whitespace-nowrap">Production-ready delivery</span>
                                 </div>
 
                                 <div
                                     ref={(el) => { pillRefs.current[2] = el; }}
-                                    className="absolute bg-white/12 backdrop-blur-sm border border-white/15 rounded-full px-7 py-3.5 shadow-lg"
+                                    className="absolute bg-white/12 backdrop-blur-sm border border-white/15 rounded-full py-1 px-2 sm:px-7 sm:py-3.5 shadow-lg"
                                     style={{ top: "56%", right: "-2%" }}
                                 >
-                                    <span className="font-sans font-medium text-[15px] text-white whitespace-nowrap">Measurable ROI</span>
+                                    <span className="font-sans font-medium text-xs sm:text-[15px] text-white whitespace-nowrap">Measurable ROI</span>
                                 </div>
 
                                 <div
                                     ref={(el) => { pillRefs.current[3] = el; }}
-                                    className="absolute bg-white/12 backdrop-blur-sm border border-white/15 rounded-full px-7 py-3.5 shadow-lg"
+                                    className="absolute bg-white/12 backdrop-blur-sm border border-white/15 rounded-full py-1 px-2 sm:px-7 sm:py-3.5 shadow-lg"
                                     style={{ bottom: "0%", left: "40%" }}
                                 >
-                                    <span className="font-sans font-medium text-[15px] text-white whitespace-nowrap">Workflow fluency</span>
+                                    <span className="font-sans font-medium text-xs sm:text-[15px] text-white whitespace-nowrap">Workflow fluency</span>
                                 </div>
                             </div>
                         </div>

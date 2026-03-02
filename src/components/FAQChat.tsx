@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import imgSeparatorPattern from '../assets/images/pattern.png';
 import favIcon from '../assets/images/favicon.svg';
 import { SidePattern } from './SidePattern';
+import { Link } from 'react-router-dom';
 
 export interface FAQItem {
     question: string;
@@ -217,6 +218,10 @@ export const FAQChat = ({ faqs, theme = 'dark' }: FAQChatProps) => {
                         </div>
                     </div>
                 </div>
+
+                <Link to="/faq" className="rounded-md w-full sm:w-auto h-auto px-8 py-4 text-[14px] text-regal-navy hover:!text-regal-navy bg-white hover:bg-white/90">
+                    See all FAQs
+                </Link>
             </div>
         </section>
     );

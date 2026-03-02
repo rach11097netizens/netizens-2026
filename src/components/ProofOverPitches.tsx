@@ -4,6 +4,12 @@ import connectorTopSvg from '../assets/images/connector-top.svg'
 import connectorBottomSvg from '../assets/images/connector-bottom.svg'
 import connectorVerticalSvg from '../assets/images/connector-vertical.svg'
 
+import securityIcon from '../assets/images/proof-to-pitches/security-icon.svg';
+import updatesIcon from '../assets/images/proof-to-pitches/updates-icon.svg';
+import supportIcon from '../assets/images/proof-to-pitches/support-icon.svg';
+import scaleIcon from '../assets/images/proof-to-pitches/scale-icon.svg';
+import sprintsIcon from '../assets/images/proof-to-pitches/sprint-icon.svg';
+
 const ProofOverPitches = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
 
@@ -112,49 +118,23 @@ const ProofOverPitches = () => {
   const infoChips = [
     {
       title: 'Security First',
-      icon: (
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15 2.5L4 7.5V14.5C4 21.3 8.7 27.6 15 29C21.3 27.6 26 21.3 26 14.5V7.5L15 2.5ZM15 14.99H23.5C22.8 20.34 19.4 25.12 15 26.44V15H6.5V9.15L15 5.15V14.99Z" fill="#0E3572" />
-        </svg>
-      ),
+      icon: securityIcon,
     },
     {
       title: '2-Week Sprints',
-      icon: (
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15 2.5C8.1 2.5 2.5 8.1 2.5 15C2.5 21.9 8.1 27.5 15 27.5C21.9 27.5 27.5 21.9 27.5 15C27.5 8.1 21.9 2.5 15 2.5ZM15 25C9.475 25 5 20.525 5 15C5 9.475 9.475 5 15 5C20.525 5 25 9.475 25 15C25 20.525 20.525 25 15 25Z" fill="#0E3572" />
-          <path d="M15.625 8.75H13.75V16.25L20.3125 20.1875L21.25 18.65L15.625 15.3125V8.75Z" fill="#0E3572" />
-        </svg>
-      ),
+      icon: sprintsIcon,
     },
     {
       title: 'Weekly Updates',
-      icon: (
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15 2.5C8.1 2.5 2.5 8.1 2.5 15C2.5 21.9 8.1 27.5 15 27.5C21.9 27.5 27.5 21.9 27.5 15C27.5 8.1 21.9 2.5 15 2.5ZM16.25 21.25H13.75V18.75H16.25V21.25ZM16.25 16.25H13.75V8.75H16.25V16.25Z" fill="#0E3572" />
-          <circle cx="15" cy="15" r="11.5" stroke="#0E3572" strokeWidth="1.5" fill="none" />
-        </svg>
-      ),
+      icon: updatesIcon,
     },
     {
       title: 'Support on Demand',
-      icon: (
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15 2.5C8.1 2.5 2.5 8.1 2.5 15C2.5 21.9 8.1 27.5 15 27.5C21.9 27.5 27.5 21.9 27.5 15C27.5 8.1 21.9 2.5 15 2.5ZM7.5 15C7.5 10.8625 10.8625 7.5 15 7.5C17.0125 7.5 18.8375 8.2875 20.2125 9.5625L9.5625 20.2125C8.2875 18.8375 7.5 17.0125 7.5 15ZM15 22.5C12.9875 22.5 11.1625 21.7125 9.7875 20.4375L20.4375 9.7875C21.7125 11.1625 22.5 12.9875 22.5 15C22.5 19.1375 19.1375 22.5 15 22.5Z" fill="#0E3572" />
-          <path d="M11 15H19M15 11V19" stroke="#0E3572" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      ),
+      icon: supportIcon,
     },
     {
       title: 'Built to Scale',
-      icon: (
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="3" width="10" height="10" rx="2" stroke="#0E3572" strokeWidth="2" />
-          <rect x="17" y="3" width="10" height="10" rx="2" stroke="#0E3572" strokeWidth="2" />
-          <rect x="3" y="17" width="10" height="10" rx="2" stroke="#0E3572" strokeWidth="2" />
-          <rect x="17" y="17" width="10" height="10" rx="2" stroke="#0E3572" strokeWidth="2" />
-        </svg>
-      ),
+      icon: scaleIcon,
     },
   ]
 
@@ -220,9 +200,7 @@ const ProofOverPitches = () => {
                 key={index}
                 className="info-chip flex-1 flex flex-col gap-2 items-center justify-center px-4 lg:px-8 py-4 lg:py-[18px] bg-[rgba(14,53,114,0.1)] border border-[rgba(255,250,250,0.1)]"
               >
-                <div className="w-[30px] h-[30px] flex items-center justify-center overflow-hidden">
-                  {chip.icon}
-                </div>
+                <img src={chip.icon} alt="Icon" className="w-[30px] h-[30px]" />
                 <p className="text-xs lg:text-base font-medium text-[#0E3572] font-['Plus_Jakarta_Sans'] leading-[22px] text-center whitespace-nowrap">
                   {chip.title}
                 </p>

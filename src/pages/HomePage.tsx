@@ -24,19 +24,17 @@ const HomePage = () => {
       <ForBuildersSection />
       <Testimonials />
       <FAQChat faqs={[
-        { question: "Do you work with early-stage startups?", answer: "Yes. We work with early-stage founders, bootstrapped teams, and funded startups. What matters most is having a real problem to solve and a clear goal for the MVP." },
-        { question: "Can we start small before committing long-term?", answer: "Absolutely. Many clients start with a short discovery sprint, prototype, or focused MVP build before moving into longer-term development." },
-        { question: "How long does MVP development usually take?", answer: "Most MVPs take 6–10 weeks, depending on scope, integrations, and feedback cycles. We focus on shipping a usable product fast, not overbuilding." },
-        { question: "Do you help decide what features go into the MVP?", answer: "Yes. MVP strategy and feature prioritization are core to our process. We help you focus on what validates the idea and avoid unnecessary features." },
-        { question: "Do you handle both design and development?", answer: "Yes. We provide end-to-end MVP development, including UX/UI design, frontend, backend, and deployment." },
-        { question: "What happens after the MVP is launched?", answer: "After launch, we help with V2 planning, scaling, performance improvements, and ongoing support or team extension as needed." },
+        { question: "Do you work with startups or enterprises?", answer: "Yes. We work with early-stage startups, growing SaaS teams, and enterprise teams. We adapt the team, process, and engagement model based on your timeline, scope, and internal owners." },
+        { question: "Can we start small before committing long-term?", answer: " Absolutely. Many clients start with a sprint or a short assessment. You'll get a clear plan, a working deliverable, and confidence before you scale the engagement." },
+        { question: "Do you provide ongoing support after launch?", answer: "Yes. Our Support & Scale option covers bug fixes, improvements, performance, security checks, and ongoing delivery. It’s for teams that want reliable support without hiring a full in-house team." },
+        { question: "Do you help with AI and automation?", answer: "Yes. We help identify where AI will actually save time, then build and integrate it into your workflows. This can include AI workflow automation, LLM integration, and internal tools that reduce manual work." },
       ]} />
       <BlogInsights />
       <ServiceCTASection
-        heading={<>Let's ship something that works.</>}
-        description="Fast delivery, clean code, and a team that owns the outcome, from build to support."
+        heading={<>Talk to a custom software development company that moves fast</>}
+        description="Share what you’re building. We’ll recommend the best approach: MVP, AI automation, workflow digitization, staff augmentation, or support."
         ctaLabel="Book a Discovery Call"
-        subtext="5-minute call. Clear scope. Real timelines."
+        subtext="No sales script. Just a practical plan."
       />
     </>
   )

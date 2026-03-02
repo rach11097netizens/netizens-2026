@@ -55,8 +55,8 @@ const AiAutomate: React.FC = () => {
                 <ClientLogos />
                 <RightFit
                     theme="light"
-                    badge="Quick Fit Check"
-                    heading="For teams that need AI to add value to their operations"
+                    badge="A quick reality check"
+                    heading="Who this AI consulting is for (and who it isn't)"
                     goodFitItems={[
                         "You have repetitive workflows consuming real hours every week",
                         "Your team works across CRM, ERP, tickets, dashboards, or internal tools",

@@ -51,7 +51,6 @@ const SupportScale: React.FC = () => {
                     image={heroImg}
                     imageAlt="Support & Scale - Software Maintenance Services"
                 />
-                <SeparatorPattern />
                 <ClientLogos />
                 <RightFit
                     theme="light"

@@ -11,6 +11,7 @@ import imgDiscover from "../assets/images/build-launch/discover-img.svg";
 import imgBuild from "../assets/images/build-launch/build-img.svg";
 import imgLaunch from "../assets/images/build-launch/launch-img.svg";
 import { SidePattern } from "./SidePattern";
+import { Link } from "react-router-dom";
 
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -242,9 +243,9 @@ export function BuildToLaunch() {
                         </div>
 
                         <div className="mt-2 w-full">
-                            <button className="w-full py-4 bg-white hover:bg-gray-50 text-carbon-black font-sans font-medium text-sm rounded transition-colors duration-200 border border-black/10 shadow-sm flex items-center justify-center">
+                            <Link to="/how-we-work" className="w-full py-4 bg-white hover:bg-gray-50 text-carbon-black font-sans font-medium text-sm rounded transition-colors duration-200 border border-black/10 shadow-sm flex items-center justify-center">
                                 Learn how we build
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

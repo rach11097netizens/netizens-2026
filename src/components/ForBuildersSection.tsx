@@ -4,6 +4,7 @@ import tabImg1 from '../assets/images/tab-img-1.svg'
 import tabImg2 from '../assets/images/tab-img-2.svg'
 import tabImg3 from '../assets/images/tab-img-3.svg'
 import patternBg from '../assets/images/pattern-bg.png'
+import { Link } from 'react-router-dom'
 
 /* ─── Tab data ─── */
 interface TabInfo {
@@ -15,12 +16,12 @@ interface TabInfo {
 const tabsData: TabInfo[] = [
   {
     title: 'MVP to production',
-    description: 'Turn your idea into a working MVP and a clear path to V2.',
+    description: 'Launch an MVP you can iterate on, not rebuild later.',
     bullets: ['Startup & SaaS founders', 'Early-stage product teams'],
   },
   {
     title: 'On-Demand Team',
-    description: 'Extend your team without hiring delays or risky contractors.',
+    description: 'Get a reliable pod that ships every week, with clear ownership.',
     bullets: ['CTOs & engineering managers', 'Teams with deadlines/backlogs'],
   },
   {
@@ -156,17 +157,17 @@ const ForBuildersSection = () => {
         <div className="builders-heading flex flex-col gap-[8px] items-center text-center mb-[34px] px-[8px]">
           <div className="inline-flex items-center justify-center px-[18px] py-2 bg-[rgba(255,250,250,0.1)] border border-[rgba(14,53,114,0.1)] rounded-[4px]">
             <span className="text-xs font-normal text-[#FFFAFA]">
-              Built for decision-makers who need results
+              Low-risk Start with Netizens
             </span>
           </div>
           <h2
             className="text-2xl lg:text-3xl font-normal text-white"
             style={{ fontFamily: "'Sora', sans-serif" }}
           >
-            For builders, Operators &amp; Owners
+            Start small. Get proof fast. Scale with confidence.
           </h2>
           <p className="text-[14px] font-medium text-white leading-[22px]">
-            We partner with people who want things shipped, not just discussed.
+            Pick a focused engagement that delivers real outcomes in weeks.
           </p>
         </div>
 
@@ -247,7 +248,7 @@ const ForBuildersSection = () => {
               15-min call. Clear plan. No pressure.
             </p>
           </div>
-          <button
+          <Link to="/book-call"
             className="shrink-0 text-[14px] font-normal text-[#FFFAFA] px-4 sm:px-[34px] py-[18px] rounded-[4px] cursor-pointer hover:opacity-90 transition-opacity"
             style={{
               background:
@@ -256,8 +257,8 @@ const ForBuildersSection = () => {
                 '0px 77px 22px 0px rgba(0,0,0,0), 0px 49px 20px 0px rgba(0,0,0,0.02), 0px 28px 17px 0px rgba(0,0,0,0.08), 0px 12px 12px 0px rgba(0,0,0,0.13), 0px 3px 7px 0px rgba(0,0,0,0.15)',
             }}
           >
-            Help me choose the right model
-          </button>
+            Book a Discovery Call
+          </Link>
         </div>
       </div>
     </section>

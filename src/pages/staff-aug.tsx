@@ -135,9 +135,9 @@ const StaffAug: React.FC = () => {
                 <BlogInsights />
                 <SeparatorPattern />
                 <ServiceCTASection
-                    heading={<>Scale your team without <br className="hidden sm:block" /> the hiring overhead.</>}
-                    description="Add vetted engineers to your team in days, not months. No recruitment delays, no ramp-up friction."
-                    subtext="Tell us the skill gap. We'll match the right engineers."
+                    heading={<>Start with a 2-week trial</>}
+                    description="Validate quality and velocity first. Continue only if the team feels like a fit."
+                    subtext="Simple onboarding. Weekly reporting. Replacement guarantee."
                 />
             </main>
         </div>

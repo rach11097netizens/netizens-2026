@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { SidePattern } from "./SidePattern";
+import { Link } from "react-router-dom";
 
 interface ProcessStep {
     title: string;
@@ -18,36 +19,39 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
     const [activeIndex, setActiveIndex] = useState(0);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
     const circlesRef = useRef<(HTMLDivElement | null)[]>([]);
-    const tlRef = useRef<gsap.core.Timeline | null>(null);
     const progressLineRef = useRef<HTMLDivElement | null>(null);
     const sectionRef = useRef<HTMLElement | null>(null);
-    const activeIndexRef = useRef(0);
+
+    const n = steps.length;
+    // Each column is flex-1 equal width → dot centers sit at (2i+1)/(2n) * 100%
+    // Line spans from first dot center to last dot center
+    const firstDotPct = `${(1 / (2 * n)) * 100}%`;   // 12.5% for n=4
+    const lastDotPct  = `${(1 / (2 * n)) * 100}%`;   // same inset from right
 
     const activateStep = (index: number) => {
-        activeIndexRef.current = index;
         setActiveIndex(index);
 
         cardsRef.current.forEach((card, i) => {
             if (!card) return;
             gsap.to(card, {
-                y: i === index ? -4 : 0,
+                opacity: i === index ? 1 : 0.5,
                 boxShadow:
                     i === index
-                        ? "0 8px 30px rgba(0,0,0,0.08)"
-                        : "0 1px 3px rgba(0,0,0,0.04)",
-                borderColor:
-                    i === index ? "rgba(14, 53, 114, 0.2)" : "rgba(0,0,0,0.06)",
-                duration: 0.4,
+                        ? "0px 8px 18px 0px rgba(0,0,0,0.10), 0px 33px 33px 0px rgba(0,0,0,0.09), 0px 75px 45px 0px rgba(0,0,0,0.05)"
+                        : "none",
+                borderColor: i === index ? "#0E3572" : "rgba(14,53,114,0.1)",
+                duration: 0.35,
                 ease: "power2.out",
             });
         });
 
         circlesRef.current.forEach((circle, i) => {
             if (!circle) return;
+            // Dot is filled navy if it has been reached (i <= index), else empty
             gsap.to(circle, {
-                scale: i <= index ? 1.3 : 1,
                 backgroundColor: i <= index ? "#0E3572" : "#ffffff",
                 borderColor: i <= index ? "#0E3572" : "#d1d5db",
+                scale: i === index ? 1.25 : 1,
                 duration: 0.3,
                 ease: "power2.out",
             });
@@ -58,167 +62,195 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
         const mm = gsap.matchMedia();
 
         mm.add("(min-width: 768px)", () => {
-            const totalDuration = steps.length * 2.5;
-            const tl = gsap.timeline({ repeat: -1, delay: 0.5 });
-            tlRef.current = tl;
+            const stepDuration = 2.5;
+            const lastStepDuration = 2.5; // last step lingers longer than the rest
+            // The progress line sweeps across during the first (n-1) steps,
+            // then holds at 100% while the last step remains active
+            const sweepDuration = (n - 1) * stepDuration;
+            const totalDuration = sweepDuration + lastStepDuration;
 
+            const tl = gsap.timeline({ repeat: -1, delay: 0.3 });
+
+            // Set initial state via GSAP so it doesn't fight Tailwind's -translate-y-1/2
+            gsap.set(progressLineRef.current, { scaleX: 0 });
+            // Set dot 0 as initially active (scale up) — owns the transform React used to set inline
+            gsap.set(circlesRef.current[0], { scale: 1.25 });
+
+            // Steps 0…n-2 are evenly spread across sweepDuration;
+            // the last step fires just AFTER the sweep completes so the line reaches the dot first
+            const triggerTime = (i: number) =>
+                i === 0
+                    ? 0.01
+                    : i === n - 1
+                        ? sweepDuration + 0.05
+                        : (i / (n - 1)) * sweepDuration;
+
+            // Sweep progress line to scaleX:1 over sweepDuration, then hold for lastStepDuration
             tl.fromTo(
                 progressLineRef.current,
-                { width: "0%" },
-                { width: "100%", duration: totalDuration, ease: "none" }
+                { scaleX: 0 },
+                { scaleX: 1, duration: sweepDuration, ease: "none" }
+            ).to(
+                progressLineRef.current,
+                { scaleX: 1, duration: lastStepDuration, ease: "none" }
             );
 
+            // Schedule activateStep calls at the right times
             steps.forEach((_, i) => {
-                const triggerTime = (i / (steps.length - 1)) * totalDuration;
-                tl.call(() => activateStep(i), [], triggerTime);
+                tl.call(() => activateStep(i), [], triggerTime(i));
             });
 
+            // At cycle end: reset all to initial state, then loop will restart
             tl.call(
                 () => {
-                    gsap.delayedCall(1, () => {
-                        cardsRef.current.forEach((card) => {
+                    gsap.delayedCall(0.6, () => {
+                        cardsRef.current.forEach((card, i) => {
                             if (!card) return;
-                            gsap.set(card, {
-                                y: 0,
-                                boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
-                                borderColor: "rgba(0,0,0,0.06)",
+                            gsap.to(card, {
+                                opacity: i === 0 ? 1 : 0.5,
+                                boxShadow: i === 0
+                                    ? "0px 8px 18px 0px rgba(0,0,0,0.10), 0px 33px 33px 0px rgba(0,0,0,0.09)"
+                                    : "none",
+                                borderColor: i === 0 ? "#0E3572" : "rgba(14,53,114,0.1)",
+                                duration: 0.3,
                             });
                         });
-                        circlesRef.current.forEach((circle) => {
+                        circlesRef.current.forEach((circle, i) => {
                             if (!circle) return;
-                            gsap.set(circle, {
-                                scale: 1,
-                                backgroundColor: "#ffffff",
-                                borderColor: "#d1d5db",
+                            gsap.to(circle, {
+                                backgroundColor: i === 0 ? "#0E3572" : "#ffffff",
+                                borderColor: i === 0 ? "#0E3572" : "#d1d5db",
+                                scale: i === 0 ? 1.25 : 1,
+                                duration: 0.3,
                             });
                         });
-                        activeIndexRef.current = -1;
                         setActiveIndex(0);
                     });
                 },
                 [],
-                totalDuration + 0.01
+                totalDuration
             );
 
-            return () => {
-                tl.kill();
-            };
+            return () => { tl.kill(); };
         });
 
         return () => mm.revert();
-    }, [steps.length]);
+    }, [n]);
 
     return (
         <section ref={sectionRef} className="relative py-16 md:py-24 bg-gray-50 overflow-hidden">
             <SidePattern />
 
-            <div className="w-full max-w-[1200px] mx-auto flex flex-col items-center relative z-10 px-2 sm:px-4">
+            <div className="w-full max-w-[1200px] mx-auto flex flex-col items-center relative z-10 px-4 sm:px-6">
+
                 {/* Header */}
-                <div className="flex flex-col items-center justify-center gap-4 text-center mb-10 md:mb-14">
-                    <div className="bg-regal-navy/5 border border-regal-navy/10 flex items-center justify-center px-[18px] py-[8px] rounded-[4px]">
-                        <span className="font-sans text-[12px] text-regal-navy text-center">
-                            {badge}
-                        </span>
+                <div className="flex flex-col items-center justify-center gap-2 text-center mb-10 md:mb-14">
+                    <div className="bg-regal-navy/5 border border-regal-navy/10 flex items-center justify-center px-[18px] py-2 rounded-[4px]">
+                        <span className="font-sans text-[12px] text-regal-navy">{badge}</span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black max-w-[1200px]">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black">
                         {heading}
                     </h2>
                 </div>
 
-                {/* ─── Desktop timeline track (md+) ─── */}
-                <div className="hidden md:block relative mb-6 w-full">
-                    {/* Base gray line */}
-                    <div className="absolute top-[6px] left-0 right-0 h-[2px] bg-gray-200" />
+                {/* ─── Desktop timeline (md+) ─── */}
+                <div className="hidden md:flex gap-[12px] relative w-full">
 
-                    {/* Animated navy progress line */}
+                    {/*
+                      ── Connecting lines ──
+                      Both lines are absolutely positioned, vertically centered on the dots (dot = 20px tall, center = top + 10px).
+                      They span from the first dot center to the last dot center.
+                      left/right = 1/(2n) * 100% keeps them anchored to dot centers regardless of container width.
+                    */}
+
+                    {/* Gray base line */}
                     <div
-                        ref={progressLineRef}
-                        className="absolute top-[6px] left-0 h-[2px] bg-[#0E3572]"
-                        style={{ width: "0%" }}
+                        className="absolute top-[10px] h-[1.5px] bg-gray-200 -translate-y-1/2 z-0 pointer-events-none"
+                        style={{ left: firstDotPct, right: lastDotPct }}
                     />
 
-                    {/* Dashed leader extending from active circle */}
-                    {activeIndex < steps.length - 1 && (
-                        <div
-                            className="absolute top-[6px] h-[2px]"
-                            style={{
-                                left: `${(activeIndex / (steps.length - 1)) * 100}%`,
-                                right: `${100 - ((activeIndex + 1) / (steps.length - 1)) * 100}%`,
-                                backgroundImage:
-                                    "repeating-linear-gradient(90deg, #0E3572 0, #0E3572 6px, transparent 6px, transparent 12px)",
-                                opacity: 0.4,
-                            }}
-                        />
-                    )}
+                    {/* Navy progress line — scaleX 0→1, origin-left */}
+                    <div
+                        ref={progressLineRef}
+                        className="absolute top-[10px] h-[1.5px] bg-[#0E3572] -translate-y-1/2 z-0 origin-left pointer-events-none"
+                        style={{ left: firstDotPct, right: lastDotPct }}
+                    />
 
-                    {/* Step circles */}
-                    <div className="relative flex justify-between">
-                        {steps.map((_, i) => (
+                    {/* Step columns — dot on top, card below */}
+                    {steps.map((step, i) => (
+                        <div
+                            key={i}
+                            className="flex-1 flex flex-col items-center gap-[18px] min-w-0 relative z-[5]"
+                        >
+                            {/* Dot */}
                             <div
-                                key={i}
                                 ref={(el) => { circlesRef.current[i] = el; }}
-                                className="w-[14px] h-[14px] rounded-full border-2 border-gray-300 bg-white cursor-pointer relative z-10"
-                                onClick={() => setActiveIndex(i)}
+                                className="w-5 h-5 rounded-full border-2 cursor-pointer flex-shrink-0"
+                                style={{
+                                    backgroundColor: i === 0 ? "#0E3572" : "#ffffff",
+                                    borderColor: i === 0 ? "#0E3572" : "#d1d5db",
+                                    zIndex: 10,
+                                    // transform intentionally omitted — GSAP owns scale
+                                    // to prevent React re-renders from fighting the animation
+                                }}
+                                onClick={() => activateStep(i)}
                             />
-                        ))}
-                    </div>
+
+                            {/* Card */}
+                            <div
+                                ref={(el) => { cardsRef.current[i] = el; }}
+                                className="w-full bg-white rounded-[10px] border p-[18px] flex flex-col gap-[10px] h-[190px] cursor-pointer"
+                                style={{
+                                    opacity: i === 0 ? 1 : 0.5,
+                                    borderColor: i === 0 ? "#0E3572" : "rgba(14,53,114,0.1)",
+                                    boxShadow: i === 0
+                                        ? "0px 8px 18px 0px rgba(0,0,0,0.10), 0px 33px 33px 0px rgba(0,0,0,0.09), 0px 75px 45px 0px rgba(0,0,0,0.05)"
+                                        : "none",
+                                    transition: "none", // GSAP owns these properties
+                                }}
+                                onClick={() => activateStep(i)}
+                            >
+                                <p className="font-headings font-normal text-[18px] leading-[25px] text-black">
+                                    {i + 1}.
+                                </p>
+                                <p className="font-headings font-normal text-[18px] leading-[25px] text-black">
+                                    {step.title}
+                                </p>
+                                <p className="font-sans font-medium text-[14px] leading-[22px] text-[rgba(88,89,91,0.75)]">
+                                    {step.description}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
 
-                {/* ─── Cards — single source of truth for both breakpoints ─── */}
-                {/*
-          On mobile  : flex-col  → vertical stack with left border accent
-          On desktop : flex-row  → horizontal card row (existing design)
-        */}
-                <div className="flex flex-col gap-4 md:flex-row md:gap-2">
+                {/* ─── Mobile: vertical stack ─── */}
+                <div className="flex md:hidden flex-col gap-4 w-full">
                     {steps.map((step, i) => (
                         <div
                             key={i}
                             className={[
-                                // Shared
-                                "flex-1 bg-white rounded-lg border p-3 xl:p-6 cursor-pointer transition-colors",
-                                // Mobile-only: left accent border for active step
+                                "bg-white rounded-lg border p-4 flex items-start gap-3 cursor-pointer",
                                 i === activeIndex
-                                    ? "border-l-4 border-l-[#0E3572] md:border-l"
-                                    : "border-l-4 border-l-transparent md:border-l",
+                                    ? "border-l-4 border-l-[#0E3572] border-[#0E3572] shadow-md"
+                                    : "border-l-4 border-l-transparent border-[rgba(14,53,114,0.1)] opacity-60",
                             ].join(" ")}
-                            ref={(el) => { cardsRef.current[i] = el; }}
-                            onClick={() => setActiveIndex(i)}
-                            style={{
-                                boxShadow:
-                                    i === activeIndex
-                                        ? "0 8px 30px rgba(0,0,0,0.08)"
-                                        : "0 1px 3px rgba(0,0,0,0.04)",
-                                borderColor:
-                                    i === activeIndex
-                                        ? "rgba(14, 53, 114, 0.2)"
-                                        : "rgba(0,0,0,0.06)",
-                            }}
+                            onClick={() => activateStep(i)}
                         >
-                            {/* Mobile: inline circle + number in a row */}
-                            <div className="flex items-center gap-3 md:block">
-                                {/* Circle — visible only on mobile (desktop uses the track above) */}
-                                <div
-                                    className={[
-                                        "md:hidden flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center text-[10px] font-bold transition-colors",
-                                        i === activeIndex
-                                            ? "bg-[#0E3572] border-[#0E3572] text-white"
-                                            : "bg-white border-gray-300 text-gray-400",
-                                    ].join(" ")}
-                                >
-                                    {i + 1}
-                                </div>
-
-                                <span className="hidden md:block text-xs font-bold text-[#0E3572] md:mb-1 md:block">
-                                    {i + 1}.
-                                </span>
+                            <div
+                                className={[
+                                    "flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center text-[10px] font-bold",
+                                    i === activeIndex
+                                        ? "bg-[#0E3572] border-[#0E3572] text-white"
+                                        : "bg-white border-gray-300 text-gray-400",
+                                ].join(" ")}
+                            >
+                                {i + 1}
                             </div>
-
-                            <h3 className="text-sm md:text-base font-semibold text-gray-900 mt-1">
-                                {step.title}
-                            </h3>
-                            <p className="text-xs md:text-sm text-gray-500 mt-1 leading-relaxed">
-                                {step.description}
-                            </p>
+                            <div className="flex flex-col gap-1">
+                                <h3 className="text-sm font-semibold text-gray-900">{step.title}</h3>
+                                <p className="text-xs text-gray-500 leading-relaxed">{step.description}</p>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -226,9 +258,15 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
                 {/* CTA */}
                 {ctaLabel && (
                     <div className="text-center mt-10">
-                        <button className="inline-flex items-center gap-2 bg-[#0E3572] text-white text-sm font-semibold px-6 py-3 rounded-full hover:bg-[#0c2d60] transition-colors">
+                        <Link to="/book-call"
+                            className="inline-flex items-center gap-2 text-white text-sm font-normal px-[18px] py-[18px] rounded-[4px] transition-opacity hover:opacity-90"
+                            style={{
+                                background: "radial-gradient(ellipse at center top, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%), #0E3572",
+                                boxShadow: "0px 3px 7px 0px rgba(0,0,0,0.15), 0px 12px 12px 0px rgba(0,0,0,0.13), 0px 28px 17px 0px rgba(0,0,0,0.08)",
+                            }}
+                        >
                             {ctaLabel}
-                        </button>
+                        </Link>
                     </div>
                 )}
             </div>

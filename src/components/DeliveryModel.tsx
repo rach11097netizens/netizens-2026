@@ -56,7 +56,7 @@ export function DeliveryModel({
                         ">
                             <div className="flex flex-col gap-[10px]">
                                 <h3 className="font-headings font-normal text-lg md:text-[24px] text-carbon-black leading-snug md:leading-normal">
-                                    <span className="text-gray-600/40 mr-1">{mainCard.number}.</span>
+                                    <span className="text-carbon-black mr-1">{mainCard.number}.</span>
                                     {mainCard.title}
                                 </h3>
                                 <p className="font-sans font-medium text-[13px] md:text-sm text-gray-600/75 leading-[20px] md:leading-[22px]">
@@ -85,7 +85,7 @@ export function DeliveryModel({
                         >
                             <div className="flex flex-col gap-[10px]">
                                 <h3 className="font-headings font-normal text-lg md:text-[18px] text-carbon-black leading-snug md:leading-[25px]">
-                                    <span className="text-gray-600/40 mr-1">{card.number}.</span>
+                                    <span className="text-carbon-black mr-1">{card.number}.</span>
                                     {card.title}
                                 </h3>
                                 <p className="font-sans font-medium text-[13px] md:text-sm text-gray-600/75 leading-[20px] md:leading-[22px]">

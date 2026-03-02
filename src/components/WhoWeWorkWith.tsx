@@ -39,7 +39,7 @@ const WhoWeWorkWith = () => {
       title: 'CTOs & Engineering Managers',
       description: "You're responsible for delivery quality and velocity, but hiring full-time is slow, risky, or expensive.",
       chips: [
-        { text: 'Hiring delays risk', bottom: '0%', left: '24.7%', rotation: 0 },
+        { text: 'Hiring delays', bottom: '0%', left: '24.7%', rotation: 0 },
         { text: 'Release pressure', bottom: '15.6%', left: '55.6%', rotation: 31.79, containerW: '46.4%', containerH: '45.3%' },
         { text: 'Delivery risk', bottom: '16.7%', left: '14%', rotation: 17.49, containerW: '37.3%', containerH: '29.4%' },
         { text: 'Skill gaps', bottom: '-3.1%', left: '-2.4%', rotation: -28.54, containerW: '32.5%', containerH: '32.9%' },
@@ -278,11 +278,11 @@ const WhoWeWorkWith = () => {
         <div className="text-center z-10">
           <div className="inline-flex items-center gap-2 px-[18px] py-2 bg-[rgba(14,53,114,0.05)] border border-[rgba(14,53,114,0.1)] rounded-[4px] mb-2">
             <span className="text-xs text-[#0E3572] font-normal">
-              Built for decision-makers who need results
+              For builders, operators, and owners
             </span>
           </div>
           <h2 className="text-2xl lg:text-3xl font-normal text-[#16181B] mb-2">
-            For builders, Operators, & Owners
+            Who We Work With
           </h2>
           <p className="text-sm text-[#58595B] font-medium leading-[22px]">
             We partner with people who want things shipped, not just discussed.

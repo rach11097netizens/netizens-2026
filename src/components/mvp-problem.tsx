@@ -23,7 +23,7 @@ const problems = [
     {
         title: "Overbuilt MVPs",
         description: "Too many features, too little progress. We cut scope, ship the essentials, and save weeks of build time.",
-        color: "bg-[#7afcff]", // Pastel Cyan
+        color: "bg-[#feff9c]", // Pastel Cyan
         delay: 0.2,
     },
     {
