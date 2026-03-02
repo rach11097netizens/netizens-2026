@@ -128,11 +128,11 @@ export function OurJourneyTimeline() {
                 }}
             />
 
-            <div className="w-full relative z-10 flex flex-col h-full justify-center">
+            <div className="w-full relative z-10 flex flex-col h-full justify-center gap-16">
                 
                 {/* ── Heading wrapper ── */}
                 {/* Fixed relative to the section top so it doesn't move while pinned */}
-                <div className="absolute top-[200px] w-full flex flex-col items-center justify-center gap-[34px] px-4">
+                <div className="w-full flex flex-col items-center justify-center gap-[34px] px-4 mt-auto">
                     <div className="flex flex-col items-center justify-center gap-2 text-center max-w-[1320px] mx-auto">
                         <div className="bg-[rgba(255,250,250,0.1)] border border-[rgba(14,53,114,0.1)] flex items-center justify-center px-[18px] py-2 rounded">
                             <span className="font-sans text-xs text-white text-center">
@@ -146,7 +146,7 @@ export function OurJourneyTimeline() {
                 </div>
 
                 {/* ── Card row (horizontal scroll track) ── */}
-                <div className="w-full max-w-[1320px] mx-auto px-4 mt-[100px] relative">
+                <div className="w-full max-w-[1320px] mx-auto px-4 relative">
                     
                     {/* Right fade gradient (stays static above moving cards) */}
                     <div className="journey-cards__fade right-0 top-0 bottom-0 absolute z-10 pointer-events-none" />
@@ -178,7 +178,7 @@ export function OurJourneyTimeline() {
                 </div>
 
                 {/* ── Timeline ruler fixed at the bottom of the viewport/section ── */}
-                <div className="absolute bottom-0 w-full flex justify-center h-[220px] pointer-events-none">
+                <div className="w-full flex justify-center h-[220px] pointer-events-none mt-auto">
                     <div className="relative w-full max-w-[1320px] h-full">
                         {/* SVG Ruler Design matching Figma (no horizontal baseline, long major vertical ticks, short minor vertical ticks) */}
                         <svg width="100%" height="100%" preserveAspectRatio="none" className="absolute left-0 bottom-0 min-w-[200vw] -ml-[50vw]">
