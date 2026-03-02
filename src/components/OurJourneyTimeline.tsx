@@ -128,7 +128,7 @@ export function OurJourneyTimeline() {
                 }}
             />
 
-            <div className="w-full relative z-10 flex flex-col h-full justify-center gap-16">
+            <div className="w-full relative z-10 flex flex-col h-full justify-center gap-8 sm:gap-16">
                 
                 {/* ── Heading wrapper ── */}
                 {/* Fixed relative to the section top so it doesn't move while pinned */}
