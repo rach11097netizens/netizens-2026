@@ -93,7 +93,7 @@ export function PartnershipSection() {
                                     Partnership, Not Patchwork
                                 </span>
                             </div>
-                            <h2 className="font-headings font-normal text-2xl md:text-3xl leading-normal text-[#FFFAFA]">
+                            <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-normal text-[#FFFAFA]">
                                 Built Into Your Team, Not Bolted On
                             </h2>
                             <p className="font-sans font-medium text-sm leading-[22px] text-[rgba(255,250,250,0.75)]">

@@ -15,7 +15,7 @@ export function JoinTheTeamSection() {
               Join the team
             </span>
           </div>
-          <h2 className="font-headings font-normal text-[28px] md:text-[36px] lg:text-[40px] leading-[1.2] text-carbon-black">
+          <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-[1.2] text-carbon-black">
             Build systems that power real businesses.
           </h2>
           <p className="font-sans text-[15px] md:text-base text-charcoal/80 leading-[26px]">

@@ -143,7 +143,7 @@ export function RightFit({
                             {badge}
                         </span>
                     </div>
-                    <h2 className={`font-headings font-normal text-2xl md:text-3xl ${s.heading}`}>
+                    <h2 className={`font-headings font-normal text-2xl lg:text-3xl ${s.heading}`}>
                         {heading}
                     </h2>
                 </div>

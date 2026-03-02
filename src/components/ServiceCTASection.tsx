@@ -34,7 +34,7 @@ export function ServiceCTASection({
 
             <div className="w-full max-w-4xl mx-auto px-4 relative z-10 flex flex-col items-center justify-center text-center gap-8">
                 <div className="flex flex-col gap-4 items-center">
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl leading-tight text-white">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-tight text-white">
                         {heading}
                     </h2>
                     <p className="font-sans font-medium text-sm sm:text-base leading-relaxed text-white/90 max-w-lg">

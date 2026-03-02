@@ -119,7 +119,7 @@ export const MvpProblem = () => {
                     </span>
                 </div>
 
-                <h2 className="font-sans font-normal text-2xl md:text-3xl leading-[48px] tracking-tight text-carbon-black relative max-w-[1200px] mx-auto text-center w-full">
+                <h2 className="font-sans font-normal text-2xl lg:text-3xl leading-[48px] tracking-tight text-carbon-black relative max-w-[1200px] mx-auto text-center w-full">
                     What breaks MVPs (and how we prevent it)
                 </h2>
             </div>

@@ -52,7 +52,7 @@ export function EngineeringCultureSection() {
               Engineering culture
             </span>
           </div>
-          <h2 className="font-headings font-normal text-3xl md:text-[30px] leading-snug text-carbon-black">
+          <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black">
             Structured delivery. Clear ownership. No chaos.
           </h2>
           <p className="font-sans text-sm text-charcoal/80 leading-[22px] max-w-[640px]">

@@ -149,7 +149,7 @@ const Testimonials = () => {
               Results from the wild
             </span>
           </div>
-          <h2 className="testimonial-title text-2xl md:text-3xl text-center font-normal text-[#16181B]">
+          <h2 className="testimonial-title text-2xl lg:text-3xl text-center font-normal text-[#16181B]">
             What it's like to work with us
           </h2>
           <p className="testimonial-subtitle text-sm font-medium text-[#58595B] font-['Plus_Jakarta_Sans'] text-center leading-[22px] w-full max-w-[460px]">

@@ -120,7 +120,7 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
                             {badge}
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-[30px] leading-snug text-carbon-black max-w-[1200px]">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black max-w-[1200px]">
                         {heading}
                     </h2>
                 </div>

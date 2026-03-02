@@ -22,7 +22,7 @@ export function BookCallHero() {
                 </div>
 
                 {/* Heading */}
-                <h2 className="font-headings font-normal text-2xl md:text-3xl leading-[1.2] text-carbon-black capitalize">
+                <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-[1.2] text-carbon-black capitalize">
                     Book A Discovery Call To Start Your Software Project The Right Way
                 </h2>
 

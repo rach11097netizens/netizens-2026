@@ -105,7 +105,7 @@ export function NetizensByNumbers() {
   return (
     <section ref={sectionRef} className="w-full bg-[#FFFFFF] py-16 md:py-24">
       <div className="max-w-7xl mx-auto">
-        <h2 className="font-headings font-normal text-[28px] md:text-[36px] text-carbon-black text-center mb-4 md:mb-6">
+        <h2 className="font-headings font-normal text-2xl lg:text-3xl text-carbon-black text-center mb-4 md:mb-6">
           Netizens by the numbers
         </h2>
 

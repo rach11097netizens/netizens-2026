@@ -180,7 +180,7 @@ export const FAQChat = ({ faqs, theme = 'dark' }: FAQChatProps) => {
                     <div className={`inline-flex items-center justify-center px-[18px] py-2 rounded-[4px] border ${isLight ? 'border-regal-navy/10 bg-regal-navy/5' : 'border-white/10 bg-white/10'}`}>
                         <span className={`font-sans text-[12px] ${isLight ? 'text-regal-navy' : 'text-white'}`}>What People Ask</span>
                     </div>
-                    <h2 className={`font-headings font-normal text-2xl md:text-3xl leading-normal ${isLight ? 'text-carbon-black' : 'text-white'}`}>
+                    <h2 className={`font-headings font-normal text-2xl lg:text-3xl leading-normal ${isLight ? 'text-carbon-black' : 'text-white'}`}>
                         Questions? We've got answers
                     </h2>
                 </div>

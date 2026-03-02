@@ -60,7 +60,7 @@ export function HowWeThinkPartnerships() {
               How we think about partnerships
             </span>
           </div>
-          <h2 className="font-headings font-normal text-3xl md:text-[36px] leading-snug text-white">
+          <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-white">
             We stay when others step away.
           </h2>
           <p className="font-sans text-sm text-white/70 leading-[22px]">

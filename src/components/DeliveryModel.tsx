@@ -33,7 +33,7 @@ export function DeliveryModel({
                             {badge}
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-carbon-black">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black">
                         {heading}
                     </h2>
                 </div>

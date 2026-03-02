@@ -129,7 +129,7 @@ export function FlexibleDeliverySection() {
                             Our Delivery Models
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl leading-tight text-carbon-black">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-tight text-carbon-black">
                         Flexible Delivery, Built Around You.
                     </h2>
                     <p className="font-sans font-medium text-sm md:text-base text-gray-600 max-w-2xl">
@@ -154,25 +154,22 @@ export function FlexibleDeliverySection() {
                             return (
                                 <div
                                     key={model.id}
-                                    className={`rounded-lg border overflow-hidden transition-all duration-300 ${
-                                        isActive
+                                    className={`rounded-lg border overflow-hidden transition-all duration-300 ${isActive
                                             ? 'bg-white border-regal-navy/25 shadow-md shadow-regal-navy/5 ring-1 ring-regal-navy/10'
                                             : 'bg-[#FAF5F5] border-[#e5e7eb] shadow-none'
-                                    }`}
+                                        }`}
                                 >
                                     {/* Tab / accordion trigger — shared */}
                                     <button
                                         onClick={() => toggle(model.id)}
-                                        className={`w-full text-left px-5 py-4 flex items-center justify-between font-sans font-semibold text-sm transition-colors ${
-                                            isActive ? 'text-carbon-black' : 'text-gray-600 hover:bg-white/50 hover:text-carbon-black'
-                                        }`}
+                                        className={`w-full text-left px-5 py-4 flex items-center justify-between font-sans font-semibold text-sm transition-colors ${isActive ? 'text-carbon-black' : 'text-gray-600 hover:bg-white/50 hover:text-carbon-black'
+                                            }`}
                                     >
                                         {model.title}
                                         {/* Chevron: visible on mobile as accordion indicator; hidden on desktop */}
                                         <ChevronDown
-                                            className={`lg:hidden w-5 h-5 text-gray-600 shrink-0 transition-transform duration-200 ${
-                                                isActive ? 'rotate-180' : ''
-                                            }`}
+                                            className={`lg:hidden w-5 h-5 text-gray-600 shrink-0 transition-transform duration-200 ${isActive ? 'rotate-180' : ''
+                                                }`}
                                         />
                                     </button>
 

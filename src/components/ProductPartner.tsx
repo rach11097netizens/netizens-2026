@@ -122,7 +122,7 @@ export function ProductPartner() {
                             Your product partner
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-white">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-white">
                         Build. Run. Scale.
                     </h2>
                 </div>

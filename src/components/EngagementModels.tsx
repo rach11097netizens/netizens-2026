@@ -173,7 +173,7 @@ export function EngagementModels({ badge, heading, cards, theme = "light" }: Eng
                             {badge}
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-white text-center w-full">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-white text-center w-full">
                         {heading}
                     </h2>
                 </div>
@@ -265,7 +265,7 @@ export function EngagementModels({ badge, heading, cards, theme = "light" }: Eng
                         {badge}
                     </span>
                 </div>
-                <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-carbon-black text-center w-full">
+                <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black text-center w-full">
                     {heading}
                 </h2>
             </div>

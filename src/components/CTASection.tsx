@@ -14,7 +14,7 @@ export const CTASection = () => {
       <div className="relative z-10 max-w-[800px] w-full flex flex-col items-center gap-4 sm:gap-6 text-center">
         {/* Text Content */}
         <div className="flex flex-col gap-4 sm:gap-[10px] items-center">
-          <h2 className="font-['Sora',sans-serif] font-normal leading-[1.2] text-2xl md:text-3xl text-[#FFFAFA] capitalize max-w-[600px]">
+          <h2 className="font-['Sora',sans-serif] font-normal leading-[1.2] text-2xl lg:text-3xl text-[#FFFAFA] capitalize max-w-[600px]">
             Doing everything and still not getting result
           </h2>
           <p className="font-['Plus_Jakarta_Sans',sans-serif] font-medium leading-[26px] text-[16px] md:text-[18px] text-[#FFFAFA] opacity-90 max-w-[552px]">

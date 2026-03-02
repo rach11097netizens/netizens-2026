@@ -94,7 +94,7 @@ export function OurPromiseSection() {
                             Our Promise
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl leading-tight text-carbon-black max-w-4xl">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-tight text-carbon-black max-w-4xl">
                         Different engagement models. Same standard.
                     </h2>
                 </div>

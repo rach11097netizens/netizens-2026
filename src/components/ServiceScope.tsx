@@ -53,7 +53,7 @@ export function ServiceScope({ badge, heading, cards, ctaCards, footerText }: Se
                             {badge}
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-white">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-white">
                         {heading}
                     </h2>
                 </div>

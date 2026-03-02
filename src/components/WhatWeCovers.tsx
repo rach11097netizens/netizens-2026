@@ -37,7 +37,7 @@ export function WhatWeCovers() {
                             What We'll Cover
                         </span>
                     </div>
-                    <h2 className="font-headings font-normal text-2xl md:text-3xl text-carbon-black">
+                    <h2 className="font-headings font-normal text-2xl lg:text-3xl text-carbon-black">
                         What Happens in a Discovery Call
                     </h2>
                 </div>

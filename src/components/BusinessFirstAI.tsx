@@ -51,7 +51,7 @@ export function BusinessFirstAI() {
                         <div className="bg-regal-navy/5 border border-regal-navy/10 flex items-center justify-center px-[18px] py-[8px] rounded-[4px] w-fit">
                             <span className="font-sans text-[12px] text-regal-navy">The Netizens Approach to AI</span>
                         </div>
-                        <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-carbon-black">
+                        <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black">
                             Business-First AI Implementation
                         </h2>
                         <p className="font-sans font-medium text-sm md:text-base text-gray-600/75 leading-relaxed max-w-[600px]">

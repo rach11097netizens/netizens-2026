@@ -79,7 +79,7 @@ export const ServiceModelsSection: React.FC = () => {
                             What we can help with
                         </span>
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-headings text-carbon-black mb-6">
+                    <h2 className="text-2xl lg:text-3xl font-headings text-carbon-black mb-6">
                         These models power every service we offer
                     </h2>
                     <p className="text-lg text-gray-500 max-w-3xl mx-auto">

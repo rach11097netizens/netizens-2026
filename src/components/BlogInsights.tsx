@@ -46,7 +46,7 @@ export const BlogInsights = () => {
                                 From the blog
                             </span>
                         </div>
-                        <h2 className="font-['Sora'] font-normal text-2xl md:text-3xl text-[#16181b] leading-normal">
+                        <h2 className="font-['Sora'] font-normal text-2xl lg:text-3xl text-[#16181b] leading-normal">
                             Practical guides on custom software, AI, and automation
                         </h2>
                     </div>

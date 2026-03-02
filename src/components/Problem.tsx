@@ -109,7 +109,7 @@ export const Problem = ({ badge, heading, cards, innerCta, banner }: ProblemProp
                         {badge}
                     </span>
                 </div>
-                <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-carbon-black relative max-w-[1200px] mx-auto text-center w-full">
+                <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black relative max-w-[1200px] mx-auto text-center w-full">
                     {heading}
                 </h2>
             </div>

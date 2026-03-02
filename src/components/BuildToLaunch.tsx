@@ -84,7 +84,7 @@ export function BuildToLaunch() {
                                 Build, launch, learn
                             </span>
                         </div>
-                        <h2 className="font-headings font-normal text-2xl md:text-3xl leading-snug text-carbon-black max-w-lg">
+                        <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-carbon-black max-w-lg">
                             The MVP cycle we run with you
                         </h2>
                     </div>

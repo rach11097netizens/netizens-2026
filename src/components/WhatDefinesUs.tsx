@@ -44,7 +44,7 @@ export function WhatDefinesUs({ image = imgWhatDefinesUs, imageAlt = "Netizens t
               </span>
             </div>
 
-            <h2 className="font-headings font-normal text-[28px] md:text-[36px] lg:text-[40px] leading-[1.2] text-carbon-black">
+            <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-[1.2] text-carbon-black">
               We build systems, not just features.
             </h2>
 

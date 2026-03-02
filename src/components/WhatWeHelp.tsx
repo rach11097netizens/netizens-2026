@@ -87,7 +87,7 @@ const WhatWeHelp = () => {
           <div className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 bg-gray-100 rounded-sm mb-2">
             <span className="text-xs text-[#0E3572]">Build. Automate. Scale</span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-normal text-center text-black">
+          <h2 className="text-2xl lg:text-3xl font-normal text-center text-black">
             One team to build your MVP, stabilize it, and scale it as you grow
           </h2>
         </div>

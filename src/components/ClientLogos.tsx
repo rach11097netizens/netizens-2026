@@ -182,7 +182,7 @@ const ClientLogos = () => {
       <div className="">
         {/* Heading */}
         <div className="text-center px-5 pt-8 md:pt-10 mb-5">
-          <h2 className="text-2xl md:text-3xl font-normal text-black">
+          <h2 className="text-2xl lg:text-3xl font-normal text-black">
             Chosen by teams that ship
           </h2>
         </div>

@@ -88,13 +88,13 @@ export function OurJourneyTimeline() {
                     // The timeline progress maps to the milestone index
                     const progress = self.progress;
                     const maxIndex = milestones.length - 1;
-                    
+
                     // Add slight padding to the progress mapping so it focuses on the dot closest to standard steps
                     let activeIndex = Math.round(progress * maxIndex);
-                    
+
                     // clamp index strictly to bounds
                     activeIndex = Math.max(0, Math.min(activeIndex, maxIndex));
-                    
+
                     setActiveYear(milestones[activeIndex].year);
                 }
             });
@@ -129,7 +129,7 @@ export function OurJourneyTimeline() {
             />
 
             <div className="w-full relative z-10 flex flex-col h-full justify-center gap-8 sm:gap-16">
-                
+
                 {/* ── Heading wrapper ── */}
                 {/* Fixed relative to the section top so it doesn't move while pinned */}
                 <div className="w-full flex flex-col items-center justify-center gap-[34px] px-4 mt-auto">
@@ -139,7 +139,7 @@ export function OurJourneyTimeline() {
                                 Our journey
                             </span>
                         </div>
-                        <h2 className="font-headings font-normal text-[24px] md:text-[30px] leading-snug text-white max-w-[800px]">
+                        <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-snug text-white max-w-[800px]">
                             From product builds to long-term engineering partnerships
                         </h2>
                     </div>
@@ -147,13 +147,13 @@ export function OurJourneyTimeline() {
 
                 {/* ── Card row (horizontal scroll track) ── */}
                 <div className="w-full max-w-[1320px] mx-auto px-4 relative">
-                    
+
                     {/* Right fade gradient (stays static above moving cards) */}
                     <div className="journey-cards__fade right-0 top-0 bottom-0 absolute z-10 pointer-events-none" />
 
-                    <div 
+                    <div
                         ref={scrollContainerRef}
-                        className="w-full overflow-hidden" 
+                        className="w-full overflow-hidden"
                     >
                         <div
                             ref={cardsWrapperRef}
@@ -210,13 +210,13 @@ export function OurJourneyTimeline() {
                                         onMouseLeave={() => setHoveredYear(null)}
                                     >
                                         {/* Active vertical line overlay */}
-                                        <div 
+                                        <div
                                             className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-white transition-all duration-500 origin-bottom rounded-t-[1px]
                                                 ${isActive ? 'h-[130px] opacity-100 shadow-[0_0_8px_rgba(255,255,255,0.6)]' : 'h-[100px] opacity-0'}`}
                                         />
-                                        
+
                                         {/* Label text placed exactly at the tip of the lines */}
-                                        <span 
+                                        <span
                                             className={`absolute left-1/2 -translate-x-1/2 transition-all duration-500 whitespace-nowrap font-sans
                                                 ${isActive ? 'bottom-[144px] text-white text-[18px] font-semibold tracking-wide' : 'bottom-[112px] text-[rgba(255,250,250,0.4)] text-[15px]'}`}
                                         >

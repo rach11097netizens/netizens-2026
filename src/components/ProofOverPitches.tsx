@@ -176,7 +176,7 @@ const ProofOverPitches = () => {
           <div className="inline-flex items-center justify-center px-3 py-2 bg-[rgba(14,53,114,0.05)] border border-[rgba(14,53,114,0.1)] rounded mb-2">
             <span className="text-xs font-normal text-[#0E3572] font-['Plus_Jakarta_Sans']">Proof over pitches</span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-normal text-[#16181B]">
+          <h2 className="text-2xl lg:text-3xl font-normal text-[#16181B]">
             10 years of building and scaling custom software
           </h2>
         </div>

@@ -281,7 +281,7 @@ const WhoWeWorkWith = () => {
               Built for decision-makers who need results
             </span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-normal text-[#16181B] mb-2">
+          <h2 className="text-2xl lg:text-3xl font-normal text-[#16181B] mb-2">
             For builders, Operators, & Owners
           </h2>
           <p className="text-sm text-[#58595B] font-medium leading-[22px]">
