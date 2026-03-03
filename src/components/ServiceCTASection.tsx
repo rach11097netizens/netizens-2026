@@ -1,5 +1,5 @@
 import imgSeparatorPattern from "../assets/images/pattern.png";
-import { Link } from "react-router-dom";
+import { BookCallButton } from "./BookCallButton";
 
 interface ServiceCTASectionProps {
     heading: React.ReactNode;
@@ -43,9 +43,9 @@ export function ServiceCTASection({
                 </div>
 
                 <div className="flex flex-col gap-4 items-center w-full max-w-[412px]">
-                    <Link to="/book-call" className="rounded-md w-full sm:w-auto h-auto px-8 py-4 text-[14px] text-regal-navy hover:!text-regal-navy bg-white hover:bg-white/90">
+                    <BookCallButton variant="white" showArrow={false}>
                         {ctaLabel}
-                    </Link>
+                    </BookCallButton>
                     {subtext && (
                         <p className="font-sans font-normal text-xs text-white/80">
                             {subtext}

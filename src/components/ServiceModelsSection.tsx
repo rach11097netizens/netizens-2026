@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SidePattern } from './SidePattern';
 import iconNavyTick from '../assets/images/icons/blue-bullet-icon.svg';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,9 +13,10 @@ interface ServiceCardProps {
     items: string[];
     cta: string;
     index: number;
+    link: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, items, cta, index }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, items, cta, index, link }) => {
     const cardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -59,11 +61,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, items, ct
                 ))}
             </div>
 
-            <button
+            <Link to={link}
                 className="w-full bg-regal-navy/10 hover:bg-regal-navy text-regal-navy hover:text-white font-bold py-4 rounded-md transition-all duration-300 flex items-center justify-center gap-2 mt-auto"
             >
                 {cta}
-            </button>
+            </Link>
         </div>
     );
 };
@@ -98,6 +100,7 @@ export const ServiceModelsSection: React.FC = () => {
                             "New products, redesigns, or rebuilds"
                         ]}
                         cta="Build MVP"
+                        link="/mvp-dev"
                     />
                     <ServiceCard
                         index={1}
@@ -108,6 +111,7 @@ export const ServiceModelsSection: React.FC = () => {
                             "ERP/CRM + integrations + automation"
                         ]}
                         cta="Digitize Workflows"
+                        link="/workflow-digit"
                     />
                     <ServiceCard
                         index={2}
@@ -118,6 +122,7 @@ export const ServiceModelsSection: React.FC = () => {
                             "AI pilots, integrations, prompt systems"
                         ]}
                         cta="Explore AI Consulting"
+                        link="/ai-automate"
                     />
                 </div>
 
@@ -133,6 +138,7 @@ export const ServiceModelsSection: React.FC = () => {
                                 "Short-term surge or long-term capacity"
                             ]}
                             cta="Hire Engineers"
+                            link="/staff-aug"
                         />
                     </div>
                     <div className="md:w-1/2">
@@ -145,6 +151,7 @@ export const ServiceModelsSection: React.FC = () => {
                                 "SLAs, monitoring, performance, DevOps"
                             ]}
                             cta="Get Support & Scale"
+                            link="/support-scale"
                         />
                     </div>
                 </div>

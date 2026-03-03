@@ -1,3 +1,4 @@
+import { BookCallButton } from "./BookCallButton";
 import imgSeparatorPattern from "../assets/images/pattern.png";
 import { SidePattern } from "./SidePattern";
 
@@ -95,9 +96,9 @@ export function ServiceScope({ badge, heading, cards, ctaCards, footerText }: Se
                                     </p>
                                 </div>
 
-                                <a href="#" className="px-8 py-4 bg-button-gradient text-white text-sm rounded-button transition-colors flex items-center justify-center gap-2 font-medium">
+                                <BookCallButton>
                                     {cta.ctaLabel}
-                                </a>
+                                </BookCallButton>
                             </div>
                         ))}
                     </div>

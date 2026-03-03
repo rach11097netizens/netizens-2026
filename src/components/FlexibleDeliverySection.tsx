@@ -42,51 +42,46 @@ const DELIVERY_MODELS: DeliveryModel[] = [
     {
         id: 'project',
         title: 'Project-Based Delivery',
-        bestFor: ['Fixed-scope builds', 'Product launches', 'Platform migrations', 'Integration projects', 'Compliance work'],
+        bestFor: ['Fixed-scope builds', 'Integrations rollout', 'Re-platform / migration', 'Feature release milestone', 'Audit + remediation'],
         whatYouGet: [
-            'Clear milestones and deliverables',
-            'Defined timeline and budget',
-            'Structured scope and change process',
-            'Dedicated project lead and team',
-            'Handoff and documentation',
+            'Fixed scope, fixed deliverables',
+            'Clear milestones + timeline',
+            'One accountable delivery owner',
+            'Defined sign-off and handover',
         ],
         whenToChoose: [
-            'Scope is well-defined and unlikely to change',
-            'You have a hard deadline or launch date',
-            'You need predictable cost and timeline',
-            'You want a complete deliverable, not ongoing capacity',
-            'You prefer milestone-based payments',
+            'You know exactly what needs to be built',
+            'You need a delivery date and milestone plan',
+            'You want predictable cost and output',
         ],
         howItWorks: [
-            { step: 'Define scope and milestones', description: 'We lock in deliverables, timeline, and success criteria.' },
-            { step: 'Execute in phases', description: 'Work progresses through defined phases with regular check-ins.' },
-            { step: 'Review and adjust', description: 'Scope changes go through a structured review process.' },
-            { step: 'Deliver and hand off', description: 'Final delivery includes documentation and knowledge transfer.' },
+            { step: 'Scope & success alignment', description: 'We define deliverables, milestones, and acceptance criteria upfront.' },
+            { step: 'Milestone-based execution', description: 'Work is delivered in structured phases with progress reviews.' },
+            { step: 'QA & validation', description: 'Each milestone goes through testing and stakeholder validation before sign-off.' },
+            { step: 'Launch & handover', description: 'We deploy, document, and transition ownership smoothly.' },
         ],
     },
     {
         id: 'retainer',
         title: 'Retainer Model',
-        bestFor: ['Ongoing product development', 'Roadmap execution', 'Maintenance & support', 'Team extension', 'Continuous improvement'],
+        bestFor: ['Ongoing support', 'Reliability + performance', 'DevOps + monitoring', 'Continuous improvements', 'Long-term product ownership'],
         whatYouGet: [
-            'Dedicated capacity and team',
-            'Flexible prioritization each cycle',
-            'Roadmap alignment and planning',
-            'SLA-backed responsiveness',
-            'Predictable monthly investment',
+            'Dedicated monthly capacity',
+            'Ongoing delivery + improvements',
+            'SLA-based support (if needed)',
+            'Continuous optimization and reliability work',
+            'Long-term product reliability',
         ],
         whenToChoose: [
-            'You need ongoing delivery capacity',
-            'Priorities evolve and you want flexibility',
-            'You want a long-term product partner',
-            'You prefer predictable monthly spend',
-            'You need reliability and continuity',
+            'You need a steady partner, not a one-off project',
+            'Your roadmap changes month to month',
+            'You want predictable support with response times',
         ],
         howItWorks: [
-            { step: 'Align on capacity and cadence', description: 'We agree on team size, cycle length, and communication rhythm.' },
-            { step: 'Prioritize each cycle', description: 'You set priorities; we execute against the roadmap.' },
-            { step: 'Ship and iterate', description: 'Regular releases with continuous feedback and refinement.' },
-            { step: 'Scale as needed', description: 'Adjust capacity and focus as your needs evolve.' },
+            { step: 'Monthly capacity planning', description: 'We align on roadmap priorities and allocate engineering bandwidth.' },
+            { step: 'Ongoing execution & improvements', description: 'Tasks are delivered continuously with weekly updates.' },
+            { step: 'SLA-backed support (if required)', description: 'Critical issues are handled within agreed response windows.' },
+            { step: 'Review & optimize monthly', description: 'We assess performance, adjust priorities, and refine the roadmap.' },
         ],
     },
 ];
@@ -130,7 +125,7 @@ export function FlexibleDeliverySection() {
                         </span>
                     </div>
                     <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-tight text-carbon-black">
-                        Flexible Delivery, Built Around You.
+                        Three Engagement Models. One Standard of Quality.
                     </h2>
                     <p className="font-sans font-medium text-sm md:text-base text-gray-600 max-w-2xl">
                         Not sure which model fits? We'll recommend the right structure after a short discovery call.

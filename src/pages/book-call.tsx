@@ -8,6 +8,7 @@ import { ServiceCTASection } from '../components/ServiceCTASection';
 import { RightFit } from '../components/RightFit';
 import { FAQChat } from '../components/FAQChat';
 import Testimonials from '../components/Testimonials';
+import { BookCallButton } from '../components/BookCallButton';
 
 const BookCall: React.FC = () => {
     useEffect(() => {
@@ -53,6 +54,12 @@ const BookCall: React.FC = () => {
                         "Very early idea-stage discussions without defined goals or direction",
                     ]}
                 />
+                <section className='bg-white pb-16'>
+                    <div className="w-full max-w-[1320px] mx-auto px-4">
+                        <BookCallButton />
+                    </div>
+                </section>
+
                 <SeparatorPattern />
                 <EngagementModels
                     theme="dark"

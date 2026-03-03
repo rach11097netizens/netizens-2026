@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { SidePattern } from "./SidePattern";
 
 interface DeliveryCard {
@@ -102,6 +103,10 @@ export function DeliveryModel({
                         </div>
                     ))}
                 </div>
+
+                <Link to="/how-we-work" className="px-8 py-4 bg-button-gradient text-white text-sm rounded-button transition-colors flex items-center justify-center gap-2 font-medium">
+                    See How We Work
+                </Link>
             </div>
         </section>
     );

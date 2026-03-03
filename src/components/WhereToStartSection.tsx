@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import sprintImg from '../assets/images/where-to-start-image/sprint-based-image.svg';
 import projectImg from '../assets/images/where-to-start-image/prject-based-delivery-image.svg';
 import retainerImg from '../assets/images/where-to-start-image/try-retainer-based-delivery-image.svg';
-import { Link } from 'react-router-dom';
+import { BookCallButton } from './BookCallButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -118,12 +118,7 @@ export function WhereToStartSection() {
                         </p>
 
                         {/* CTA Button */}
-                        <Link
-                            to="/book-call"
-                            className="btn-primary w-full flex items-center justify-center py-[18px] px-[18px] text-sm font-sans font-normal text-[#FFFAFA] leading-normal no-underline"
-                        >
-                            Book a Discovery Call
-                        </Link>
+                        <BookCallButton showArrow={false} />
                     </div>
 
                     {/* Delivery Model Cards */}

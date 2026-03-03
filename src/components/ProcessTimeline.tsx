@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { SidePattern } from "./SidePattern";
-import { Link } from "react-router-dom";
+import { BookCallButton } from "./BookCallButton";
 
 interface ProcessStep {
     title: string;
@@ -26,7 +26,7 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
     // Each column is flex-1 equal width → dot centers sit at (2i+1)/(2n) * 100%
     // Line spans from first dot center to last dot center
     const firstDotPct = `${(1 / (2 * n)) * 100}%`;   // 12.5% for n=4
-    const lastDotPct  = `${(1 / (2 * n)) * 100}%`;   // same inset from right
+    const lastDotPct = `${(1 / (2 * n)) * 100}%`;   // same inset from right
 
     const activateStep = (index: number) => {
         setActiveIndex(index);
@@ -258,15 +258,9 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
                 {/* CTA */}
                 {ctaLabel && (
                     <div className="text-center mt-10">
-                        <Link to="/book-call"
-                            className="inline-flex items-center gap-2 text-white text-sm font-normal px-[18px] py-[18px] rounded-[4px] transition-opacity hover:opacity-90"
-                            style={{
-                                background: "radial-gradient(ellipse at center top, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%), #0E3572",
-                                boxShadow: "0px 3px 7px 0px rgba(0,0,0,0.15), 0px 12px 12px 0px rgba(0,0,0,0.13), 0px 28px 17px 0px rgba(0,0,0,0.08)",
-                            }}
-                        >
+                        <BookCallButton variant="navy-radial" showArrow={false}>
                             {ctaLabel}
-                        </Link>
+                        </BookCallButton>
                     </div>
                 )}
             </div>

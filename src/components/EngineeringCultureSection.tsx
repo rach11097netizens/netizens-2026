@@ -65,7 +65,7 @@ export function EngineeringCultureSection() {
           {cards.map((card, idx) => (
             <div
               key={idx}
-              className="bg-white border-[0.5px] border-[rgba(14,53,114,0.1)] flex flex-col items-start p-6 md:p-8 hover:bg-[#FFFAFA] transition-all duration-300 gap-6 min-h-[240px] hover:z-10 hover:shadow-[0_0_20px_rgba(14,53,114,0.08)] relative"
+              className="bg-white border-[0.5px] border-[rgba(14,53,114,0.1)] flex flex-col items-start p-6 md:p-8 hover:bg-[#FFFAFA] transition-all duration-300 gap-6 min-h-[150px] hover:z-10 hover:shadow-[0_0_20px_rgba(14,53,114,0.08)] relative"
             >
               <div className="flex flex-col gap-4 relative z-10">
                 <div className="bg-[#E8ECF0] rounded-[8px] p-1.5 w-fit">
@@ -75,9 +75,9 @@ export function EngineeringCultureSection() {
                   {card.title}
                 </h3>
               </div>
-              <p className="font-sans font-medium text-sm leading-[22px] text-charcoal/80 relative z-10">
+              {/* <p className="font-sans font-medium text-sm leading-[22px] text-charcoal/80 relative z-10">
                 {card.description}
-              </p>
+              </p> */}
             </div>
           ))}
         </div>

@@ -34,7 +34,7 @@ const HowWeWork: React.FC = () => {
                 <HowWeWorkPageSEO />
                 <Hero
                     badge="How We Deliver"
-                    heading="Agile Sprints When You Need Speed. Retainers When You Need Stability."
+                    heading="A Delivery Model That Fits Your Team, Timeline, and Risk."
                     description="From agile development sprints to long-term retainers, we deliver with predictable cadence, transparent comms, and accountable execution."
                     image={heroImg}
                     imageAlt="How We Work"

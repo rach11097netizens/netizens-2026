@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Menu, X, ChevronDown, PhoneIncoming } from 'lucide-react'
+import { BookCallButton } from './BookCallButton'
 import logoSvg from '../assets/images/logo.svg'
 import { Link } from 'react-router-dom'
 import bulletIcon from "../assets/images/icons/bullet-icons.svg";
@@ -113,7 +114,7 @@ const Navbar = () => {
                                 <div className="absolute top-[65px] left-1/2 -translate-x-1/2 w-[1320px] lg:w-[1320px] bg-gray-100 border-[1.5px] border-[rgba(14,53,114,0.2)] shadow-[0px_20px_40px_rgba(0,0,0,0.08)] rounded-[18px] overflow-hidden grid grid-cols-3 grid-rows-2 gap-[1px] z-50">
                                     {/* Category 1 */}
                                     <Link to="/mvp-development" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             Product Development
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
@@ -138,7 +139,7 @@ const Navbar = () => {
 
                                     {/* Category 2 */}
                                     <Link to="/workflow-digitization" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             Workflow Digitization
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
@@ -163,7 +164,7 @@ const Navbar = () => {
 
                                     {/* Category 3 */}
                                     <Link to="/support-and-scale" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             Support & Scale
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
@@ -188,7 +189,7 @@ const Navbar = () => {
 
                                     {/* Category 4 */}
                                     <Link to="/staff-augmentation" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             Staff Augmentation
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
@@ -213,7 +214,7 @@ const Navbar = () => {
 
                                     {/* Category 5 */}
                                     <Link to="/ai-consulting" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className="font-['Geist',sans-serif] text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
                                             AI Consulting & Automation
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
@@ -437,9 +438,7 @@ const Navbar = () => {
                                 Insights
                             </a>
 
-                            <Link to="/book-call" className="px-6 py-2.5 bg-button-gradient text-white rounded-button w-full text-left inline-block">
-                                Book a Discovery Call
-                            </Link>
+                            <BookCallButton className="w-full text-left inline-block" showArrow={false} />
                         </div>
                     </div>
                 )}

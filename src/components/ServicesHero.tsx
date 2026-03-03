@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { BookCallButton } from "./BookCallButton";
 
 interface HeroProps {
   badge: string;
@@ -112,10 +112,9 @@ export function Hero({
         </p>
 
         <div className="hero-animate-item flex flex-col sm:flex-row items-center lg:items-start gap-4 mt-2 w-full sm:w-auto">
-          <Link to="/book-call" className="px-8 py-4 bg-button-gradient text-white text-sm rounded-button transition-colors flex items-center justify-center gap-2 font-medium">
+          <BookCallButton>
             {primaryCta}
-            <ArrowRight size={20} />
-          </Link>
+          </BookCallButton>
           <Link to="/how-we-work" className="px-8 py-4 border-2 border-gray-300 text-black text-sm rounded-md hover:bg-black hover:text-white hover:border-black transition-colors font-medium">
             {secondaryCta}
           </Link>

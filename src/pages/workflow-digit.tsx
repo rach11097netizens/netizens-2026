@@ -53,8 +53,8 @@ const WorkflowDigit: React.FC = () => {
                 <ClientLogos />
                 <RightFit
                     theme="light"
-                    badge="Quick Fit Check"
-                    heading="For teams that need a connected, scalable system"
+                    badge="Is This the Right Fit?"
+                    heading="For Teams Scaling Faster Than Their Systems"
                     goodFitItems={[
                         "Your ERP, CRM, inventory, payments, and reporting tools don't talk to each other",
                         "Teams manually move data between spreadsheets, dashboards, and tools",

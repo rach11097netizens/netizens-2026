@@ -8,6 +8,7 @@ import imgMvp from "../assets/images/product-partner/mvp-developement-img.svg";
 import imgWorkflow from "../assets/images/product-partner/workflow-digitization-img.svg";
 import imgAI from "../assets/images/product-partner/ai-consulting-img.svg";
 import imgStaffAug from "../assets/images/product-partner/staff-aug-img.svg";
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,21 +17,25 @@ const cards = [
         title: "MVP Development",
         description: "After launch, we stabilize, optimize, and keep shipping without fire drills.",
         image: imgMvp,
+        link: '/mvp-dev',
     },
     {
         title: "Workflow Digitization",
         description: "Once systems are live, we maintain integrations, performance, and reliability as usage grows.",
         image: imgWorkflow,
+        link: '/workflow-digit',
     },
     {
         title: "AI Consulting",
         description: "After AI goes live, we monitor quality, manage costs, and improve performance over time.",
         image: imgAI,
+        link: '/ai-automate'
     },
     {
         title: "Staff Augmentation",
         description: "As teams scale, we maintain standards, DevOps hygiene, and clean handoffs.",
         image: imgStaffAug,
+        link: '/staff-aug',
     },
 ];
 
@@ -148,6 +153,9 @@ export function ProductPartner() {
                                     <p className="font-sans font-medium text-sm md:text-base text-gray-600/75 leading-[22px] max-w-[360px]">
                                         {card.description}
                                     </p>
+                                    <Link to={card.link} className="text-sm uppercase text-[#0e3572] font-semibold hover:underline">
+                                        Learn more
+                                    </Link>
                                 </div>
                                 <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
                                     <img

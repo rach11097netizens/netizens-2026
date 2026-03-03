@@ -80,15 +80,19 @@ export function HowWeThinkPartnerships() {
               <p className="font-headings text-base md:text-lg text-white leading-snug">
                 {card.description}
               </p>
-              <Link
-                to="/how-we-work"
-                className="font-sans text-[11px] font-semibold text-white/70 uppercase tracking-wider mt-auto hover:text-white transition-colors"
-              >
-                {card.label}
-              </Link>
             </div>
           ))}
         </div>
+
+        <Link to="/how-we-work" 
+          className="bg-white text-[#0E3572] text-xs sm:text-[14px] font-normal px-5 sm:px-[34px] py-3 sm:py-[18px] rounded-[4px] w-max mx-auto cursor-pointer hover:opacity-90 transition-opacity"
+          style={{
+            boxShadow:
+              '0px 77px 22px 0px rgba(0,0,0,0), 0px 49px 20px 0px rgba(0,0,0,0.02), 0px 28px 17px 0px rgba(0,0,0,0.08), 0px 12px 12px 0px rgba(0,0,0,0.13), 0px 3px 7px 0px rgba(0,0,0,0.15)',
+          }}
+        >
+          How we work
+        </Link>
       </div>
     </section>
   );

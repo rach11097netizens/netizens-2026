@@ -71,7 +71,7 @@ const MvpDev: React.FC = () => {
                 <SeparatorPattern />
                 <RightFit
                     theme="dark"
-                    badge="Before you book"
+                    badge=""
                     heading="Is This the Right MVP Build for You?"
                     goodFitItems={[
                         "You're a founder or operator solving a real, validated problem",

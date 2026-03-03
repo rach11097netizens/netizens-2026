@@ -46,7 +46,7 @@ const SupportScale: React.FC = () => {
                 <SupportAndScalePageSEO />
                 <Hero
                     badge="Long-Term Product Reliability"
-                    heading="Software Maintenance Services For Products That Can't Go Down"
+                    heading="A Support & Scale Service for Products That Can’t Afford Downtime"
                     description="We handle maintenance, SLAs, cloud infrastructure, CI/CD, and long-term code health — so your team can focus on roadmap, not firefighting."
                     image={heroImg}
                     imageAlt="Support & Scale - Software Maintenance Services"
@@ -109,10 +109,10 @@ const SupportScale: React.FC = () => {
                 <BlogInsights />
                 <SeparatorPattern />
                 <ServiceCTASection
-                    heading={<>Keep your product <br className="hidden sm:block" /> stable as you scale.</>}
-                    description="Get a support plan with SLAs, DevOps monitoring, and continuous improvements."
-                    ctaLabel="Book a Discovery Call"
-                    subtext="Clear scope. Predictable support."
+                    heading={<>One partner, after launch too.</>}
+                    description="From fixes to scaling, we stay on the hook with structured support and ongoing upgrades."
+                    ctaLabel="Explore Support Plans"
+                    subtext="No handoffs. No gaps."
                 />
             </main>
         </div>

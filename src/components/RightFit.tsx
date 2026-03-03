@@ -138,11 +138,13 @@ export function RightFit({
             <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 flex flex-col items-center gap-10">
 
                 <div className="flex flex-col items-center gap-3 text-center">
-                    <div className={`${s.badgeWrap} inline-flex items-center justify-center px-[18px] py-[8px] rounded-[4px]`}>
-                        <span className={`font-sans font-bold text-[12px] ${s.badgeText} text-center`}>
-                            {badge}
-                        </span>
-                    </div>
+                    {badge && (
+                        <div className={`${s.badgeWrap} inline-flex items-center justify-center px-[18px] py-[8px] rounded-[4px]`}>
+                            <span className={`font-sans font-bold text-[12px] ${s.badgeText} text-center`}>
+                                {badge}
+                            </span>
+                        </div>
+                    )}
                     <h2 className={`font-headings font-normal text-2xl lg:text-3xl ${s.heading}`}>
                         {heading}
                     </h2>
