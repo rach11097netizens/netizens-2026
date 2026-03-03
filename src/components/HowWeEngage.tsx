@@ -7,24 +7,55 @@ interface Milestone {
   title: string
   subtitle: string
   baseWidth: number
+  bestFor: string
+  youGet: string
+  howItWorks: string
 }
 
 const milestones: Milestone[] = [
-  { number: '01', title: 'Sprint', subtitle: '2–4 weeks', baseWidth: 435 },
-  { number: '02', title: 'Project', subtitle: '1–6 months', baseWidth: 520 },
-  { number: '03', title: 'Staff Augmentation', subtitle: 'Ongoing', baseWidth: 430 },
-  { number: '04', title: 'Retainer', subtitle: 'Monthly', baseWidth: 340 },
+  {
+    number: '01',
+    title: 'Sprint',
+    subtitle: '2–4 weeks',
+    baseWidth: 435,
+    bestFor: 'Quick wins, audits, MVP slices, fixes, AI/workflow pilots',
+    youGet: 'A shipped release + next-step plan',
+    howItWorks: '1 clear goal → weekly demos → delivery',
+  },
+  {
+    number: '02',
+    title: 'Project',
+    subtitle: '1–6 months',
+    baseWidth: 520,
+    bestFor: 'Full MVP build, large modules, rebuilds, major integrations',
+    youGet: 'End-to-end build with milestones + launch support',
+    howItWorks: 'Roadmap → phases → QA → go-live',
+  },
+  {
+    number: '03',
+    title: 'Staff Augmentation',
+    subtitle: 'Ongoing',
+    baseWidth: 430,
+    bestFor: 'Backlog pressure, skill gaps, scaling delivery capacity',
+    youGet: 'Dedicated developers/QA/DevOps/AI roles (managed)',
+    howItWorks: '2-week trial option → weekly reporting → easy scaling',
+  },
+  {
+    number: '04',
+    title: 'Retainer',
+    subtitle: 'Monthly',
+    baseWidth: 340,
+    bestFor: 'Support & Scale, improvements, performance, reliability',
+    youGet: 'On-demand help + planned upgrades every month',
+    howItWorks: 'SLA + monthly priorities → continuous releases',
+  },
 ]
 
 const DESIGN_WIDTH = 1320
-// Gap between bars (in px at design width)
 const INTER_BAR_GAP = 120
-// Bar width as a fraction of container — ensures bars feel "present" for a
-// comfortable duration regardless of screen size or speed.
 const BAR_WIDTH_FRACTION = 0.52
 const BAR_MIN_WIDTH_PX   = 180
 
-/* ─── Responsive dimension calculator ─── */
 interface Dims {
   blockHeight: number
   rowGap: number
@@ -41,47 +72,92 @@ interface Dims {
 
 const getDims = (w: number): Dims => {
   const t = Math.max(0, Math.min(1, (w - 320) / (DESIGN_WIDTH - 320)))
-
-  const blockHeight = Math.round(48 + 20 * t)
-  const rowGap = Math.round(55 + 26 * t)
-  const topOffset = Math.round(14 + 13 * t)
-  const titleSize = Math.round(13 + 5 * t)
-  const subtitleSize = Math.round(11 + 4 * t)
-  const padX = Math.round(8 + 7 * t)
-  const padY = Math.round(6 + 4 * t)
-  const fadeWidth = Math.round(30 + 90 * t)
-  const dotSize = Math.round(12 + 6 * t)
-  const lineWidth = +(2 + 1.7 * t).toFixed(1)
+  const blockHeight   = Math.round(48 + 20 * t)
+  const rowGap        = Math.round(55 + 26 * t)
+  const topOffset     = Math.round(14 + 13 * t)
+  const titleSize     = Math.round(13 + 5 * t)
+  const subtitleSize  = Math.round(11 + 4 * t)
+  const padX          = Math.round(8 + 7 * t)
+  const padY          = Math.round(6 + 4 * t)
+  const fadeWidth     = Math.round(30 + 90 * t)
+  const dotSize       = Math.round(12 + 6 * t)
+  const lineWidth     = +(2 + 1.7 * t).toFixed(1)
   const timelineHeight = topOffset + 3 * rowGap + blockHeight + 14
-
   return { blockHeight, rowGap, topOffset, titleSize, subtitleSize, padX, padY, fadeWidth, dotSize, lineWidth, timelineHeight }
 }
 
-// ── Sequential animation state ──
-// Each bar lives on its own row and runs one at a time.
-// "position" = left edge of the bar in container px.
-// Bars start off the right edge and move left at a fixed speed.
-// When bar[i] exits left, bar[i+1] is queued to enter from the right — after a small gap.
-//
-// Sequence logic:
-//  • All bars share one "cursor" position that advances continuously.
-//  • Bar i occupies cursor range [i * (barWidth + gap), i * (barWidth + gap) + barWidth]
-//  • containerX = cursorPos - barOffset  →  left edge of bar in screen space
-//  • When cursorPos wraps past total length, it resets so the loop restarts.
-
 const HowWeEngage = () => {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const timelineRef = useRef<HTMLDivElement>(null)
-  const blockRefs = useRef<(HTMLDivElement | null)[]>([])
+  const sectionRef       = useRef<HTMLDivElement>(null)
+  const timelineRef      = useRef<HTMLDivElement>(null)
+  const blockRefs        = useRef<(HTMLDivElement | null)[]>([])
   const containerWidthRef = useRef(DESIGN_WIDTH)
-  const dimsRef = useRef<Dims>(getDims(DESIGN_WIDTH))
-  const cursorRef = useRef(0) // global cursor in "design px" equivalent
-  const animCleanupRef = useRef<(() => void) | null>(null)
+  const dimsRef          = useRef<Dims>(getDims(DESIGN_WIDTH))
+  const cursorRef        = useRef(0)
+  const animCleanupRef   = useRef<(() => void) | null>(null)
+
+  // ── New refs for hover ──
+  // Stores the gsap instance after dynamic import so hover handlers can use it
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const gsapRef          = useRef<any>(null)
+  // Whether the ticker should advance the cursor (pause on hover)
+  const isPausedRef      = useRef(false)
+  // The floating info panel DOM node (lives outside overflow-hidden timelineRef)
+  const panelRef         = useRef<HTMLDivElement>(null)
+  // Which milestone's content the panel is currently showing (-1 = hidden)
+  const [hoveredIndex, setHoveredIndex] = useState<number>(-1)
 
   const [dims, setDims] = useState<Dims>(() =>
     getDims(typeof window !== 'undefined' ? window.innerWidth : DESIGN_WIDTH)
   )
 
+  // ── Hover handlers ────────────────────────────────────────────────────────
+  // Called from JSX onMouseEnter on each bar wrapper div.
+  // 1. Pause the cursor advance
+  // 2. Read bar's true screen rect → compute panel position relative to section
+  // 3. GSAP-animate the panel in
+  const handleBarMouseEnter = (i: number) => {
+    isPausedRef.current = true
+
+    const bar     = blockRefs.current[i]
+    const section = sectionRef.current
+    const panel   = panelRef.current
+    const gsap    = gsapRef.current
+    if (!bar || !section || !panel || !gsap) return
+
+    const barRect     = bar.getBoundingClientRect()
+    const sectionRect = section.getBoundingClientRect()
+
+    // Position panel directly below the bar, flush with its left edge
+    panel.style.left  = `${barRect.left - sectionRect.left}px`
+    panel.style.top   = `${barRect.bottom - sectionRect.top + 6}px`
+    panel.style.width = `${barRect.width}px`
+
+    // Switch content then animate in
+    setHoveredIndex(i)
+    gsap.fromTo(
+      panel,
+      { autoAlpha: 0, y: -8 },
+      { autoAlpha: 1, y: 0, duration: 0.22, ease: 'power2.out' }
+    )
+  }
+
+  const handleBarMouseLeave = () => {
+    isPausedRef.current = false
+
+    const panel = panelRef.current
+    const gsap  = gsapRef.current
+    if (!panel || !gsap) return
+
+    gsap.to(panel, {
+      autoAlpha: 0,
+      y: -6,
+      duration: 0.18,
+      ease: 'power2.in',
+      onComplete: () => setHoveredIndex(-1),
+    })
+  }
+
+  // ── Main animation setup (unchanged except storing gsap + pausing cursor) ──
   useEffect(() => {
     let cancelled = false
 
@@ -89,36 +165,29 @@ const HowWeEngage = () => {
       const { gsap } = await import('gsap')
       if (cancelled || !timelineRef.current) return
 
+      // Store instance for hover handlers
+      gsapRef.current = gsap
+
       const cw = timelineRef.current.offsetWidth || DESIGN_WIDTH
       containerWidthRef.current = cw
       const newDims = getDims(cw)
       dimsRef.current = newDims
       setDims(newDims)
 
-      // Speed in px/sec — slow and readable
       const SPEED = 110
 
-      // Bar width = fixed fraction of container so bars always feel "substantial"
-      // regardless of screen size. This is the key to preventing bars from
-      // zipping past — a wider bar spends more time on screen at the same speed.
       const getBarWidth = (containerW: number) =>
         Math.max(BAR_MIN_WIDTH_PX, containerW * BAR_WIDTH_FRACTION)
 
       const getGap = (containerW: number) =>
         INTER_BAR_GAP * (containerW / DESIGN_WIDTH)
 
-      // Total length of all bars + gaps in the sequence loop
       const getSequenceLength = (containerW: number) => {
         const bw  = getBarWidth(containerW)
         const gap = getGap(containerW)
         return milestones.length * (bw + gap)
       }
 
-      // ── Cursor init ──
-      // screenX formula: screenX = cw - cursor + barStart
-      // For bar 0 (barStart = 0) we want its RIGHT edge flush with the
-      // container's right edge so it's visible the instant the section loads:
-      //   screenX + barWidth = cw  →  (cw - cursor) + barWidth = cw  →  cursor = barWidth
       cursorRef.current = getBarWidth(cw)
 
       const tickHandler = (_time: number, deltaTime: number) => {
@@ -128,53 +197,47 @@ const HowWeEngage = () => {
         const bw  = getBarWidth(currentCw)
         const gap = getGap(currentCw)
 
-        cursorRef.current += SPEED * dt
+        // ── Only advance cursor when not hovered — bars freeze in place ──
+        if (!isPausedRef.current) {
+          cursorRef.current += SPEED * dt
 
-        // Loop: once the last bar's right edge has exited left (cursor > seqLen + cw),
-        // reset so bar 0's right edge is back at the container's right edge.
-        const seqLen = getSequenceLength(currentCw)
-        if (cursorRef.current > seqLen + currentCw) {
-          cursorRef.current = bw // bar 0 enters immediately from the right
+          const seqLen = getSequenceLength(currentCw)
+          if (cursorRef.current > seqLen + currentCw) {
+            cursorRef.current = bw
+          }
         }
 
         milestones.forEach((_, i) => {
           const el = blockRefs.current[i]
           if (!el) return
 
-          // Each bar has a fixed slot: bar i starts at i * (bw + gap) in the sequence
           const barStart = i * (bw + gap)
-          // screenX = left edge of bar in screen coords
-          // grows negative as cursor advances → bar moves left
-          const screenX = currentCw - cursorRef.current + barStart
+          const screenX  = currentCw - cursorRef.current + barStart
 
           el.style.transform = `translateX(${screenX}px)`
-          el.style.width = `${bw}px`
+          el.style.width     = `${bw}px`
 
           const barLeft  = screenX
           const barRight = screenX + bw
 
-          // Hide bars that are fully off-screen (avoids ghost renders)
           el.style.opacity = (barRight > 0 && barLeft < currentCw) ? '1' : '0'
 
           const loadedEl = el.querySelector('.engage-loaded') as HTMLElement
           if (!loadedEl) return
 
           if (barRight <= cx) {
-            // Fully past center — white/settled
-            loadedEl.style.clipPath = 'inset(0 0% 0 0)'
+            loadedEl.style.clipPath    = 'inset(0 0% 0 0)'
             loadedEl.style.borderColor = '#0E3572'
-            loadedEl.style.color = '#0E3572'
+            loadedEl.style.color       = '#0E3572'
           } else if (barLeft >= cx) {
-            // Not yet reached center — ghost
-            loadedEl.style.clipPath = 'inset(0 100% 0 0)'
+            loadedEl.style.clipPath    = 'inset(0 100% 0 0)'
             loadedEl.style.borderColor = '#ED1C24'
-            loadedEl.style.color = '#ED1C24'
+            loadedEl.style.color       = '#ED1C24'
           } else {
-            // Crossing — reveal proportionally to how much has passed the line
             const revealed = ((cx - barLeft) / bw) * 100
-            loadedEl.style.clipPath = `inset(0 ${100 - revealed}% 0 0)`
+            loadedEl.style.clipPath    = `inset(0 ${100 - revealed}% 0 0)`
             loadedEl.style.borderColor = '#ED1C24'
-            loadedEl.style.color = '#ED1C24'
+            loadedEl.style.color       = '#ED1C24'
           }
         })
       }
@@ -206,7 +269,6 @@ const HowWeEngage = () => {
     }
   }, [])
 
-  // Dashed line y-positions
   const dashedYs = [
     dims.topOffset - 6,
     dims.topOffset + dims.rowGap - 6,
@@ -214,6 +276,8 @@ const HowWeEngage = () => {
     dims.topOffset + 3 * dims.rowGap - 6,
     dims.timelineHeight - 8,
   ]
+
+  const infoFontSize = Math.max(10, dims.subtitleSize - 1)
 
   return (
     <section
@@ -244,7 +308,7 @@ const HowWeEngage = () => {
           className="relative w-full max-w-[1320px] mx-auto overflow-hidden"
           style={{ height: `${dims.timelineHeight}px` }}
         >
-          {/* Background horizontal dashed lines */}
+          {/* Background dashed lines */}
           <div className="absolute inset-0 pointer-events-none">
             {dashedYs.map((y, i) => (
               <div
@@ -259,7 +323,7 @@ const HowWeEngage = () => {
             ))}
           </div>
 
-          {/* Red center line with dot */}
+          {/* Red center line */}
           <div
             className="absolute left-1/2 -translate-x-1/2 top-0 flex flex-col items-center z-10"
             style={{ height: `${dims.timelineHeight}px`, width: `${dims.dotSize}px` }}
@@ -279,7 +343,7 @@ const HowWeEngage = () => {
             />
           </div>
 
-          {/* ── Milestone rows — each bar on its own track ── */}
+          {/* Milestone rows */}
           {milestones.map((milestone, i) => (
             <div
               key={i}
@@ -291,15 +355,17 @@ const HowWeEngage = () => {
             >
               <div
                 ref={(el) => { blockRefs.current[i] = el }}
-                className="absolute top-0"
+                className="absolute top-0 cursor-pointer"
                 style={{
                   width: `${Math.max(BAR_MIN_WIDTH_PX, DESIGN_WIDTH * BAR_WIDTH_FRACTION)}px`,
                   height: `${dims.blockHeight}px`,
                   willChange: 'transform, opacity',
                   opacity: 0,
                 }}
+                onMouseEnter={() => handleBarMouseEnter(i)}
+                onMouseLeave={handleBarMouseLeave}
               >
-                {/* Unloaded state: ghost / semi-transparent */}
+                {/* Ghost state */}
                 <div
                   className="absolute inset-0 rounded-[7px] flex flex-col justify-center"
                   style={{
@@ -332,7 +398,7 @@ const HowWeEngage = () => {
                   </p>
                 </div>
 
-                {/* Loaded state: white card, colored border + text, revealed by clip-path */}
+                {/* Loaded state */}
                 <div
                   className="engage-loaded absolute inset-0 rounded-[7px] flex flex-col justify-center"
                   style={{
@@ -373,7 +439,7 @@ const HowWeEngage = () => {
             </div>
           ))}
 
-          {/* Edge fade gradients — sit above bars, below center line dot */}
+          {/* Edge fades */}
           <div
             className="absolute right-0 top-0 bottom-0 pointer-events-none z-[5]"
             style={{
@@ -390,8 +456,92 @@ const HowWeEngage = () => {
           />
         </div>
 
-        {/* CTA Button */}
-        <Link to="/how-we-work" 
+        {/* ── Hover info panel ────────────────────────────────────────────────
+             Lives OUTSIDE timelineRef so it's not clipped by overflow-hidden.
+             Position is set directly via style in handleBarMouseEnter.
+             GSAP controls autoAlpha (visibility + opacity) and y.
+        ─────────────────────────────────────────────────────────────────── */}
+        <div
+          ref={panelRef}
+          className="absolute pointer-events-none"
+          style={{
+            // Initial hidden state — GSAP will set autoAlpha on mount
+            visibility: 'hidden',
+            opacity: 0,
+            zIndex: 20,
+            // min-width guard so panel never collapses on very small bars
+            minWidth: `${BAR_MIN_WIDTH_PX}px`,
+          }}
+          onMouseEnter={() => { isPausedRef.current = true }}
+          onMouseLeave={handleBarMouseLeave}
+        >
+          {hoveredIndex >= 0 && (
+            <div
+              style={{
+                background: '#FFFAFA',
+                border: '1.5px solid #0E3572',
+                borderRadius: '7px',
+                padding: `${dims.padY + 6}px ${dims.padX + 2}px`,
+                boxShadow: '0px 4px 24px 0px rgba(7,7,7,0.22), 0px 0px 0px 1px rgba(14,53,114,0.1)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5px',
+              }}
+            >
+              {/* Best for */}
+              <p
+                style={{
+                  fontSize: `${infoFontSize}px`,
+                  color: '#0E3572',
+                  lineHeight: '1.5',
+                  margin: 0,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                <span style={{ fontWeight: 700, fontFamily: "'Sora', sans-serif" }}>Best for: </span>
+                {milestones[hoveredIndex].bestFor}
+              </p>
+
+              {/* You get */}
+              <p
+                style={{
+                  fontSize: `${infoFontSize}px`,
+                  color: '#0E3572',
+                  lineHeight: '1.5',
+                  margin: 0,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                <span style={{ fontWeight: 700, fontFamily: "'Sora', sans-serif" }}>You get: </span>
+                {milestones[hoveredIndex].youGet}
+              </p>
+
+              {/* How it works */}
+              <p
+                style={{
+                  fontSize: `${infoFontSize}px`,
+                  color: '#0E3572',
+                  lineHeight: '1.5',
+                  margin: 0,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                <span style={{ fontWeight: 700, fontFamily: "'Sora', sans-serif" }}>How it works: </span>
+                {milestones[hoveredIndex].howItWorks}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* CTA */}
+        <Link
+          to="/how-we-work"
           className="bg-white text-[#0E3572] text-xs sm:text-[14px] font-normal px-5 sm:px-[34px] py-3 sm:py-[18px] rounded-[4px] cursor-pointer hover:opacity-90 transition-opacity"
           style={{
             boxShadow:

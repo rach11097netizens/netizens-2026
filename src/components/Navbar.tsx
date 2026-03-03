@@ -114,8 +114,20 @@ const Navbar = () => {
                                 <div className="absolute top-[65px] left-1/2 -translate-x-1/2 w-[1320px] lg:w-[1320px] bg-gray-100 border-[1.5px] border-[rgba(14,53,114,0.2)] shadow-[0px_20px_40px_rgba(0,0,0,0.08)] rounded-[18px] overflow-hidden grid grid-cols-3 grid-rows-2 gap-[1px] z-50">
                                     {/* Category 1 */}
                                     <Link to="/mvp-development" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             Product Development
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1402_4100">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
                                             <li className="flex items-center gap-[6px] text-[12px] font-medium text-[#58595b] uppercase hover:text-regal-navy cursor-pointer transition-colors group">
@@ -139,8 +151,20 @@ const Navbar = () => {
 
                                     {/* Category 2 */}
                                     <Link to="/workflow-digitization" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             Workflow Digitization
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1402_4100">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
                                             <li className="flex items-center gap-[6px] text-[12px] font-medium text-[#58595b] uppercase hover:text-regal-navy cursor-pointer transition-colors group">
@@ -164,8 +188,20 @@ const Navbar = () => {
 
                                     {/* Category 3 */}
                                     <Link to="/support-and-scale" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             Support & Scale
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1402_4100">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
                                             <li className="flex items-center gap-[6px] text-[12px] font-medium text-[#58595b] uppercase hover:text-regal-navy cursor-pointer transition-colors group">
@@ -189,8 +225,20 @@ const Navbar = () => {
 
                                     {/* Category 4 */}
                                     <Link to="/staff-augmentation" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             Staff Augmentation
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1402_4100">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
                                             <li className="flex items-center gap-[6px] text-[12px] font-medium text-[#58595b] uppercase hover:text-regal-navy cursor-pointer transition-colors group">
@@ -214,8 +262,20 @@ const Navbar = () => {
 
                                     {/* Category 5 */}
                                     <Link to="/ai-consulting" onClick={closeMenus} className="bg-white p-6 hover:bg-gray-50 transition-colors flex flex-col gap-4 group/card">
-                                        <h3 className=" text-[16px] text-[#16181b] tracking-[0.8px] uppercase font-medium">
+                                        <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             AI Consulting & Automation
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1402_4100">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
                                         </h3>
                                         <ul className="flex flex-col gap-3 relative z-10">
                                             <li className="flex items-center gap-[6px] text-[12px] font-medium text-[#58595b] uppercase hover:text-regal-navy cursor-pointer transition-colors group">

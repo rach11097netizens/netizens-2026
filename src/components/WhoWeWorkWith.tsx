@@ -2,6 +2,10 @@ import { useEffect, useRef } from 'react'
 import React from 'react'
 import { SidePattern } from './SidePattern'
 import patternBg from '../assets/images/pattern-bg.png'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 interface ChipItem {
   text: string
@@ -20,7 +24,7 @@ interface AudienceCard {
 }
 
 const WhoWeWorkWith = () => {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const sectionRef   = useRef<HTMLDivElement>(null)
   const cardStackRef = useRef<HTMLDivElement>(null)
 
   const audiences: AudienceCard[] = [
@@ -28,236 +32,166 @@ const WhoWeWorkWith = () => {
       title: 'Startup & SaaS Founders',
       description: 'You have an idea or early product and need a technical partner who can move fast, make smart decisions, and protect your runway.',
       chips: [
-        { text: 'Weak UX or slow delivery', bottom: '14.6%', left: '39.6%', rotation: 23.31, containerW: '61.8%', containerH: '46.4%' },
-        { text: 'Growing backlog', bottom: '41.7%', left: '52.6%', rotation: 13.37, containerW: '48.4%', containerH: '30.1%' },
-        { text: 'Fundraising deadlines', bottom: '-3.3%', left: '-1.6%', rotation: -57.81, containerW: '42.3%', containerH: '71.4%' },
-        { text: 'MVP → V2 scaling', bottom: '-0.5%', left: '15.6%', rotation: -24.63, containerW: '47.8%', containerH: '40%' },
-        { text: 'Need to validate fast', bottom: '0%', left: '46.1%', rotation: 0 },
+        { text: 'Weak UX or slow delivery',  bottom: '14.6%', left: '39.6%', rotation: 23.31,  containerW: '61.8%', containerH: '46.4%' },
+        { text: 'Growing backlog',            bottom: '41.7%', left: '52.6%', rotation: 13.37,  containerW: '48.4%', containerH: '30.1%' },
+        { text: 'Fundraising deadlines',      bottom: '-3.3%', left: '-1.6%', rotation: -57.81, containerW: '42.3%', containerH: '71.4%' },
+        { text: 'MVP → V2 scaling',           bottom: '-0.5%', left: '15.6%', rotation: -24.63, containerW: '47.8%', containerH: '40%'   },
+        { text: 'Need to validate fast',      bottom: '0%',    left: '46.1%', rotation: 0 },
       ],
     },
     {
       title: 'CTOs & Engineering Managers',
       description: "You're responsible for delivery quality and velocity, but hiring full-time is slow, risky, or expensive.",
       chips: [
-        { text: 'Hiring delays', bottom: '0%', left: '24.7%', rotation: 0 },
-        { text: 'Release pressure', bottom: '15.6%', left: '55.6%', rotation: 31.79, containerW: '46.4%', containerH: '45.3%' },
-        { text: 'Delivery risk', bottom: '16.7%', left: '14%', rotation: 17.49, containerW: '37.3%', containerH: '29.4%' },
-        { text: 'Skill gaps', bottom: '-3.1%', left: '-2.4%', rotation: -28.54, containerW: '32.5%', containerH: '32.9%' },
-        { text: 'Team bandwidth', bottom: '-3%', right: '-2.1%', rotation: 27.63, containerW: '46.1%', containerH: '41.5%' },
+        { text: 'Hiring delays',    bottom: '0%',    left: '24.7%', rotation: 0 },
+        { text: 'Release pressure', bottom: '15.6%', left: '55.6%', rotation: 31.79,  containerW: '46.4%', containerH: '45.3%' },
+        { text: 'Delivery risk',    bottom: '16.7%', left: '14%',   rotation: 17.49,  containerW: '37.3%', containerH: '29.4%' },
+        { text: 'Skill gaps',       bottom: '-3.1%', left: '-2.4%', rotation: -28.54, containerW: '32.5%', containerH: '32.9%' },
+        { text: 'Team bandwidth',   bottom: '-3%',  right: '-2.1%', rotation: 27.63,  containerW: '46.1%', containerH: '41.5%' },
       ],
     },
     {
       title: 'Teams Adopting AI',
       description: 'You want AI applied to real workflows, not experiments. The goal is saving time, reducing cost, and improving output.',
       chips: [
-        { text: 'Disconnected tools', bottom: '-2.4%', left: '14.4%', rotation: -30, containerW: '50.7%', containerH: '47%' },
-        { text: 'No clear ROI', bottom: '34.8%', left: '51.4%', rotation: 9.89, containerW: '37.2%', containerH: '24.5%' },
-        { text: 'Manual repetitive work', bottom: '7.7%', left: '-1.7%', rotation: -30.36, containerW: '55.9%', containerH: '51.2%' },
-        { text: 'AI confusion', bottom: '17.8%', left: '63.3%', rotation: 0 },
-        { text: 'Slow operations', bottom: '0%', right: '12.5%', rotation: 0 },
+        { text: 'Disconnected tools',     bottom: '-2.4%', left: '14.4%', rotation: -30,    containerW: '50.7%', containerH: '47%'   },
+        { text: 'No clear ROI',           bottom: '34.8%', left: '51.4%', rotation: 9.89,   containerW: '37.2%', containerH: '24.5%' },
+        { text: 'Manual repetitive work', bottom: '7.7%',  left: '-1.7%', rotation: -30.36, containerW: '55.9%', containerH: '51.2%' },
+        { text: 'AI confusion',           bottom: '17.8%', left: '63.3%', rotation: 0 },
+        { text: 'Slow operations',        bottom: '0%',   right: '12.5%', rotation: 0 },
       ],
     },
     {
       title: 'Ops & IT Leaders',
       description: "You're managing growing systems and need better visibility, fewer errors, and connected workflows across tools.",
       chips: [
-        { text: 'Operational errors', bottom: '0%', left: '18.4%', rotation: 0 },
-        { text: 'Data scattered across tools', bottom: '7%', left: '3.1%', rotation: -28.51, containerW: '66.8%', containerH: '56.4%' },
-        { text: 'Poor visibility', bottom: '16.9%', left: '62%', rotation: 23.13, containerW: '39.8%', containerH: '34.2%' },
-        { text: 'Scaling complexity', bottom: '-2.4%', left: '50.3%', rotation: 23.53, containerW: '51.6%', containerH: '41%' },
-        { text: 'Manual processes', bottom: '37.8%', right: '50.8%', rotation: -13.21, containerW: '50.1%', containerH: '30.4%' },
+        { text: 'Operational errors',          bottom: '0%',    left: '18.4%', rotation: 0 },
+        { text: 'Data scattered across tools', bottom: '7%',    left: '3.1%',  rotation: -28.51, containerW: '66.8%', containerH: '56.4%' },
+        { text: 'Poor visibility',             bottom: '16.9%', left: '62%',   rotation: 23.13,  containerW: '39.8%', containerH: '34.2%' },
+        { text: 'Scaling complexity',          bottom: '-2.4%', left: '50.3%', rotation: 23.53,  containerW: '51.6%', containerH: '41%'   },
+        { text: 'Manual processes',            bottom: '37.8%', right: '50.8%', rotation: -13.21, containerW: '50.1%', containerH: '30.4%' },
       ],
     },
   ]
 
   useEffect(() => {
-    const initAnimation = async () => {
-      const { gsap } = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      gsap.registerPlugin(ScrollTrigger)
+    const section   = sectionRef.current
+    const cardStack = cardStackRef.current
+    if (!section || !cardStack) return
 
-      if (!sectionRef.current || !cardStackRef.current) return
+    const cardEls = Array.from(cardStack.querySelectorAll<HTMLElement>('.deck-card'))
+    const total   = cardEls.length
 
-      const cards = Array.from(cardStackRef.current.querySelectorAll('.deck-card')) as HTMLElement[]
-      const totalCards = cards.length
+    // ── Initial states ──
+    cardEls.forEach((el, i) => {
+      // Higher z-index for later cards so incoming slides over outgoing
+      el.style.zIndex = `${total + i}`
 
-      // ── Set GPU-composited initial states ──
-      // Using gsap.set() so state is applied before first paint in this tick.
-      // force3D: true + will-change prevents subpixel blur on transform.
-      cards.forEach((el, index) => {
-        el.style.zIndex = `${totalCards - index}`
-
-        if (index === 0) {
-          // Top card — fully active, no transform
-          gsap.set(el, {
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            force3D: true,
-          })
-          // Activate text colours immediately for top card
-          el.classList.add('is-active')
-        } else {
-          // Cards underneath — stacked behind, shifted down, slightly scaled
-          const depthOffset = index * 6 // px offset per layer
-          gsap.set(el, {
-            y: depthOffset,
-            scale: 1 - index * 0.03,
-            opacity: 1,
-            force3D: true,
-          })
-        }
-
-        // All cards use the same white background — no tinting
-      })
-
-      // ── ScrollTrigger: drive card transitions via progress ──
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        onUpdate: (self) => {
-          const progress = self.progress
-          // Each card (except the last) owns an equal slice of scroll progress
-          const segmentSize = 1 / (totalCards - 1)
-
-          cards.forEach((el, index) => {
-            if (index === totalCards - 1) {
-              // Bottom card never flies away — just rises into active state
-              const prevProgress = Math.max(0, Math.min(1,
-                (progress - (index - 1) * segmentSize) / segmentSize
-              ))
-              const scale = (1 - (totalCards - 1) * 0.03) + (totalCards - 1) * 0.03 * prevProgress
-              const y = (totalCards - 1) * 6 * (1 - prevProgress)
-
-              gsap.set(el, { y, scale, force3D: true })
-
-              if (prevProgress > 0.7) el.classList.add('is-active')
-              else el.classList.remove('is-active')
-              return
-            }
-
-            const segStart = index * segmentSize
-            const segEnd = segStart + segmentSize
-
-            // How far through THIS card's flight segment are we?
-            const localProgress = Math.max(0, Math.min(1,
-              (progress - segStart) / (segEnd - segStart)
-            ))
-
-            // How far through the PREVIOUS card's flight are we?
-            // (used to animate this card rising as the one above flies away)
-            const prevStart = Math.max(0, (index - 1) * segmentSize)
-            const prevEnd = Math.min(1, prevStart + segmentSize)
-            const prevProgress = index === 0 ? 0 : Math.max(0, Math.min(1,
-              (progress - prevStart) / (prevEnd - prevStart)
-            ))
-
-            if (localProgress > 0) {
-              // ── Flying away ──
-              // No blur — just translate up + gentle rotate + fade out.
-              // Blur causes rendering artifacts and is visually noisy on cards.
-              const direction = index % 2 === 0 ? 1 : -1
-              const yMove = -160 * localProgress          // px upward
-              const rotation = 8 * localProgress * direction
-              // Fade starts at 60% through the flight so the card is clearly
-              // visible while rising, then cleanly disappears.
-              const opacity = localProgress < 0.6
-                ? 1
-                : 1 - ((localProgress - 0.6) / 0.4)
-
-              gsap.set(el, {
-                y: yMove,
-                rotation,
-                opacity,
-                scale: 1,
-                force3D: true,
-              })
-              el.classList.remove('is-active')
-
-            } else {
-              // ── Waiting underneath or becoming active ──
-              const targetDepth = index      // natural stack depth
-              // As previous card flies away, this card rises to full size
-              const riseProgress = prevProgress
-
-              const baseScale = 1 - targetDepth * 0.03
-              const scale = baseScale + (1 - baseScale) * riseProgress
-              const baseY = targetDepth * 6
-              const y = baseY * (1 - riseProgress)
-
-              // Reset any flight state cleanly
-              gsap.set(el, {
-                y,
-                scale,
-                rotation: 0,
-                opacity: 1,
-                force3D: true,
-              })
-
-              // Card 0 at rest has riseProgress=0 (no prev card), so we must
-              // special-case it — it's always active until it starts flying away.
-              if (index === 0 || riseProgress > 0.75) el.classList.add('is-active')
-              else el.classList.remove('is-active')
-            }
-          })
-        },
-      })
-
-      // ── Chips fade in on the active card ──
-      // All chips start hidden. MutationObserver fires the reveal when
-      // is-active is toggled. Card 0 is triggered manually after attaching
-      // because is-active is already set before the observer exists.
-      const animateChipsIn = (card: HTMLElement) => {
-        const chips = card.querySelectorAll('.deck-chip')
-        gsap.to(chips, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: 0.07,
-          ease: 'power3.out',
-          force3D: true,
-        })
+      if (i === 0) {
+        gsap.set(el, { y: 0, opacity: 1, scale: 1, force3D: true })
+      } else {
+        gsap.set(el, { y: '110%', opacity: 0, scale: 1, force3D: true })
       }
+    })
 
-      const animateChipsOut = (card: HTMLElement) => {
-        const chips = card.querySelectorAll('.deck-chip')
-        gsap.set(chips, { autoAlpha: 0, y: 10, force3D: true })
-      }
-
-      cards.forEach((card, i) => {
-        // All chips start hidden
-        animateChipsOut(card)
-
-        // Track whether chips have been revealed for this card.
-        // Once revealed, they stay visible — even as the card flies away.
-        let chipsRevealed = false
-
-        const observer = new MutationObserver(() => {
-          if (card.classList.contains('is-active') && !chipsRevealed) {
-            chipsRevealed = true
-            animateChipsIn(card)
-          }
-          // No else — we never hide chips after they've appeared
-        })
-        observer.observe(card, { attributes: true, attributeFilter: ['class'] })
-
-        // Card 0 already has is-active set before the observer was attached,
-        // so trigger its chip reveal manually right now.
-        if (i === 0) {
-          chipsRevealed = true
-          animateChipsIn(card)
-        }
+    // ── Chip helpers ──
+    const animateChipsIn = (card: HTMLElement) => {
+      const chips = card.querySelectorAll('.deck-chip')
+      gsap.to(chips, {
+        autoAlpha: 1,
+        y:         0,
+        duration:  0.4,
+        stagger:   0.07,
+        ease:      'power3.out',
+        force3D:   true,
       })
     }
 
-    initAnimation()
+    const hideChips = (card: HTMLElement) => {
+      gsap.set(card.querySelectorAll('.deck-chip'), { autoAlpha: 0, y: 10, force3D: true })
+    }
+
+    // Hide all chips initially
+    cardEls.forEach(hideChips)
+
+    // Track which cards have had their chips revealed (one-way: never hide after reveal)
+    const chipsRevealed = new Array(total).fill(false)
+
+    const revealChipsIfNeeded = (index: number) => {
+      if (index < 0 || index >= total) return
+      if (chipsRevealed[index]) return
+      chipsRevealed[index] = true
+      animateChipsIn(cardEls[index])
+    }
+
+    // Card 0 chips reveal immediately
+    revealChipsIfNeeded(0)
+
+    // ── Timeline durations (must match exactly for progress math) ──
+    // Each card pair: outgoing (dur=1) + incoming (dur=1, starts at <0.3)
+    // → each pair occupies 1.3 units on the timeline
+    // Final hold: 0.4
+    const SEG  = 1.3   // timeline units per card transition
+    const HOLD = 0.4
+    const TOTAL_DUR = (total - 1) * SEG + HOLD
+
+    // ── Build the card-swap timeline ──
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger:      section,
+        start:        'top top',
+        // ScrollTrigger will add pinSpacing equal to this distance.
+        // The section itself is only min-height:100vh — no manual 400vh needed.
+        end:          `+=${total * 80}%`,
+        pin:          true,
+        pinSpacing:   true,   // explicit: ST adds the spacer, section stays 100vh
+        scrub:        0.5,
+        anticipatePin: 1,
+
+        // onUpdate is the ONLY reliable way to detect which card is active
+        // during a scrubbed timeline — onStart/onComplete are skipped by scrub.
+        onUpdate(self) {
+          // Map scroll progress → timeline time → active card index
+          const t          = self.progress * TOTAL_DUR
+          // Card i (i>0) is fully onscreen when its incoming tween completes,
+          // which happens at t = i * SEG.
+          // We trigger slightly early (0.15 units before full arrival) so chips
+          // appear as the card settles in, not after.
+          const EARLY      = 0.15
+          let activeIndex  = 0
+          for (let i = total - 1; i >= 1; i--) {
+            if (t >= i * SEG - EARLY) {
+              activeIndex = i
+              break
+            }
+          }
+          revealChipsIfNeeded(activeIndex)
+        },
+      },
+    })
+
+    for (let i = 0; i < total - 1; i++) {
+      tl.to(cardEls[i], {
+        y:        '-40%',
+        opacity:  0,
+        scale:    0.95,
+        duration: 1,
+        ease:     'power2.in',
+      })
+      .fromTo(
+        cardEls[i + 1],
+        { y: '110%', opacity: 0 },
+        { y: 0,      opacity: 1, duration: 1, ease: 'power3.out' },
+        '<0.3',
+      )
+    }
+
+    // Brief hold on the last card
+    tl.to({}, { duration: HOLD })
 
     return () => {
-      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
-        ScrollTrigger.getAll().forEach((t) => {
-          if (t.trigger === sectionRef.current) t.kill()
-        })
+      ScrollTrigger.getAll().forEach((st) => {
+        if (st.trigger === section) st.kill()
       })
     }
   }, [])
@@ -265,14 +199,15 @@ const WhoWeWorkWith = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#FFFAFA]"
-      style={{ minHeight: '400vh' }}
+      // ✅ min-h-screen only — ScrollTrigger's pinSpacing adds the extra scroll room.
+      // Using minHeight:'400vh' here caused double-spacing (section height + ST spacer).
+      className="relative bg-[#FFFAFA] min-h-screen"
     >
       <div className="separator-pattern absolute top-0 left-0 right-0 z-10" />
       <SidePattern invert={true} />
 
-      {/* Sticky wrapper */}
-      <div className="sticky overflow-hidden top-0 h-screen flex flex-col items-center justify-center gap-6 px-5 md:px-10 max-w-[1300px] mx-auto">
+      {/* Sticky viewport — pinned by ScrollTrigger, not CSS sticky */}
+      <div className="h-screen overflow-hidden flex flex-col items-center justify-center gap-6 px-5 md:px-10 max-w-[1300px] mx-auto">
 
         {/* Heading */}
         <div className="text-center z-10">
@@ -289,32 +224,28 @@ const WhoWeWorkWith = () => {
           </p>
         </div>
 
-        {/* Card Stack */}
+        {/* Card stack */}
         <div
           ref={cardStackRef}
           className="relative w-full max-w-[1096px]"
-          style={{ height: '380px', perspective: '1200px' }}
+          style={{ height: '380px' }}
         >
           {audiences.map((audience, index) => (
             <article
               key={index}
               className="deck-card absolute top-0 left-0 w-full h-full"
               style={{
-                transformOrigin: 'center bottom',
-                willChange: 'transform, opacity',
-                borderRadius: '34px',
-                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.06), 0 20px 25px -5px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
+                transformOrigin: 'center center',
+                willChange:      'transform, opacity',
+                borderRadius:    '34px',
+                boxShadow:       '0 4px 6px -1px rgba(0,0,0,0.06), 0 20px 25px -5px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
               }}
             >
               <div
                 className="deck-card-inner pl-0 md:pl-[26px] flex items-center flex-col md:flex-row overflow-hidden relative h-full"
-                style={{
-                  borderRadius: 'inherit',
-                  gap: '34px',
-                  background: 'white',
-                }}
+                style={{ borderRadius: 'inherit', gap: '34px', background: 'white' }}
               >
-                {/* Text Content */}
+                {/* Text */}
                 <div className="flex flex-1 flex-col gap-[18px] items-start min-h-0 min-w-0 relative p-[18px] whitespace-pre-wrap z-[1]">
                   <h3
                     className="deck-card-title text-base sm:text-lg lg:text-2xl font-normal relative shrink-0 w-full text-[#16181B]"
@@ -330,43 +261,40 @@ const WhoWeWorkWith = () => {
                   </p>
                 </div>
 
-                {/* Chip Area */}
+                {/* Chip area */}
                 <div
                   className="relative shrink-0 w-full md:w-[350px] lg:w-[420px] h-[200px] sm:h-[250px] md:h-full"
                   style={{ borderRadius: '0 34px 34px 0' }}
                 >
-                  {/* Dark background + pattern */}
                   <div className="absolute inset-0 pointer-events-none" style={{ borderRadius: 'inherit' }}>
                     <div
                       className="absolute inset-0"
                       style={{
                         borderRadius: 'inherit',
-                        background: 'linear-gradient(180deg, rgba(14,53,114,0.7) 0%, rgb(14,53,114) 100%)',
+                        background:   'linear-gradient(180deg, rgba(14,53,114,0.7) 0%, rgb(14,53,114) 100%)',
                       }}
                     />
                     <div
                       className="absolute inset-0"
                       style={{
-                        borderRadius: 'inherit',
-                        backgroundImage: `url(${patternBg})`,
-                        backgroundSize: 'cover',
+                        borderRadius:       'inherit',
+                        backgroundImage:    `url(${patternBg})`,
+                        backgroundSize:     'cover',
                         backgroundPosition: 'center',
-                        opacity: 0.15,
+                        opacity:            0.15,
                       }}
                     />
                   </div>
 
-                  {/* Chips — opacity controlled by GSAP via MutationObserver above */}
                   {audience.chips.map((chip, chipIndex) => {
                     const wrapperStyle: React.CSSProperties = {
-                      bottom: chip.bottom,
-                      // Start invisible; GSAP will reveal on is-active
-                      visibility: 'visible',
+                      bottom:         chip.bottom,
+                      visibility:     'visible',
                       animationDelay: `${chipIndex * 0.08}s`,
                     }
-                    if (chip.left) wrapperStyle.left = chip.left
-                    if (chip.right) wrapperStyle.right = chip.right
-                    if (chip.containerW) wrapperStyle.width = chip.containerW
+                    if (chip.left)       wrapperStyle.left   = chip.left
+                    if (chip.right)      wrapperStyle.right  = chip.right
+                    if (chip.containerW) wrapperStyle.width  = chip.containerW
                     if (chip.containerH) wrapperStyle.height = chip.containerH
 
                     return (
