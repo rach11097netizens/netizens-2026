@@ -1,4 +1,4 @@
-import { SidePattern } from "./SidePattern";
+import React, { CSSProperties, useEffect, useState } from "react";
 
 import imgReact from "../assets/images/tech-stack/react.png";
 import imgNextjsFrontend from "../assets/images/tech-stack/nextjs-frontend.png";
@@ -17,216 +17,394 @@ import imgNextjs from "../assets/images/tech-stack/nextjs.png";
 import imgLlm from "../assets/images/tech-stack/llm-integrations.png";
 import imgAiWorkflows from "../assets/images/tech-stack/ai-workflows.png";
 import imgAutomation from "../assets/images/tech-stack/automation-agents.png";
+import { SidePattern } from "./SidePattern";
 
+// ── Design Tokens ─────────────────────────────────────────────────────────────
+const NAVY = "#0e3572";
+const CYAN = "#3eafd1";
+const RED = "#ed1c24";
+const NAVY_10 = "rgba(14,53,114,0.10)";
+const NAVY_60 = "rgba(14,53,114,0.60)";
+const CHARCOAL = "#58595b";
+const CHARCOAL_40 = "rgba(88,89,91,0.40)";
+const fontSans = "'Plus Jakarta Sans', 'Segoe UI', sans-serif";
+const fontHead = "'Sora', 'Segoe UI', sans-serif";
+
+// ── Breakpoints ───────────────────────────────────────────────────────────────
+const BP_SM = 640;   // 2-col card grid
+const BP_LG = 1024;  // full desktop bento
+
+// ── Types ─────────────────────────────────────────────────────────────────────
 interface TechItem {
-    icon: string;
+    src: string;
     label: string;
+    border?: boolean;
 }
 
-interface TechCategory {
+interface CategoryCardProps {
     title: string;
     items: TechItem[];
-    gridArea: string;
-    mobileOrder: number;
+    vertical?: boolean;
+    autoHeight?: boolean;
+    iconSize?: number;
 }
 
-const categories: TechCategory[] = [
+interface TintProps { r: number; c: number; }
+interface AccentCellDef { r: number; c: number; color: string; }
+interface TintCellDef { r: number; c: number; }
+interface SidePatternProps { flip?: boolean; }
+
+// ── useWindowWidth ────────────────────────────────────────────────────────────
+function useWindowWidth(): number {
+    const [width, setWidth] = useState<number>(
+        typeof window !== "undefined" ? window.innerWidth : BP_LG + 1
+    );
+    useEffect(() => {
+        const handler = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", handler);
+        return () => window.removeEventListener("resize", handler);
+    }, []);
+    return width;
+}
+
+// ── TechIcon ──────────────────────────────────────────────────────────────────
+const TechIcon: React.FC<TechItem & { size?: number }> = ({
+    src, label, border = true, size = 60,
+}) => (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+        <div style={{
+            width: size, height: size,
+            background: "#fff",
+            border: border ? `1px solid ${CHARCOAL_40}` : "none",
+            borderRadius: 6,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: 8, boxSizing: "border-box", flexShrink: 0,
+        }}>
+            <img src={src} alt={label} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+        </div>
+        <span style={{
+            fontFamily: fontSans, fontSize: 11, color: CHARCOAL,
+            textAlign: "center", lineHeight: "1.3", maxWidth: size + 20,
+        }}>
+            {label}
+        </span>
+    </div>
+);
+
+// ── CategoryCard ──────────────────────────────────────────────────────────────
+const CategoryCard: React.FC<CategoryCardProps> = ({
+    title, items, vertical = false, autoHeight = false, iconSize = 60,
+}) => (
+    <div style={{
+        background: "#fff",
+        border: `1px solid ${NAVY_60}`,
+        borderBottom: `4px solid ${NAVY_60}`,
+        borderRadius: 10,
+        overflow: "hidden",
+        display: "flex", flexDirection: "column",
+        alignItems: "center",
+        padding: "15px 10px",
+        position: "relative",
+        height: autoHeight ? "auto" : "100%",
+        boxSizing: "border-box",
+        gap: 10,
+    }}>
+        <h3 style={{
+            fontFamily: fontHead, fontSize: 16, fontWeight: 400,
+            color: NAVY, textAlign: "center", lineHeight: "25px",
+            margin: 0, whiteSpace: "pre-line", flexShrink: 0,
+            minHeight: 44,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            width: "100%",
+        }}>
+            {title}
+        </h3>
+
+        <div style={{
+            display: "flex",
+            flexDirection: vertical ? "column" : "row",
+            flexWrap: vertical ? "nowrap" : "wrap",
+            gap: vertical ? 28 : 12,
+            alignItems: "center", justifyContent: "center",
+            flex: autoHeight ? undefined : 1,
+            width: "100%",
+            paddingBottom: 8,
+        }}>
+            {items.map((item) => (
+                <TechIcon key={item.label} {...item} size={iconSize} />
+            ))}
+        </div>
+
+        <div style={{
+            position: "absolute", inset: 0,
+            borderRadius: "inherit", pointerEvents: "none",
+            boxShadow: "inset 0px -10px 12px 0px rgba(14,53,114,0.12)",
+        }} />
+    </div>
+);
+
+// ── Tinted Cell ───────────────────────────────────────────────────────────────
+const Tint: React.FC<TintProps> = ({ r, c }) => (
+    <div style={{ gridRow: r, gridColumn: c, background: NAVY_10, position: "relative" }}>
+        <div style={{
+            position: "absolute", inset: 0, pointerEvents: "none",
+            boxShadow: "inset 3px 6px 21px 0px rgba(14,53,114,0.08)",
+        }} />
+    </div>
+);
+
+// ── Static Data ───────────────────────────────────────────────────────────────
+const tintCells: TintCellDef[] = [
+    { r: 1, c: 1 }, { r: 1, c: 5 }, { r: 1, c: 6 }, { r: 1, c: 12 },
+    { r: 2, c: 1 }, { r: 2, c: 5 }, { r: 2, c: 6 }, { r: 2, c: 12 }, { r: 2, c: 13 },
+    { r: 3, c: 1 }, { r: 3, c: 2 }, { r: 3, c: 3 }, { r: 3, c: 4 },
+    { r: 3, c: 8 }, { r: 3, c: 9 }, { r: 3, c: 10 }, { r: 3, c: 11 },
+    { r: 3, c: 12 }, { r: 3, c: 13 }, { r: 3, c: 14 },
+    { r: 4, c: 1 }, { r: 4, c: 2 }, { r: 4, c: 3 }, { r: 4, c: 4 },
+    { r: 4, c: 8 }, { r: 4, c: 9 }, { r: 4, c: 10 }, { r: 4, c: 11 }, { r: 4, c: 14 },
+    { r: 5, c: 1 }, { r: 5, c: 6 }, { r: 5, c: 7 }, { r: 5, c: 11 }, { r: 5, c: 14 },
+    { r: 6, c: 6 }, { r: 6, c: 7 }, { r: 6, c: 11 }, { r: 6, c: 14 },
+    { r: 7, c: 3 }, { r: 7, c: 4 }, { r: 7, c: 5 }, { r: 7, c: 6 },
+    { r: 7, c: 7 }, { r: 7, c: 8 }, { r: 7, c: 9 }, { r: 7, c: 10 },
+    { r: 7, c: 11 }, { r: 7, c: 14 },
+];
+
+const accentCells: AccentCellDef[] = [
+    { r: 1, c: 13, color: CYAN },
+    { r: 1, c: 14, color: NAVY },
+    { r: 2, c: 14, color: RED },
+    { r: 6, c: 1, color: CYAN },
+    { r: 7, c: 1, color: NAVY },
+    { r: 7, c: 2, color: RED },
+];
+
+// Mobile card data sorted by mobileOrder (matching original JSX component)
+const mobileCategories = [
     {
+        mobileOrder: 1,
         title: "Frontend",
         items: [
-            { icon: imgReact, label: "React" },
-            { icon: imgNextjsFrontend, label: "Next.js" },
+            { src: imgReact, label: "React" },
+            { src: imgNextjsFrontend, label: "Next.js", border: false },
         ],
-        gridArea: "1 / 2 / span 2 / span 3",
-        mobileOrder: 1,
     },
     {
+        mobileOrder: 2,
         title: "DevOps & Infrastructure",
         items: [
-            { icon: imgAws, label: "AWS" },
-            { icon: imgGoogleCloud, label: "Google Cloud" },
-            { icon: imgCicd, label: "CI/CD" },
-            { icon: imgMonitoring, label: "Monitoring & Logging" },
+            { src: imgAws, label: "AWS" },
+            { src: imgGoogleCloud, label: "Google Cloud" },
+            { src: imgCicd, label: "CI/CD" },
+            { src: imgMonitoring, label: "Monitoring & Logging" },
         ],
-        gridArea: "1 / 7 / span 2 / span 5",
-        mobileOrder: 2,
     },
     {
+        mobileOrder: 3,
         title: "Mobile",
         items: [
-            { icon: imgFlutter, label: "Flutter" },
-            { icon: imgReactNative, label: "React Native" },
+            { src: imgFlutter, label: "Flutter", border: false },
+            { src: imgReactNative, label: "React Native", border: false },
         ],
-        gridArea: "3 / 5 / span 2 / span 3",
-        mobileOrder: 3,
     },
     {
-        title: "Database",
-        items: [
-            { icon: imgPostgresql, label: "PostgreSQL" },
-            { icon: imgMysql, label: "MySQL" },
-            { icon: imgMongodb, label: "MongoDB" },
-            { icon: imgFirebase, label: "Firebase" },
-        ],
-        gridArea: "5 / 2 / span 2 / span 4",
-        mobileOrder: 5,
-    },
-    {
+        mobileOrder: 4,
         title: "Backend",
         items: [
-            { icon: imgNodejs, label: "Node.js" },
-            { icon: imgNextjs, label: "Next.js" },
+            { src: imgNodejs, label: "Node.js", border: false },
+            { src: imgNextjs, label: "Next.js", border: false },
         ],
-        gridArea: "5 / 8 / span 2 / span 3",
-        mobileOrder: 4,
     },
     {
+        mobileOrder: 5,
+        title: "Database",
+        items: [
+            { src: imgPostgresql, label: "PostgreSQL" },
+            { src: imgMysql, label: "MySQL" },
+            { src: imgMongodb, label: "MongoDB" },
+            { src: imgFirebase, label: "Firebase" },
+        ],
+    },
+    {
+        mobileOrder: 6,
         title: "Agentic Workflows / AI\n(when relevant)",
         items: [
-            { icon: imgLlm, label: "LLM integrations" },
-            { icon: imgAiWorkflows, label: "AI-powered workflows" },
-            { icon: imgAutomation, label: "Automation agents" },
+            { src: imgLlm, label: "LLM integrations" },
+            { src: imgAiWorkflows, label: "AI-powered workflows" },
+            { src: imgAutomation, label: "Automation agents" },
         ],
-        gridArea: "4 / 12 / span 4 / span 2",
-        mobileOrder: 6,
     },
-];
+].sort((a, b) => a.mobileOrder - b.mobileOrder);
 
-function TechIcon({ icon, label }: TechItem) {
-    return (
-        <div className="flex flex-col items-center gap-2">
-            <div className="w-[60px] h-[60px] sm:w-[68px] sm:h-[68px] bg-white border border-charcoal/40 rounded-[6px] flex items-center justify-center p-2.5">
-                <img src={icon} alt={label} className="w-full h-full object-contain" />
-            </div>
-            <span className="font-sans text-[11px] sm:text-[12px] text-charcoal text-center leading-tight">
-                {label}
-            </span>
-        </div>
-    );
-}
-
-function CategoryCard({ category }: { category: TechCategory }) {
-    const isVertical = category.title.includes("Agentic");
+// ── Main Component ────────────────────────────────────────────────────────────
+export const TechStack: React.FC = () => {
+    const width = useWindowWidth();
+    const isMobile = width < BP_SM;
+    const isDesktop = width >= BP_LG;
 
     return (
-        <div className="bg-white border border-regal-navy/60 border-b-4 rounded-[10px] overflow-hidden relative flex flex-col items-center px-3 py-4 sm:px-4 sm:py-5 h-full">
+        <section style={{ width: "100%", background: "#f9f9f9", fontFamily: fontSans }}>
+            <div style={{ display: "flex", alignItems: "stretch", width: "100%" }}>
 
-            <h3 className="font-headings text-[16px] sm:text-[18px] text-regal-navy text-center leading-[25px] mb-3 whitespace-pre-line">
-                {category.title}
-            </h3>
-            <div
-                className={`flex ${isVertical ? "flex-col gap-8" : "flex-row flex-wrap gap-4 sm:gap-6"} items-center justify-center flex-1`}
-            >
-                {category.items.map((item) => (
-                    <TechIcon key={item.label} {...item} />
-                ))}
-            </div>
-            <div className="absolute inset-0 pointer-events-none rounded-[inherit] shadow-[inset_0px_-10px_12px_0px_rgba(14,53,114,0.12)]" />
-        </div>
-    );
-}
-
-const accentCells = [
-    { row: 1, col: 13, color: "bg-[#3eafd1]" },
-    { row: 1, col: 14, color: "bg-regal-navy" },
-    { row: 2, col: 14, color: "bg-[#ed1c24]" },
-    { row: 7, col: 1, color: "bg-regal-navy" },
-    { row: 7, col: 2, color: "bg-[#ed1c24]" },
-    { row: 6, col: 1, color: "bg-[#3eafd1]" },
-];
-
-const tintedCells = [
-    { row: 1, col: 1 }, { row: 2, col: 1 }, { row: 3, col: 1 },
-    { row: 1, col: 5 }, { row: 2, col: 5 }, { row: 1, col: 6 },
-    { row: 2, col: 6 }, { row: 1, col: 12 }, { row: 2, col: 12 },
-    { row: 2, col: 13 }, { row: 3, col: 12 }, { row: 3, col: 13 },
-    { row: 3, col: 14 }, { row: 4, col: 14 },
-    { row: 5, col: 14 }, { row: 6, col: 14 }, { row: 7, col: 14 },
-    { row: 3, col: 2 }, { row: 3, col: 3 }, { row: 3, col: 4 },
-    { row: 3, col: 8 }, { row: 3, col: 9 }, { row: 3, col: 10 },
-    { row: 3, col: 11 }, { row: 4, col: 1 }, { row: 4, col: 2 },
-    { row: 4, col: 3 }, { row: 4, col: 4 }, { row: 4, col: 8 },
-    { row: 4, col: 9 }, { row: 4, col: 10 }, { row: 4, col: 11 },
-    { row: 5, col: 1 }, { row: 5, col: 6 }, { row: 5, col: 7 },
-    { row: 5, col: 11 }, { row: 6, col: 6 }, { row: 6, col: 7 },
-    { row: 6, col: 11 }, { row: 7, col: 3 }, { row: 7, col: 4 },
-    { row: 7, col: 5 }, { row: 7, col: 6 }, { row: 7, col: 7 },
-    { row: 7, col: 8 }, { row: 7, col: 9 }, { row: 7, col: 10 },
-    { row: 7, col: 11 },
-];
-
-export function TechStack() {
-    return (
-        <section className="relative w-full bg-snow-white flex flex-col items-center py-16 md:py-20 overflow-hidden">
-            <SidePattern invert />
-
-            <div className="w-full max-w-[1320px] mx-auto px-4 relative z-10 flex flex-col items-center gap-8">
-                {/* Header */}
-                <div className="flex flex-col items-center gap-2">
-                    <div className="flex items-center justify-center px-3 py-2 bg-regal-navy/5 border border-regal-navy/10 rounded-[4px]">
-                        <span className="font-sans font-normal text-[12px] text-regal-navy text-center">
-                            Built With
-                        </span>
+                {/* Left gutter — desktop only */}
+                {isDesktop && (
+                    <div className="hidden lg:block flex-1 relative overflow-hidden">
+                        <SidePattern side="left" invert />
                     </div>
-                    <h2 className="font-headings text-[24px] sm:text-[30px] text-carbon-black text-center">
-                        Technologies we work with
-                    </h2>
-                </div>
+                )}
 
-                {/* Desktop bento grid */}
-                <div
-                    className="hidden lg:grid grid-cols-14 gap-1 w-full bg-white relative"
-                    style={{
-                        gridTemplateRows: "repeat(7, 1fr)",
-                        aspectRatio: "1320 / 673",
-                    }}
-                >
-                    {/* Tinted background cells */}
-                    {tintedCells.map(({ row, col }, i) => (
-                        <div
-                            key={`tint-${i}`}
-                            className="bg-regal-navy/10 relative"
-                            style={{ gridRow: row, gridColumn: col }}
-                        >
-                            <div className="absolute inset-0 shadow-[inset_3px_6px_21px_0px_rgba(14,53,114,0.08)]" />
+                {/* ── Center content ── */}
+                <div style={{
+                    width: isDesktop ? 1320 : "100%",
+                    flexShrink: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: isDesktop ? 34 : 24,
+                    paddingTop: isDesktop ? 80 : 48,
+                    paddingBottom: isDesktop ? 80 : 48,
+                    paddingLeft: isDesktop ? 0 : 16,
+                    paddingRight: isDesktop ? 0 : 16,
+                    boxSizing: "border-box",
+                }}>
+
+                    {/* Header */}
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+                        <div style={{
+                            background: "rgba(14,53,114,0.05)",
+                            border: "1px solid rgba(14,53,114,0.10)",
+                            borderRadius: 4, padding: "8px 12px",
+                        }}>
+                            <span style={{ fontFamily: fontSans, fontSize: 12, color: NAVY }}>Built With</span>
                         </div>
-                    ))}
+                        <h2 style={{
+                            fontFamily: fontHead,
+                            fontSize: isMobile ? 22 : isDesktop ? 30 : 26,
+                            fontWeight: 400, color: "#16181b",
+                            margin: 0, textAlign: "center",
+                        }}>
+                            Technologies we work with
+                        </h2>
+                    </div>
 
-                    {/* Accent colored cells */}
-                    {accentCells.map(({ row, col, color }, i) => (
-                        <div
-                            key={`accent-${i}`}
-                            className={`${color}`}
-                            style={{ gridRow: row, gridColumn: col }}
-                        />
-                    ))}
+                    {/* ── Desktop bento grid ── */}
+                    {isDesktop && (
+                        <div style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(14, 1fr)",
+                            gridTemplateRows: "repeat(7, 1fr)",
+                            gap: 4,
+                            width: "100%",
+                            aspectRatio: "1320 / 673",
+                            background: "#fff",
+                            position: "relative",
+                        }}>
+                            {tintCells.map(({ r, c }, i) => <Tint key={`t-${i}`} r={r} c={c} />)}
+                            {accentCells.map(({ r, c, color }, i) => (
+                                <div key={`a-${i}`} style={{ gridRow: r, gridColumn: c, background: color }} />
+                            ))}
 
-                    {/* Category cards */}
-                    {categories.map((cat) => (
-                        <div
-                            key={cat.title}
-                            style={{ gridArea: cat.gridArea }}
-                            className="z-10 min-h-0"
-                        >
-                            <CategoryCard category={cat} />
+                            {/* Frontend — col 2–4, row 1–2 */}
+                            <div style={{ gridColumn: "2 / span 3", gridRow: "1 / span 2", zIndex: 10 }}>
+                                <CategoryCard title="Frontend" iconSize={68} items={[
+                                    { src: imgReact, label: "React" },
+                                    { src: imgNextjsFrontend, label: "Next.js", border: false },
+                                ]} />
+                            </div>
+
+                            {/* DevOps — col 7–11, row 1–2 */}
+                            <div style={{ gridColumn: "7 / span 5", gridRow: "1 / span 2", zIndex: 10 }}>
+                                <CategoryCard title="DevOps & Infrastructure" iconSize={68} items={[
+                                    { src: imgAws, label: "AWS" },
+                                    { src: imgGoogleCloud, label: "Google Cloud" },
+                                    { src: imgCicd, label: "CI/CD" },
+                                    { src: imgMonitoring, label: "Monitoring & Logging" },
+                                ]} />
+                            </div>
+
+                            {/* Mobile — col 5–7, row 3–4 */}
+                            <div style={{ gridColumn: "5 / span 3", gridRow: "3 / span 2", zIndex: 10 }}>
+                                <CategoryCard title="Mobile" iconSize={68} items={[
+                                    { src: imgFlutter, label: "Flutter", border: false },
+                                    { src: imgReactNative, label: "React Native", border: false },
+                                ]} />
+                            </div>
+
+                            {/* Database — col 2–5, row 5–6 */}
+                            <div style={{ gridColumn: "2 / span 4", gridRow: "5 / span 2", zIndex: 10 }}>
+                                <CategoryCard title="Database" iconSize={68} items={[
+                                    { src: imgPostgresql, label: "PostgreSQL" },
+                                    { src: imgMysql, label: "MySQL" },
+                                    { src: imgMongodb, label: "MongoDB" },
+                                    { src: imgFirebase, label: "Firebase" },
+                                ]} />
+                            </div>
+
+                            {/* Backend — col 8–10, row 5–6 */}
+                            <div style={{ gridColumn: "8 / span 3", gridRow: "5 / span 2", zIndex: 10 }}>
+                                <CategoryCard title="Backend" iconSize={68} items={[
+                                    { src: imgNodejs, label: "Node.js", border: false },
+                                    { src: imgNextjs, label: "Next.js", border: false },
+                                ]} />
+                            </div>
+
+                            {/* Agentic — col 12–13, row 4–7 */}
+                            <div style={{ gridColumn: "12 / span 2", gridRow: "4 / span 4", zIndex: 10 }}>
+                                <CategoryCard
+                                    title={"Agentic Workflows / AI\n(when relevant)"}
+                                    vertical iconSize={68}
+                                    items={[
+                                        { src: imgLlm, label: "LLM integrations" },
+                                        { src: imgAiWorkflows, label: "AI-powered workflows" },
+                                        { src: imgAutomation, label: "Automation agents" },
+                                    ]}
+                                />
+                            </div>
                         </div>
-                    ))}
+                    )}
+
+                    {/* ── Mobile / Tablet: responsive card grid ── */}
+                    {!isDesktop && (
+                        <div style={{
+                            display: "grid",
+                            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+                            gap: 12,
+                            width: "100%",
+                        }}>
+                            {mobileCategories.map((cat) => (
+                                <CategoryCard
+                                    key={cat.title}
+                                    title={cat.title}
+                                    items={cat.items}
+                                    vertical={cat.title.includes("Agentic")}
+                                    autoHeight
+                                    iconSize={isMobile ? 52 : 60}
+                                />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Footer */}
+                    <p style={{
+                        fontFamily: fontHead,
+                        fontSize: isMobile ? 14 : isDesktop ? 18 : 16,
+                        fontWeight: 400, color: "#16181b",
+                        textAlign: "center", lineHeight: "25px",
+                        margin: 0, width: "100%",
+                    }}>
+                        We choose tools based on product needs, not preferences.
+                    </p>
                 </div>
 
-                {/* Mobile/Tablet grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full lg:hidden">
-                    {[...categories]
-                        .sort((a, b) => a.mobileOrder - b.mobileOrder)
-                        .map((cat) => (
-                            <CategoryCard key={cat.title} category={cat} />
-                        ))}
-                </div>
+                {/* Right gutter — desktop only */}
+                {isDesktop && (
+                    <div className="hidden lg:block flex-1 relative overflow-hidden">
+                        <SidePattern side="right" invert />
+                    </div>
+                )}
 
-                {/* Footer text */}
-                <p className="font-headings text-[16px] sm:text-[18px] text-carbon-black text-center leading-[25px]">
-                    We choose tools based on product needs, not preferences.
-                </p>
             </div>
         </section>
     );
-}
+};
+
+export default TechStack;
