@@ -46,7 +46,9 @@ export const Problem = ({ badge, heading, cards, innerCta, banner }: ProblemProp
         const macWindow = windowRef.current;
         const bannerEl = finalBannerRef.current;
 
-        if (section && header && macWindow) {
+        if (!section || !header || !macWindow) return;
+
+        const ctx = gsap.context(() => {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
@@ -90,7 +92,9 @@ export const Problem = ({ badge, heading, cards, innerCta, banner }: ProblemProp
                     "-=0.1",
                 );
             }
-        }
+        }, sectionRef); // ← scope to section element
+
+        return () => ctx.revert();
     }, []);
 
     return (

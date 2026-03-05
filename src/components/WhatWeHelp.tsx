@@ -1,5 +1,9 @@
 import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowRight } from 'lucide-react'
+
+gsap.registerPlugin(ScrollTrigger)
 import serviceImg1 from '../assets/images/service-img-1.svg'
 import serviceImg2 from '../assets/images/service-img-2.svg'
 import serviceImg3 from '../assets/images/service-img-3.svg'
@@ -10,40 +14,38 @@ const WhatWeHelp = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const initAnimations = async () => {
-      const { gsap } = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+    const section = sectionRef.current;
+    if (!section) return;
 
-      gsap.registerPlugin(ScrollTrigger)
+    const ctx = gsap.context(() => {
+      const cards = section.querySelectorAll('.service-card')
 
-      if (sectionRef.current) {
-        const cards = sectionRef.current.querySelectorAll('.service-card')
-
-        gsap.fromTo(
-          cards,
-          {
-            opacity: 0,
-            y: 50,
-            scale: 0.95,
+      gsap.fromTo(
+        cards,
+        {
+          opacity: 0,
+          y: 50,
+          scale: 0.95,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 70%',
+            toggleActions: 'play none none none',
           },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 70%',
-              toggleActions: 'play none none none',
-            },
-          }
-        )
-      }
-    }
+        }
+      )
+    }, section)
 
-    initAnimations()
+    return () => {
+      ctx.revert();
+    }
   }, [])
 
   const services = [

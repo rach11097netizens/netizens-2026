@@ -20,7 +20,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, items, ct
     const cardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (cardRef.current) {
+        if (!cardRef.current) return;
+
+        const ctx = gsap.context(() => {
             gsap.fromTo(cardRef.current,
                 { y: 30, opacity: 0 },
                 {
@@ -35,7 +37,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, items, ct
                     }
                 }
             );
-        }
+        }, cardRef); // Scope to the card element
+
+        return () => ctx.revert();
     }, [index]);
 
     return (
@@ -100,7 +104,7 @@ export const ServiceModelsSection: React.FC = () => {
                             "New products, redesigns, or rebuilds"
                         ]}
                         cta="Build MVP"
-                        link="/mvp-dev"
+                        link="/mvp-development"
                     />
                     <ServiceCard
                         index={1}
@@ -111,7 +115,7 @@ export const ServiceModelsSection: React.FC = () => {
                             "ERP/CRM + integrations + automation"
                         ]}
                         cta="Digitize Workflows"
-                        link="/workflow-digit"
+                        link="/workflow-digitization"
                     />
                     <ServiceCard
                         index={2}
@@ -122,7 +126,7 @@ export const ServiceModelsSection: React.FC = () => {
                             "AI pilots, integrations, prompt systems"
                         ]}
                         cta="Explore AI Consulting"
-                        link="/ai-automate"
+                        link="/ai-consulting"
                     />
                 </div>
 
@@ -138,7 +142,7 @@ export const ServiceModelsSection: React.FC = () => {
                                 "Short-term surge or long-term capacity"
                             ]}
                             cta="Hire Engineers"
-                            link="/staff-aug"
+                            link="/staff-augmentation"
                         />
                     </div>
                     <div className="md:w-1/2">
@@ -151,7 +155,7 @@ export const ServiceModelsSection: React.FC = () => {
                                 "SLAs, monitoring, performance, DevOps"
                             ]}
                             cta="Get Support & Scale"
-                            link="/support-scale"
+                            link="/support-and-scale"
                         />
                     </div>
                 </div>

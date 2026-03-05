@@ -77,14 +77,16 @@ const ClientLogos = () => {
   const track2Ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    let ctx: gsap.Context
+    let cancelled = false;
 
     const init = async () => {
-      const { gsap } = await import("gsap")
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger")
-      gsap.registerPlugin(ScrollTrigger)
+      const { gsap } = await import("gsap");
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      gsap.registerPlugin(ScrollTrigger);
 
-      ctx = gsap.context(() => {
+      if (cancelled || !sectionRef.current) return;
+
+      const ctx = gsap.context(() => {
         // Fade-in
         gsap.fromTo(
           sectionRef.current,
@@ -99,18 +101,15 @@ const ClientLogos = () => {
               start: "top 85%",
             },
           }
-        )
+        );
 
         // ✅ helper for perfect marquee
-        const createMarquee = (
-          el: HTMLElement | null,
-          direction = 1
-        ) => {
-          if (!el) return // ✅ prevents runtime & TS error
+        const createMarquee = (el: HTMLElement | null, direction = 1) => {
+          if (!el) return;
 
-          const distance = el.scrollWidth / 2
-          const speed = 60
-          const duration = distance / speed
+          const distance = el.scrollWidth / 2;
+          const speed = 60;
+          const duration = distance / speed;
 
           gsap.fromTo(
             el,
@@ -121,17 +120,23 @@ const ClientLogos = () => {
               ease: "none",
               repeat: -1,
             }
-          )
-        }
+          );
+        };
 
-        createMarquee(track1Ref.current, 1)  // left
-        createMarquee(track2Ref.current, -1) // right
-      }, sectionRef)
-    }
+        createMarquee(track1Ref.current, 1);  // left
+        createMarquee(track2Ref.current, -1); // right
+      }, sectionRef);
 
-    init()
-    return () => ctx?.revert()
-  }, [])
+      return ctx;
+    };
+
+    const ctxPromise = init();
+
+    return () => {
+      cancelled = true;
+      ctxPromise.then(ctx => ctx?.revert());
+    };
+  }, []);
 
   // Split logos into two rows for the two tracks
   const row1 = LOGOS.slice(0, 10)

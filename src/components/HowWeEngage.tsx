@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { SidePattern } from './SidePattern'
 import { Link } from 'react-router-dom'
+import gsap from 'gsap'
 
 interface Milestone {
   number: string
@@ -54,7 +55,7 @@ const milestones: Milestone[] = [
 const DESIGN_WIDTH = 1320
 const INTER_BAR_GAP = 120
 const BAR_WIDTH_FRACTION = 0.52
-const BAR_MIN_WIDTH_PX   = 180
+const BAR_MIN_WIDTH_PX = 180
 
 interface Dims {
   blockHeight: number
@@ -72,37 +73,33 @@ interface Dims {
 
 const getDims = (w: number): Dims => {
   const t = Math.max(0, Math.min(1, (w - 320) / (DESIGN_WIDTH - 320)))
-  const blockHeight   = Math.round(48 + 20 * t)
-  const rowGap        = Math.round(55 + 26 * t)
-  const topOffset     = Math.round(14 + 13 * t)
-  const titleSize     = Math.round(13 + 5 * t)
-  const subtitleSize  = Math.round(11 + 4 * t)
-  const padX          = Math.round(8 + 7 * t)
-  const padY          = Math.round(6 + 4 * t)
-  const fadeWidth     = Math.round(30 + 90 * t)
-  const dotSize       = Math.round(12 + 6 * t)
-  const lineWidth     = +(2 + 1.7 * t).toFixed(1)
+  const blockHeight = Math.round(48 + 20 * t)
+  const rowGap = Math.round(55 + 26 * t)
+  const topOffset = Math.round(14 + 13 * t)
+  const titleSize = Math.round(13 + 5 * t)
+  const subtitleSize = Math.round(11 + 4 * t)
+  const padX = Math.round(8 + 7 * t)
+  const padY = Math.round(6 + 4 * t)
+  const fadeWidth = Math.round(30 + 90 * t)
+  const dotSize = Math.round(12 + 6 * t)
+  const lineWidth = +(2 + 1.7 * t).toFixed(1)
   const timelineHeight = topOffset + 3 * rowGap + blockHeight + 14
   return { blockHeight, rowGap, topOffset, titleSize, subtitleSize, padX, padY, fadeWidth, dotSize, lineWidth, timelineHeight }
 }
 
 const HowWeEngage = () => {
-  const sectionRef       = useRef<HTMLDivElement>(null)
-  const timelineRef      = useRef<HTMLDivElement>(null)
-  const blockRefs        = useRef<(HTMLDivElement | null)[]>([])
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const timelineRef = useRef<HTMLDivElement>(null)
+  const blockRefs = useRef<(HTMLDivElement | null)[]>([])
   const containerWidthRef = useRef(DESIGN_WIDTH)
-  const dimsRef          = useRef<Dims>(getDims(DESIGN_WIDTH))
-  const cursorRef        = useRef(0)
-  const animCleanupRef   = useRef<(() => void) | null>(null)
+  const dimsRef = useRef<Dims>(getDims(DESIGN_WIDTH))
+  const cursorRef = useRef(0)
 
-  // ── New refs for hover ──
-  // Stores the gsap instance after dynamic import so hover handlers can use it
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const gsapRef          = useRef<any>(null)
+
   // Whether the ticker should advance the cursor (pause on hover)
-  const isPausedRef      = useRef(false)
+  const isPausedRef = useRef(false)
   // The floating info panel DOM node (lives outside overflow-hidden timelineRef)
-  const panelRef         = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
   // Which milestone's content the panel is currently showing (-1 = hidden)
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1)
 
@@ -118,18 +115,17 @@ const HowWeEngage = () => {
   const handleBarMouseEnter = (i: number) => {
     isPausedRef.current = true
 
-    const bar     = blockRefs.current[i]
+    const bar = blockRefs.current[i]
     const section = sectionRef.current
-    const panel   = panelRef.current
-    const gsap    = gsapRef.current
-    if (!bar || !section || !panel || !gsap) return
+    const panel = panelRef.current
+    if (!bar || !section || !panel) return
 
-    const barRect     = bar.getBoundingClientRect()
+    const barRect = bar.getBoundingClientRect()
     const sectionRect = section.getBoundingClientRect()
 
     // Position panel directly below the bar, flush with its left edge
-    panel.style.left  = `${barRect.left - sectionRect.left}px`
-    panel.style.top   = `${barRect.bottom - sectionRect.top + 6}px`
+    panel.style.left = `${barRect.left - sectionRect.left}px`
+    panel.style.top = `${barRect.bottom - sectionRect.top + 6}px`
     panel.style.width = `${barRect.width}px`
 
     // Switch content then animate in
@@ -145,8 +141,7 @@ const HowWeEngage = () => {
     isPausedRef.current = false
 
     const panel = panelRef.current
-    const gsap  = gsapRef.current
-    if (!panel || !gsap) return
+    if (!panel) return
 
     gsap.to(panel, {
       autoAlpha: 0,
@@ -159,16 +154,11 @@ const HowWeEngage = () => {
 
   // ── Main animation setup (unchanged except storing gsap + pausing cursor) ──
   useEffect(() => {
-    let cancelled = false
+    const section = sectionRef.current;
+    if (!section || !timelineRef.current) return;
 
-    const initAnimation = async () => {
-      const { gsap } = await import('gsap')
-      if (cancelled || !timelineRef.current) return
-
-      // Store instance for hover handlers
-      gsapRef.current = gsap
-
-      const cw = timelineRef.current.offsetWidth || DESIGN_WIDTH
+    const ctx = gsap.context(() => {
+      const cw = timelineRef.current!.offsetWidth || DESIGN_WIDTH
       containerWidthRef.current = cw
       const newDims = getDims(cw)
       dimsRef.current = newDims
@@ -183,7 +173,7 @@ const HowWeEngage = () => {
         INTER_BAR_GAP * (containerW / DESIGN_WIDTH)
 
       const getSequenceLength = (containerW: number) => {
-        const bw  = getBarWidth(containerW)
+        const bw = getBarWidth(containerW)
         const gap = getGap(containerW)
         return milestones.length * (bw + gap)
       }
@@ -194,13 +184,11 @@ const HowWeEngage = () => {
         const dt = Math.min(deltaTime / 1000, 0.05)
         const currentCw = containerWidthRef.current
         const cx = currentCw / 2
-        const bw  = getBarWidth(currentCw)
+        const bw = getBarWidth(currentCw)
         const gap = getGap(currentCw)
 
-        // ── Only advance cursor when not hovered — bars freeze in place ──
         if (!isPausedRef.current) {
           cursorRef.current += SPEED * dt
-
           const seqLen = getSequenceLength(currentCw)
           if (cursorRef.current > seqLen + currentCw) {
             cursorRef.current = bw
@@ -212,12 +200,12 @@ const HowWeEngage = () => {
           if (!el) return
 
           const barStart = i * (bw + gap)
-          const screenX  = currentCw - cursorRef.current + barStart
+          const screenX = currentCw - cursorRef.current + barStart
 
           el.style.transform = `translateX(${screenX}px)`
-          el.style.width     = `${bw}px`
+          el.style.width = `${bw}px`
 
-          const barLeft  = screenX
+          const barLeft = screenX
           const barRight = screenX + bw
 
           el.style.opacity = (barRight > 0 && barLeft < currentCw) ? '1' : '0'
@@ -226,18 +214,18 @@ const HowWeEngage = () => {
           if (!loadedEl) return
 
           if (barRight <= cx) {
-            loadedEl.style.clipPath    = 'inset(0 0% 0 0)'
+            loadedEl.style.clipPath = 'inset(0 0% 0 0)'
             loadedEl.style.borderColor = '#0E3572'
-            loadedEl.style.color       = '#0E3572'
+            loadedEl.style.color = '#0E3572'
           } else if (barLeft >= cx) {
-            loadedEl.style.clipPath    = 'inset(0 100% 0 0)'
+            loadedEl.style.clipPath = 'inset(0 100% 0 0)'
             loadedEl.style.borderColor = '#ED1C24'
-            loadedEl.style.color       = '#ED1C24'
+            loadedEl.style.color = '#ED1C24'
           } else {
             const revealed = ((cx - barLeft) / bw) * 100
-            loadedEl.style.clipPath    = `inset(0 ${100 - revealed}% 0 0)`
+            loadedEl.style.clipPath = `inset(0 ${100 - revealed}% 0 0)`
             loadedEl.style.borderColor = '#ED1C24'
-            loadedEl.style.color       = '#ED1C24'
+            loadedEl.style.color = '#ED1C24'
           }
         })
       }
@@ -255,19 +243,16 @@ const HowWeEngage = () => {
       })
       if (timelineRef.current) ro.observe(timelineRef.current)
 
-      animCleanupRef.current = () => {
+      return () => {
         gsap.ticker.remove(tickHandler)
         ro.disconnect()
       }
-    }
-
-    initAnimation()
+    }, section);
 
     return () => {
-      cancelled = true
-      animCleanupRef.current?.()
-    }
-  }, [])
+      ctx.revert();
+    };
+  }, []);
 
   const dashedYs = [
     dims.topOffset - 6,

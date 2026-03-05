@@ -15,31 +15,33 @@ export function BusinessFirstAI() {
         const pills = pillRefs.current.filter(Boolean);
         if (!container || pills.length === 0) return;
 
-        const finalRotations = [-65, -35, -30, -0];
-        const containerH = container.getBoundingClientRect().height;
+        const ctx = gsap.context(() => {
+            const finalRotations = [-65, -35, -30, -0];
+            const containerH = container.getBoundingClientRect().height;
 
-        pills.forEach((pill, i) => {
-            gsap.set(pill!, { y: -containerH, opacity: 0, rotation: finalRotations[i] - 10 });
-        });
+            pills.forEach((pill, i) => {
+                gsap.set(pill!, { y: -containerH, opacity: 0, rotation: finalRotations[i] - 10 });
+            });
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: container,
-                start: "top 80%",
-            },
-        });
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: container,
+                    start: "top 80%",
+                },
+            });
 
-        pills.forEach((pill, i) => {
-            tl.to(pill!, {
-                y: 0,
-                opacity: 1,
-                rotation: finalRotations[i],
-                duration: 0.8,
-                ease: "bounce.out",
-            }, i * 0.18);
-        });
+            pills.forEach((pill, i) => {
+                tl.to(pill!, {
+                    y: 0,
+                    opacity: 1,
+                    rotation: finalRotations[i],
+                    duration: 0.8,
+                    ease: "bounce.out",
+                }, i * 0.18);
+            });
+        }, pillsContainerRef);
 
-        return () => { tl.kill(); };
+        return () => ctx.revert();
     }, []);
 
     return (

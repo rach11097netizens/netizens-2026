@@ -2,6 +2,10 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import logo from "../assets/images/logo.svg";
 import { Link } from "react-router-dom";
+import uae from "../assets/images/icons/uae.svg";
+import us from "../assets/images/icons/us.svg";
+import india from "../assets/images/icons/in.svg";
+import brazil from "../assets/images/icons/br.svg";
 
 const FacebookIcon = () => (
     <svg width="11" height="18" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.5957 10.125L10.0845 6.86742H7.02823V4.75348C7.02823 3.86227 7.45517 2.99355 8.82398 2.99355H10.2134V0.220078C10.2134 0.220078 8.95255 0 7.74702 0C5.23008 0 3.58489 1.56023 3.58489 4.38469V6.86742H0.787109V10.125H3.58489V18H7.02823V10.125H9.5957Z" fill="currentColor" /></svg>
@@ -154,6 +158,19 @@ export const Footer = () => {
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Insights</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Careers</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Contact</a>
+                            </div>
+                        </AccordionSection>
+
+                        <AccordionSection
+                            title="Our Presence"
+                            isOpen={openAccordion === 'ourPresence'}
+                            onToggle={() => toggleAccordion('ourPresence')}
+                        >
+                            <div className="flex flex-col gap-3 opacity-80 pb-2 md:pb-0">
+                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">India <img src={india} width="24" alt="" /></p>
+                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">US <img src={us} width="24" alt="" /></p>
+                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">UAE <img src={uae} width="24" alt="" /></p>
+                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">Brazil <img src={brazil} width="24" alt="" /></p>
                             </div>
                         </AccordionSection>
                     </div>

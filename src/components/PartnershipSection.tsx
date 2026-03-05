@@ -31,10 +31,13 @@ export function PartnershipSection() {
 
     useEffect(() => {
         const section = sectionRef.current;
-        const leftCol = leftColRef.current;
-        const rightCol = rightColRef.current;
+        if (!section) return;
 
-        if (section && leftCol && rightCol) {
+        const ctx = gsap.context(() => {
+            const leftCol = leftColRef.current;
+            const rightCol = rightColRef.current;
+            if (!leftCol || !rightCol) return;
+
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
@@ -63,7 +66,9 @@ export function PartnershipSection() {
                     );
                 }
             });
-        }
+        }, section);
+
+        return () => ctx.revert();
     }, []);
 
     return (

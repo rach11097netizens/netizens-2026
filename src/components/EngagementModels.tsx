@@ -37,52 +37,56 @@ export function EngagementModels({ badge, heading, cards, theme = "light" }: Eng
     const [activeIndex, setActiveIndex] = useState(0);
     const isDark = theme === "dark";
 
-    // Entry animation (both themes)
+    // GSAP context for all animations
     useEffect(() => {
-        const section = sectionRef.current;
-        const header = headerRef.current;
-        const macWindow = windowRef.current;
+        const ctx = gsap.context(() => {
+            const section = sectionRef.current;
+            const header = headerRef.current;
+            const macWindow = windowRef.current;
 
-        if (section && header && macWindow) {
-            const tl = gsap.timeline(
-                isDark
-                    ? {}
-                    : {
-                        scrollTrigger: {
-                            trigger: section,
-                            start: "top 75%",
-                        },
+            if (section && header && macWindow) {
+                const tl = gsap.timeline(
+                    isDark
+                        ? {}
+                        : {
+                            scrollTrigger: {
+                                trigger: section,
+                                start: "top 75%",
+                            },
+                        }
+                );
+
+                tl.fromTo(
+                    header,
+                    { y: 30, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+                ).fromTo(
+                    macWindow,
+                    { y: 40, opacity: 0, scale: 0.98 },
+                    { y: 0, opacity: 1, scale: 1, duration: 0.7, ease: "power3.out" },
+                    "-=0.2",
+                );
+
+                cardsRef.current.forEach((card, index) => {
+                    if (card) {
+                        tl.fromTo(
+                            card,
+                            { y: 30, opacity: 0, rotation: isDark ? 0 : gsap.utils.random(-2, 2) },
+                            {
+                                y: 0,
+                                opacity: 1,
+                                rotation: isDark ? 0 : gsap.utils.random(-1, 1),
+                                duration: 0.5,
+                                ease: "back.out(1.2)",
+                            },
+                            `-=${0.5 - index * 0.05}`,
+                        );
                     }
-            );
+                });
+            }
+        }, sectionRef);
 
-            tl.fromTo(
-                header,
-                { y: 30, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
-            ).fromTo(
-                macWindow,
-                { y: 40, opacity: 0, scale: 0.98 },
-                { y: 0, opacity: 1, scale: 1, duration: 0.7, ease: "power3.out" },
-                "-=0.2",
-            );
-
-            cardsRef.current.forEach((card, index) => {
-                if (card) {
-                    tl.fromTo(
-                        card,
-                        { y: 30, opacity: 0, rotation: isDark ? 0 : gsap.utils.random(-2, 2) },
-                        {
-                            y: 0,
-                            opacity: 1,
-                            rotation: isDark ? 0 : gsap.utils.random(-1, 1),
-                            duration: 0.5,
-                            ease: "back.out(1.2)",
-                        },
-                        `-=${0.5 - index * 0.05}`,
-                    );
-                }
-            });
-        }
+        return () => ctx.revert();
     }, [isDark]);
 
     // Dark theme: auto-cycling timeline animation
@@ -112,29 +116,32 @@ export function EngagementModels({ badge, heading, cards, theme = "light" }: Eng
     useEffect(() => {
         if (!isDark) return;
 
-        const progressEl = progressRef.current;
-        if (progressEl) {
-            const totalCards = cards.length;
-            // Progress goes from first dot to current dot
-            const pct = totalCards > 1
-                ? (activeIndex / (totalCards - 1)) * 100
-                : 100;
-            gsap.to(progressEl, {
-                width: `${pct}%`,
-                duration: 0.8,
-                ease: "power2.out",
-            });
-        }
-
-        dotsRef.current.forEach((dot, i) => {
-            if (dot) {
-                gsap.to(dot, {
-                    scale: i <= activeIndex ? 1.4 : 1,
-                    duration: 0.4,
-                    ease: "back.out(2)",
+        const ctx = gsap.context(() => {
+            const progressEl = progressRef.current;
+            if (progressEl) {
+                const totalCards = cards.length;
+                const pct = totalCards > 1
+                    ? (activeIndex / (totalCards - 1)) * 100
+                    : 100;
+                gsap.to(progressEl, {
+                    width: `${pct}%`,
+                    duration: 0.8,
+                    ease: "power2.out",
                 });
             }
-        });
+
+            dotsRef.current.forEach((dot, i) => {
+                if (dot) {
+                    gsap.to(dot, {
+                        scale: i <= activeIndex ? 1.4 : 1,
+                        duration: 0.4,
+                        ease: "back.out(2)",
+                    });
+                }
+            });
+        }, sectionRef);
+
+        return () => ctx.revert();
     }, [activeIndex, isDark, cards.length]);
 
     if (isDark) {

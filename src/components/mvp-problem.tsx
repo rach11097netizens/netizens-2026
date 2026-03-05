@@ -53,7 +53,9 @@ export const MvpProblem = () => {
         const macWindow = windowRef.current;
         const banner = finalBannerRef.current;
 
-        if (section && header && macWindow && banner) {
+        if (!section || !header || !macWindow || !banner) return;
+
+        const ctx = gsap.context(() => {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
@@ -100,7 +102,9 @@ export const MvpProblem = () => {
                 { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
                 "-=0.1",
             );
-        }
+        }, sectionRef); // ← scope to section element
+
+        return () => ctx.revert();
     }, []);
 
     return (

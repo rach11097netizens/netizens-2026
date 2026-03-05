@@ -34,34 +34,36 @@ export function BuildToLaunch() {
 
         if (!c1 || !c2 || !c3) return;
 
-        // Create a Timeline for the stacking effect
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top top", // Trigger when the section hits the top
-                end: "+=200%",    // Pin for double the height to allow scroll
-                pin: true,        // Pin the entire section
-                scrub: 1,         // Smooth scrubbing
-                anticipatePin: 1
-            }
-        });
+        const ctx = gsap.context(() => {
+            // Create a Timeline for the stacking effect
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top", // Trigger when the section hits the top
+                    end: "+=200%",    // Pin for double the height to allow scroll
+                    pin: true,        // Pin the entire section
+                    scrub: 1,         // Smooth scrubbing
+                    anticipatePin: 1
+                }
+            });
 
-        // Set initial states for cards 2 and 3 (below viewport or scaled down)
-        gsap.set([c2, c3], { y: "100%", opacity: 0 });
+            // Set initial states for cards 2 and 3 (below viewport or scaled down)
+            gsap.set([c2, c3], { y: "100%", opacity: 0 });
 
-        // Animation Sequence
-        // 1. Bring in Card 2, slightly push back Card 1
-        tl.to(c1, { scale: 0.95, opacity: 0.5, y: -20, duration: 1 })
-            .to(c2, { y: 0, opacity: 1, duration: 1 }, "<");
+            // Animation Sequence
+            // 1. Bring in Card 2, slightly push back Card 1
+            tl.to(c1, { scale: 0.95, opacity: 0.5, y: -20, duration: 1 })
+                .to(c2, { y: 0, opacity: 1, duration: 1 }, "<");
 
-        // 2. Bring in Card 3, slightly push back Card 2 (Card 1 drops further)
-        tl.to(c1, { scale: 0.9, opacity: 0.2, y: -40, duration: 1 })
-            .to(c2, { scale: 0.95, opacity: 0.5, y: -20, duration: 1 }, "<")
-            .to(c3, { y: 0, opacity: 1, duration: 1 }, "<");
+            // 2. Bring in Card 3, slightly push back Card 2 (Card 1 drops further)
+            tl.to(c1, { scale: 0.9, opacity: 0.2, y: -40, duration: 1 })
+                .to(c2, { scale: 0.95, opacity: 0.5, y: -20, duration: 1 }, "<")
+                .to(c3, { y: 0, opacity: 1, duration: 1 }, "<");
+        }, sectionRef); // Scope to the section element
 
         return () => {
-            // Cleanup ScrollTrigger instances
-            ScrollTrigger.getAll().forEach(st => st.kill());
+            // Cleanup GSAP context
+            ctx.revert();
         };
     }, []);
 

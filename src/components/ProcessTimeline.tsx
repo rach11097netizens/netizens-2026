@@ -59,82 +59,78 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
     };
 
     useEffect(() => {
-        const mm = gsap.matchMedia();
+        const section = sectionRef.current;
+        if (!section) return;
 
-        mm.add("(min-width: 768px)", () => {
-            const stepDuration = 2.5;
-            const lastStepDuration = 2.5; // last step lingers longer than the rest
-            // The progress line sweeps across during the first (n-1) steps,
-            // then holds at 100% while the last step remains active
-            const sweepDuration = (n - 1) * stepDuration;
-            const totalDuration = sweepDuration + lastStepDuration;
+        const ctx = gsap.context(() => {
+            const mm = gsap.matchMedia();
 
-            const tl = gsap.timeline({ repeat: -1, delay: 0.3 });
+            mm.add("(min-width: 768px)", () => {
+                const stepDuration = 2.5;
+                const lastStepDuration = 2.5;
+                const sweepDuration = (n - 1) * stepDuration;
+                const totalDuration = sweepDuration + lastStepDuration;
 
-            // Set initial state via GSAP so it doesn't fight Tailwind's -translate-y-1/2
-            gsap.set(progressLineRef.current, { scaleX: 0 });
-            // Set dot 0 as initially active (scale up) — owns the transform React used to set inline
-            gsap.set(circlesRef.current[0], { scale: 1.25 });
+                const tl = gsap.timeline({ repeat: -1, delay: 0.3 });
 
-            // Steps 0…n-2 are evenly spread across sweepDuration;
-            // the last step fires just AFTER the sweep completes so the line reaches the dot first
-            const triggerTime = (i: number) =>
-                i === 0
-                    ? 0.01
-                    : i === n - 1
-                        ? sweepDuration + 0.05
-                        : (i / (n - 1)) * sweepDuration;
+                gsap.set(progressLineRef.current, { scaleX: 0 });
+                gsap.set(circlesRef.current[0], { scale: 1.25 });
 
-            // Sweep progress line to scaleX:1 over sweepDuration, then hold for lastStepDuration
-            tl.fromTo(
-                progressLineRef.current,
-                { scaleX: 0 },
-                { scaleX: 1, duration: sweepDuration, ease: "none" }
-            ).to(
-                progressLineRef.current,
-                { scaleX: 1, duration: lastStepDuration, ease: "none" }
-            );
+                const triggerTime = (i: number) =>
+                    i === 0
+                        ? 0.01
+                        : i === n - 1
+                            ? sweepDuration + 0.05
+                            : (i / (n - 1)) * sweepDuration;
 
-            // Schedule activateStep calls at the right times
-            steps.forEach((_, i) => {
-                tl.call(() => activateStep(i), [], triggerTime(i));
+                tl.fromTo(
+                    progressLineRef.current,
+                    { scaleX: 0 },
+                    { scaleX: 1, duration: sweepDuration, ease: "none" }
+                ).to(
+                    progressLineRef.current,
+                    { scaleX: 1, duration: lastStepDuration, ease: "none" }
+                );
+
+                steps.forEach((_, i) => {
+                    tl.call(() => activateStep(i), [], triggerTime(i));
+                });
+
+                tl.call(
+                    () => {
+                        gsap.delayedCall(0.6, () => {
+                            cardsRef.current.forEach((card, i) => {
+                                if (!card) return;
+                                gsap.to(card, {
+                                    opacity: i === 0 ? 1 : 0.5,
+                                    boxShadow: i === 0
+                                        ? "0px 8px 18px 0px rgba(0,0,0,0.10), 0px 33px 33px 0px rgba(0,0,0,0.09)"
+                                        : "none",
+                                    borderColor: i === 0 ? "#0E3572" : "rgba(14,53,114,0.1)",
+                                    duration: 0.3,
+                                });
+                            });
+                            circlesRef.current.forEach((circle, i) => {
+                                if (!circle) return;
+                                gsap.to(circle, {
+                                    backgroundColor: i === 0 ? "#0E3572" : "#ffffff",
+                                    borderColor: i === 0 ? "#0E3572" : "#d1d5db",
+                                    scale: i === 0 ? 1.25 : 1,
+                                    duration: 0.3,
+                                });
+                            });
+                            setActiveIndex(0);
+                        });
+                    },
+                    [],
+                    totalDuration
+                );
+
+                // No need for a manual kill if we revert ctx
             });
+        }, section);
 
-            // At cycle end: reset all to initial state, then loop will restart
-            tl.call(
-                () => {
-                    gsap.delayedCall(0.6, () => {
-                        cardsRef.current.forEach((card, i) => {
-                            if (!card) return;
-                            gsap.to(card, {
-                                opacity: i === 0 ? 1 : 0.5,
-                                boxShadow: i === 0
-                                    ? "0px 8px 18px 0px rgba(0,0,0,0.10), 0px 33px 33px 0px rgba(0,0,0,0.09)"
-                                    : "none",
-                                borderColor: i === 0 ? "#0E3572" : "rgba(14,53,114,0.1)",
-                                duration: 0.3,
-                            });
-                        });
-                        circlesRef.current.forEach((circle, i) => {
-                            if (!circle) return;
-                            gsap.to(circle, {
-                                backgroundColor: i === 0 ? "#0E3572" : "#ffffff",
-                                borderColor: i === 0 ? "#0E3572" : "#d1d5db",
-                                scale: i === 0 ? 1.25 : 1,
-                                duration: 0.3,
-                            });
-                        });
-                        setActiveIndex(0);
-                    });
-                },
-                [],
-                totalDuration
-            );
-
-            return () => { tl.kill(); };
-        });
-
-        return () => mm.revert();
+        return () => ctx.revert();
     }, [n]);
 
     return (

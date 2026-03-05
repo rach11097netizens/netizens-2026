@@ -1,4 +1,8 @@
 import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 import { SidePattern } from './SidePattern'
 import quoteMarkSvg from '../assets/images/quote-mark.svg'
 import testimonialAvatar1 from '../assets/images/testimonial-avatar-1.png'
@@ -10,131 +14,115 @@ const Testimonials = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const initAnimations = async () => {
-      const { gsap } = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+    const section = sectionRef.current;
+    if (!section) return;
 
-      gsap.registerPlugin(ScrollTrigger)
-
-      if (!sectionRef.current) return
-
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: 'top 75%',
           toggleActions: 'play none none none',
         },
-      })
+      });
 
       // Animate heading group with stagger
       tl.fromTo(
-        sectionRef.current.querySelector('.testimonial-badge'),
+        '.testimonial-badge',
         { opacity: 0, y: 20, scale: 0.9 },
         { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.5)' }
       )
+        .fromTo(
+          '.testimonial-title',
+          { opacity: 0, y: 25 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
+          '-=0.3'
+        )
+        .fromTo(
+          '.testimonial-subtitle',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' },
+          '-=0.2'
+        );
 
+      // Animate cards
       tl.fromTo(
-        sectionRef.current.querySelector('.testimonial-title'),
-        { opacity: 0, y: 25 },
-        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
-        '-=0.3'
-      )
-
-      tl.fromTo(
-        sectionRef.current.querySelector('.testimonial-subtitle'),
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' },
-        '-=0.2'
-      )
-
-      // Animate left tall card - slide in from left
-      tl.fromTo(
-        sectionRef.current.querySelector('.card-tall-left'),
+        '.card-tall-left',
         { opacity: 0, x: -50, rotateY: 5 },
         { opacity: 1, x: 0, rotateY: 0, duration: 0.7, ease: 'power3.out' },
         '-=0.2'
       )
+        .fromTo(
+          '.card-short-top',
+          { opacity: 0, y: 40, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+          '-=0.5'
+        )
+        .fromTo(
+          '.card-short-bottom',
+          { opacity: 0, y: 40, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+          '-=0.4'
+        )
+        .fromTo(
+          '.card-tall-right',
+          { opacity: 0, x: 50, rotateY: -5 },
+          { opacity: 1, x: 0, rotateY: 0, duration: 0.7, ease: 'power3.out' },
+          '-=0.5'
+        );
 
-      // Animate center top card - slide in from bottom
+      // Animate quote marks and text
       tl.fromTo(
-        sectionRef.current.querySelector('.card-short-top'),
-        { opacity: 0, y: 40, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-        '-=0.5'
-      )
-
-      // Animate center bottom card - slide in from bottom
-      tl.fromTo(
-        sectionRef.current.querySelector('.card-short-bottom'),
-        { opacity: 0, y: 40, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-        '-=0.4'
-      )
-
-      // Animate right tall card - slide in from right
-      tl.fromTo(
-        sectionRef.current.querySelector('.card-tall-right'),
-        { opacity: 0, x: 50, rotateY: -5 },
-        { opacity: 1, x: 0, rotateY: 0, duration: 0.7, ease: 'power3.out' },
-        '-=0.5'
-      )
-
-      // Animate quote marks with a pop
-      tl.fromTo(
-        sectionRef.current.querySelectorAll('.quote-mark'),
+        '.quote-mark',
         { opacity: 0, scale: 0, rotation: -15 },
         { opacity: 1, scale: 1, rotation: 0, duration: 0.5, stagger: 0.12, ease: 'back.out(2.5)' },
         '-=0.4'
       )
+        .fromTo(
+          '.testimonial-text',
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: 'power2.out' },
+          '-=0.3'
+        )
+        .fromTo(
+          '.author-info',
+          { opacity: 0, x: -20 },
+          { opacity: 1, x: 0, duration: 0.4, stagger: 0.1, ease: 'power2.out' },
+          '-=0.2'
+        )
+        .fromTo(
+          '.avatar-circle',
+          { opacity: 0, scale: 0.5 },
+          { opacity: 1, scale: 1, duration: 0.4, stagger: 0.08, ease: 'back.out(1.7)' },
+          '-=0.3'
+        );
 
-      // Animate testimonial text fading in
-      tl.fromTo(
-        sectionRef.current.querySelectorAll('.testimonial-text'),
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: 'power2.out' },
-        '-=0.3'
-      )
-
-      // Animate author sections sliding in
-      tl.fromTo(
-        sectionRef.current.querySelectorAll('.author-info'),
-        { opacity: 0, x: -20 },
-        { opacity: 1, x: 0, duration: 0.4, stagger: 0.1, ease: 'power2.out' },
-        '-=0.2'
-      )
-
-      // Animate avatar images scaling in
-      tl.fromTo(
-        sectionRef.current.querySelectorAll('.avatar-circle'),
-        { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1, duration: 0.4, stagger: 0.08, ease: 'back.out(1.7)' },
-        '-=0.3'
-      )
-
-      // Subtle hover animations for cards
-      const cards = sectionRef.current.querySelectorAll('.testimonial-card')
+      // Subtle hover animations for cards using GSAP
+      const cards = section.querySelectorAll('.testimonial-card');
       cards.forEach((card) => {
-        card.addEventListener('mouseenter', () => {
+        const hoverIn = () => {
           gsap.to(card, {
             y: -6,
             boxShadow: '0px 14px 28px rgba(0,0,0,0.12), 0px 4px 10px rgba(0,0,0,0.08)',
             duration: 0.3,
             ease: 'power2.out',
-          })
-        })
-        card.addEventListener('mouseleave', () => {
+          });
+        };
+        const hoverOut = () => {
           gsap.to(card, {
             y: 0,
             boxShadow: 'none',
             duration: 0.3,
             ease: 'power2.out',
-          })
-        })
-      })
-    }
+          });
+        };
+        card.addEventListener('mouseenter', hoverIn);
+        card.addEventListener('mouseleave', hoverOut);
+      });
+    }, section);
 
-    initAnimations()
-  }, [])
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section ref={sectionRef} className="py-[80px] bg-white relative overflow-hidden">

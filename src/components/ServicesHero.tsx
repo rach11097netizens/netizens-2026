@@ -1,6 +1,10 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { BookCallButton } from "./BookCallButton";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface HeroProps {
   badge: string;
@@ -24,16 +28,10 @@ export function Hero({
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const initAnimations = async () => {
-      const { gsap } = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+    const section = sectionRef.current;
+    if (!section) return;
 
-      gsap.registerPlugin(ScrollTrigger);
-
-      if (!sectionRef.current) return;
-
-      const section = sectionRef.current;
-
+    const ctx = gsap.context(() => {
       // Animate left-side content elements with stagger
       const contentItems = section.querySelectorAll(".hero-animate-item");
       gsap.fromTo(
@@ -73,21 +71,10 @@ export function Hero({
           }
         );
       }
-    };
-
-    initAnimations();
+    }, section);
 
     return () => {
-      import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-        ScrollTrigger.getAll().forEach((t) => {
-          if (
-            sectionRef.current &&
-            t.trigger === sectionRef.current
-          ) {
-            t.kill();
-          }
-        });
-      });
+      ctx.revert();
     };
   }, []);
 

@@ -1,6 +1,10 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { BookCallButton } from './BookCallButton'
 import { Link } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 import laravelLogo from '../assets/images/icons/logo/laravel.svg'
 import oracleLogo from '../assets/images/icons/logo/oracle.svg'
 import wordpressLogo from '../assets/images/icons/logo/wordpress.svg'
@@ -148,146 +152,75 @@ const Hero = () => {
   ]
 
   useEffect(() => {
-    const initAnimations = async () => {
-      const { gsap } = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+    const section = heroRef.current;
+    if (!section || !headingRef.current) return;
 
-      gsap.registerPlugin(ScrollTrigger)
+    const ctx = gsap.context(() => {
+      // Fade in hero content
+      gsap.fromTo(
+        headingRef.current!.children,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power3.out',
+        }
+      )
 
-      if (heroRef.current && headingRef.current) {
-        // Fade in hero content
-        gsap.fromTo(
-          headingRef.current.children,
-          {
-            opacity: 0,
-            y: 30,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            stagger: 0.2,
-            ease: 'power3.out',
+      // NEW MARQUEE ANIMATION - Infinite vertical scroll
+      if (marqueeTrackRef.current && marqueeViewportRef.current) {
+        const track = marqueeTrackRef.current
+        const viewport = marqueeViewportRef.current
+
+        // Wait for layout to calculate accurate heights
+        const initMarquee = () => {
+          const totalHeight = track.scrollHeight
+          const singleSetHeight = totalHeight / 2
+
+          if (singleSetHeight === 0 || totalHeight === 0) {
+            setTimeout(initMarquee, 50)
+            return
           }
-        )
 
-        // OLD STATIC GRID ANIMATION - COMMENTED OUT (can be toggled)
-        // Uncomment below to use the old static grid animation instead of marquee
-        /*
-        if (patternRef.current) {
-          const squares = patternRef.current.querySelectorAll('.pattern-square')
-          squares.forEach((square, index) => {
-            const targetOpacity = squareOpacities[index]
-            gsap.fromTo(
-              square,
-              {
-                opacity: 0,
-                scale: 0.8,
-              },
-              {
-                opacity: targetOpacity,
-                scale: 1,
-                duration: 0.6,
-                delay: 0.3 + (index * 0.02),
-                ease: 'back.out(1.7)',
-              }
-            )
+          gsap.set(track, { y: 0 })
+
+          const scrollAnimation = gsap.fromTo(track,
+            { y: 0 },
+            {
+              y: -singleSetHeight,
+              duration: 40,
+              ease: 'none',
+              repeat: -1,
+              immediateRender: true,
+            }
+          )
+
+          scrollAnimationRef.current = scrollAnimation
+
+          const handleMouseEnter = () => scrollAnimation.timeScale(2.2)
+          const handleMouseLeave = () => scrollAnimation.timeScale(1)
+
+          viewport.addEventListener('mouseenter', handleMouseEnter)
+          viewport.addEventListener('mouseleave', handleMouseLeave)
+
+          // Add custom cleanup to the context
+          ctx.add(() => {
+            viewport.removeEventListener('mouseenter', handleMouseEnter)
+            viewport.removeEventListener('mouseleave', handleMouseLeave)
+            scrollAnimation.kill()
           })
         }
-        */
 
-        // NEW MARQUEE ANIMATION - Infinite vertical scroll
-        if (marqueeTrackRef.current && marqueeViewportRef.current) {
-          const track = marqueeTrackRef.current
-          const viewport = marqueeViewportRef.current
-
-          // Wait for layout to calculate accurate heights
-          const initMarquee = () => {
-            // Calculate the height of one set of content (half of total since duplicated)
-            const totalHeight = track.scrollHeight
-            const singleSetHeight = totalHeight / 2
-
-            // Verify we have duplicated content
-            if (singleSetHeight === 0 || totalHeight === 0) {
-              // Retry if not ready
-              setTimeout(initMarquee, 50)
-              return
-            }
-
-            // Set initial position to start slightly below to hide the transition
-            // This ensures the loop appears continuous from below
-            gsap.set(track, { y: 0 })
-
-            // Create seamless infinite scroll animation
-            // The animation moves from 0 to -50% (one set height)
-            // When it loops, the mask gradient at top hides the reset
-            // and the content appears to continue from below seamlessly
-            const scrollAnimation = gsap.fromTo(track,
-              { y: 0 },
-              {
-                y: -singleSetHeight,
-                duration: 40,
-                ease: 'none',
-                repeat: -1, // Infinite seamless loop
-                yoyo: false,
-                immediateRender: true,
-                // Ensure smooth reset on repeat
-                onRepeat: () => {
-                  // The mask gradient will hide this transition
-                  // Content appears to continue from below
-                }
-              }
-            )
-
-            // Store animation reference
-            scrollAnimationRef.current = scrollAnimation
-
-            // Speed up on hover - create handler functions for proper cleanup
-            const handleMouseEnter = () => {
-              if (scrollAnimationRef.current) {
-                scrollAnimationRef.current.timeScale(2.2)
-              }
-            }
-
-            const handleMouseLeave = () => {
-              if (scrollAnimationRef.current) {
-                scrollAnimationRef.current.timeScale(1)
-              }
-            }
-
-            viewport.addEventListener('mouseenter', handleMouseEnter)
-            viewport.addEventListener('mouseleave', handleMouseLeave)
-
-              // Store handlers for cleanup
-              ; (viewport as any).__marqueeHandlers = {
-                enter: handleMouseEnter,
-                leave: handleMouseLeave
-              }
-          }
-
-          // Initialize after a short delay to ensure DOM is ready
-          requestAnimationFrame(() => {
-            requestAnimationFrame(initMarquee)
-          })
-
-          // Cleanup
-          return () => {
-            if (scrollAnimationRef.current) {
-              scrollAnimationRef.current.kill()
-              scrollAnimationRef.current = null
-            }
-            if (marqueeViewportRef.current && (marqueeViewportRef.current as any).__marqueeHandlers) {
-              const handlers = (marqueeViewportRef.current as any).__marqueeHandlers
-              marqueeViewportRef.current.removeEventListener('mouseenter', handlers.enter)
-              marqueeViewportRef.current.removeEventListener('mouseleave', handlers.leave)
-            }
-          }
-        }
+        requestAnimationFrame(() => requestAnimationFrame(initMarquee))
       }
-    }
+    }, section);
 
-    initAnimations()
-  }, [squareOpacities])
+    return () => {
+      ctx.revert();
+    };
+  }, [squareOpacities]);
 
   return (
     <section ref={heroRef} className="relative flex items-center pt-20 md:pt-24 overflow-hidden">

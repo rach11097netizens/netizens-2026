@@ -117,10 +117,10 @@ const Navbar = () => {
                                         <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             Product Development
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0_1402_4100)">
-                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                <g clipPath="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" strokeLinejoin="round" />
                                                 </g>
                                                 <defs>
                                                     <clipPath id="clip0_1402_4100">
@@ -154,10 +154,10 @@ const Navbar = () => {
                                         <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             Workflow Digitization
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0_1402_4100)">
-                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                <g clipPath="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" strokeLinejoin="round" />
                                                 </g>
                                                 <defs>
                                                     <clipPath id="clip0_1402_4100">
@@ -191,10 +191,10 @@ const Navbar = () => {
                                         <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             Support & Scale
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0_1402_4100)">
-                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                <g clipPath="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" strokeLinejoin="round" />
                                                 </g>
                                                 <defs>
                                                     <clipPath id="clip0_1402_4100">
@@ -228,10 +228,10 @@ const Navbar = () => {
                                         <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             Staff Augmentation
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0_1402_4100)">
-                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                <g clipPath="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" strokeLinejoin="round" />
                                                 </g>
                                                 <defs>
                                                     <clipPath id="clip0_1402_4100">
@@ -265,10 +265,10 @@ const Navbar = () => {
                                         <h3 className="flex justify-between items-center font-['Geist',sans-serif] text-lg text-[#0e3572] tracking-[0.8px] uppercase font-semibold">
                                             AI Consulting & Automation
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0_1402_4100)">
-                                                    <path d="M5 12H19" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 16L19 12" stroke="#58595B" stroke-linejoin="round" />
-                                                    <path d="M15 8L19 12" stroke="#58595B" stroke-linejoin="round" />
+                                                <g clipPath="url(#clip0_1402_4100)">
+                                                    <path d="M5 12H19" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 16L19 12" stroke="#58595B" strokeLinejoin="round" />
+                                                    <path d="M15 8L19 12" stroke="#58595B" strokeLinejoin="round" />
                                                 </g>
                                                 <defs>
                                                     <clipPath id="clip0_1402_4100">

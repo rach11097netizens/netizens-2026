@@ -48,10 +48,13 @@ export function OurPromiseSection() {
 
     useEffect(() => {
         const section = sectionRef.current;
-        const header = headerRef.current;
-        const center = centerRef.current;
+        if (!section) return;
 
-        if (section && header && center) {
+        const ctx = gsap.context(() => {
+            const header = headerRef.current;
+            const center = centerRef.current;
+            if (!header || !center) return;
+
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
@@ -63,13 +66,12 @@ export function OurPromiseSection() {
                 header,
                 { y: 24, opacity: 0 },
                 { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }
-            )
-                .fromTo(
-                    center,
-                    { scale: 0.9, opacity: 0 },
-                    { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.2)' },
-                    '-=0.2'
-                );
+            ).fromTo(
+                center,
+                { scale: 0.9, opacity: 0 },
+                { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.2)' },
+                '-=0.2'
+            );
 
             cardsRef.current.forEach((card, i) => {
                 if (card) {
@@ -81,7 +83,9 @@ export function OurPromiseSection() {
                     );
                 }
             });
-        }
+        }, section);
+
+        return () => ctx.revert();
     }, []);
 
     return (

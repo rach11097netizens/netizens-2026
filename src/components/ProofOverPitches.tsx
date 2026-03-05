@@ -1,5 +1,9 @@
 import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SidePattern } from './SidePattern'
+
+gsap.registerPlugin(ScrollTrigger)
 import connectorTopSvg from '../assets/images/connector-top.svg'
 import connectorBottomSvg from '../assets/images/connector-bottom.svg'
 import connectorVerticalSvg from '../assets/images/connector-vertical.svg'
@@ -14,17 +18,13 @@ const ProofOverPitches = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const initAnimations = async () => {
-      const { gsap } = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+    const section = sectionRef.current;
+    if (!section) return;
 
-      gsap.registerPlugin(ScrollTrigger)
-
-      if (!sectionRef.current) return
-
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: 'top 75%',
           toggleActions: 'play none none none',
         },
@@ -32,14 +32,14 @@ const ProofOverPitches = () => {
 
       // Animate heading
       tl.fromTo(
-        sectionRef.current.querySelector('.proof-heading'),
+        '.proof-heading',
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }
       )
 
       // Animate first stat card
       tl.fromTo(
-        sectionRef.current.querySelector('.stat-card-1'),
+        '.stat-card-1',
         { opacity: 0, scale: 0.85, y: 20 },
         { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'back.out(1.4)' },
         '-=0.2'
@@ -47,16 +47,15 @@ const ProofOverPitches = () => {
 
       // Animate top connector
       tl.fromTo(
-        sectionRef.current.querySelector('.connector-top'),
+        '.connector-top',
         { opacity: 0, scaleY: 0 },
         { opacity: 1, scaleY: 1, duration: 0.4, ease: 'power2.out', transformOrigin: 'top center' },
         '-=0.1'
       )
 
       // Animate info chips
-      const chips = sectionRef.current.querySelectorAll('.info-chip')
       tl.fromTo(
-        chips,
+        '.info-chip',
         { opacity: 0, y: 25, scale: 0.9 },
         { opacity: 1, y: 0, scale: 1, duration: 0.4, stagger: 0.08, ease: 'back.out(1.2)' },
         '-=0.1'
@@ -64,7 +63,7 @@ const ProofOverPitches = () => {
 
       // Animate bottom connector
       tl.fromTo(
-        sectionRef.current.querySelector('.connector-bottom'),
+        '.connector-bottom',
         { opacity: 0, scaleY: 0 },
         { opacity: 1, scaleY: 1, duration: 0.4, ease: 'power2.out', transformOrigin: 'top center' },
         '-=0.1'
@@ -72,7 +71,7 @@ const ProofOverPitches = () => {
 
       // Animate second stat card
       tl.fromTo(
-        sectionRef.current.querySelector('.stat-card-2'),
+        '.stat-card-2',
         { opacity: 0, scale: 0.85, y: 20 },
         { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'back.out(1.4)' },
         '-=0.1'
@@ -80,16 +79,15 @@ const ProofOverPitches = () => {
 
       // Animate vertical line
       tl.fromTo(
-        sectionRef.current.querySelector('.vertical-line-1'),
+        '.vertical-line-1',
         { opacity: 0, scaleY: 0 },
         { opacity: 1, scaleY: 1, duration: 0.3, ease: 'power2.out', transformOrigin: 'top center' },
         '-=0.1'
       )
 
       // Animate additional stats
-      const additionalChips = sectionRef.current.querySelectorAll('.additional-chip')
       tl.fromTo(
-        additionalChips,
+        '.additional-chip',
         { opacity: 0, y: 20, scale: 0.9 },
         { opacity: 1, y: 0, scale: 1, duration: 0.4, stagger: 0.08, ease: 'back.out(1.2)' },
         '-=0.1'
@@ -97,7 +95,7 @@ const ProofOverPitches = () => {
 
       // Animate second vertical line
       tl.fromTo(
-        sectionRef.current.querySelector('.vertical-line-2'),
+        '.vertical-line-2',
         { opacity: 0, scaleY: 0 },
         { opacity: 1, scaleY: 1, duration: 0.3, ease: 'power2.out', transformOrigin: 'top center' },
         '-=0.1'
@@ -105,14 +103,16 @@ const ProofOverPitches = () => {
 
       // Animate third stat card
       tl.fromTo(
-        sectionRef.current.querySelector('.stat-card-3'),
+        '.stat-card-3',
         { opacity: 0, scale: 0.85, y: 20 },
         { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'back.out(1.4)' },
         '-=0.1'
       )
-    }
+    }, section)
 
-    initAnimations()
+    return () => {
+      ctx.revert();
+    }
   }, [])
 
   const infoChips = [

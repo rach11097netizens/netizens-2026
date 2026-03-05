@@ -1,4 +1,8 @@
 import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
   {
@@ -48,17 +52,14 @@ export function NetizensByNumbers() {
   const hasAnimated = useRef(false);
 
   useEffect(() => {
-    const initAnimation = async () => {
-      const { gsap } = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      gsap.registerPlugin(ScrollTrigger);
+    const section = sectionRef.current;
+    if (!section) return;
 
-      if (!sectionRef.current) return;
-
-      const counterEls = sectionRef.current.querySelectorAll<HTMLElement>(".stat-number");
+    const ctx = gsap.context(() => {
+      const counterEls = section.querySelectorAll<HTMLElement>(".stat-number");
 
       ScrollTrigger.create({
-        trigger: sectionRef.current,
+        trigger: section,
         start: "top 75%",
         once: true,
         onEnter: () => {
@@ -70,7 +71,6 @@ export function NetizensByNumbers() {
             const suffix = stats[i].suffix;
             const obj = { val: 0 };
 
-            // Stagger start time per card — each begins 120ms after previous
             gsap.to(obj, {
               val: target,
               duration: 1.8,
@@ -78,27 +78,19 @@ export function NetizensByNumbers() {
               ease: "power3.out",
               force3D: true,
               onUpdate: () => {
-                // Show integer values — no decimals
                 el.textContent = Math.round(obj.val) + suffix;
               },
               onComplete: () => {
-                // Snap to exact final value
                 el.textContent = target + suffix;
               },
             });
           });
         },
       });
-    };
-
-    initAnimation();
+    }, section);
 
     return () => {
-      import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-        ScrollTrigger.getAll().forEach((t) => {
-          if (t.trigger === sectionRef.current) t.kill();
-        });
-      });
+      ctx.revert();
     };
   }, []);
 

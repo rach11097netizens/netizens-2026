@@ -48,20 +48,20 @@ const CARD_GAP = 10;
 export function OurJourneyTimeline() {
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const sectionRef    = useRef<HTMLElement>(null);
-    const headingRef    = useRef<HTMLDivElement>(null);
-    const trackRef      = useRef<HTMLDivElement>(null);
-    const ticksRef      = useRef<HTMLDivElement>(null);
+    const sectionRef = useRef<HTMLElement>(null);
+    const headingRef = useRef<HTMLDivElement>(null);
+    const trackRef = useRef<HTMLDivElement>(null);
+    const ticksRef = useRef<HTMLDivElement>(null);
     const progressBarRef = useRef<HTMLDivElement>(null);
     const progressDotRef = useRef<HTMLDivElement>(null);
 
     // Mutable refs so callbacks never go stale
-    const activeIndexRef    = useRef(0);
-    const slideTweenRef     = useRef<gsap.core.Tween | null>(null);
-    const delayedCallRef    = useRef<gsap.core.Tween | null>(null);
-    const hasEnteredRef     = useRef(false);
-    const isUserPausedRef   = useRef(false);
-    const resumeTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const activeIndexRef = useRef(0);
+    const slideTweenRef = useRef<gsap.core.Tween | null>(null);
+    const delayedCallRef = useRef<gsap.core.Tween | null>(null);
+    const hasEnteredRef = useRef(false);
+    const isUserPausedRef = useRef(false);
+    const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     /* ─────────────────────────────────────────────────────────
        slideTo — GSAP-drives the card track, progress bar & dot
@@ -70,9 +70,9 @@ export function OurJourneyTimeline() {
         activeIndexRef.current = index;
         setActiveIndex(index);
 
-        const targetX   = -(index * (CARD_WIDTH + CARD_GAP));
-        const pct       = (index / (milestones.length - 1)) * 100;
-        const dur       = instant ? 0 : 0.72;
+        const targetX = -(index * (CARD_WIDTH + CARD_GAP));
+        const pct = (index / (milestones.length - 1)) * 100;
+        const dur = instant ? 0 : 0.72;
 
         slideTweenRef.current?.kill();
         slideTweenRef.current = gsap.to(trackRef.current, {
@@ -112,85 +112,91 @@ export function OurJourneyTimeline() {
     ───────────────────────────────────────────────────────── */
     useEffect(() => {
         const section = sectionRef.current;
-        const heading = headingRef.current;
-        const ticks   = ticksRef.current;
-        if (!section || !heading || !ticks) return;
+        if (!section) return;
 
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (!entry.isIntersecting || hasEnteredRef.current) return;
-                hasEnteredRef.current = true;
+        const ctx = gsap.context(() => {
+            const heading = headingRef.current;
+            const ticks = ticksRef.current;
+            if (!heading || !ticks) return;
 
-                const tickEls    = ticks.querySelectorAll<HTMLElement>('.journey-tick');
-                const cardEls    = section.querySelectorAll<HTMLElement>('.journey-card');
-                const yearLabels = section.querySelectorAll<HTMLElement>('.journey-year__label');
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (!entry.isIntersecting || hasEnteredRef.current) return;
+                    hasEnteredRef.current = true;
 
-                // ── Set initial hidden states ──
-                gsap.set(heading,              { y: 40, opacity: 0 });
-                gsap.set(cardEls,              { y: 30, opacity: 0 });
-                gsap.set(tickEls,              { scaleY: 0, transformOrigin: 'bottom center' });
-                gsap.set(yearLabels,           { opacity: 0, y: 10 });
-                gsap.set(progressBarRef.current,  { width: '0%', opacity: 0 });
-                gsap.set(progressDotRef.current,  { left: '0%', opacity: 0, scale: 0 });
-                gsap.set(trackRef.current,        { x: 0 });
+                    const tickEls = ticks.querySelectorAll<HTMLElement>('.journey-tick');
+                    const cardEls = section.querySelectorAll<HTMLElement>('.journey-card');
+                    const yearLabels = section.querySelectorAll<HTMLElement>('.journey-year__label');
 
-                // ── Master timeline ──
-                const tl = gsap.timeline({
-                    defaults: { ease: 'power3.out' },
-                    onComplete: scheduleNext,
-                });
+                    // ── Set initial hidden states ──
+                    gsap.set(heading, { y: 40, opacity: 0 });
+                    gsap.set(cardEls, { y: 30, opacity: 0 });
+                    gsap.set(tickEls, { scaleY: 0, transformOrigin: 'bottom center' });
+                    gsap.set(yearLabels, { opacity: 0, y: 10 });
+                    gsap.set(progressBarRef.current, { width: '0%', opacity: 0 });
+                    gsap.set(progressDotRef.current, { left: '0%', opacity: 0, scale: 0 });
+                    gsap.set(trackRef.current, { x: 0 });
 
-                // 1 — Heading rises in
-                tl.to(heading, {
-                    y: 0, opacity: 1, duration: 0.65,
-                });
+                    // ── Master timeline ──
+                    const tl = gsap.timeline({
+                        defaults: { ease: 'power3.out' },
+                        onComplete: scheduleNext,
+                    });
 
-                // 2 — Cards stagger up (only the first few are visible)
-                tl.to(cardEls, {
-                    y: 0, opacity: 1,
-                    stagger: 0.09,
-                    duration: 0.5,
-                }, '-=0.35');
+                    // 1 — Heading rises in
+                    tl.to(heading, {
+                        y: 0, opacity: 1, duration: 0.65,
+                    });
 
-                // 3 — Ruler ticks grow upward from the baseline, left → right
-                tl.to(tickEls, {
-                    scaleY: 1,
-                    duration: 0.5,
-                    stagger: { each: 0.008, from: 'start' },
-                    ease: 'power2.out',
-                }, '-=0.3');
+                    // 2 — Cards stagger up
+                    tl.to(cardEls, {
+                        y: 0, opacity: 1,
+                        stagger: 0.09,
+                        duration: 0.5,
+                    }, '-=0.35');
 
-                // 4 — Year labels fade in
-                tl.to(yearLabels, {
-                    opacity: 1, y: 0,
-                    stagger: 0.06,
-                    duration: 0.4,
-                }, '-=0.35');
+                    // 3 — Ruler ticks
+                    tl.to(tickEls, {
+                        scaleY: 1,
+                        duration: 0.5,
+                        stagger: { each: 0.008, from: 'start' },
+                        ease: 'power2.out',
+                    }, '-=0.3');
 
-                // 5 — Progress bar + dot appear
-                tl.to([progressBarRef.current, progressDotRef.current], {
-                    opacity: 1, scale: 1,
-                    duration: 0.4,
-                }, '-=0.2');
+                    // 4 — Year labels
+                    tl.to(yearLabels, {
+                        opacity: 1, y: 0,
+                        stagger: 0.06,
+                        duration: 0.4,
+                    }, '-=0.35');
 
-                // 6 — Active card reveals with a slight scale pulse
-                tl.fromTo(cardEls[0], {
-                    boxShadow: '0 0 0px rgba(255,250,250,0)',
-                }, {
-                    boxShadow: '0 0 24px rgba(255,250,250,0.08)',
-                    duration: 0.6,
-                    ease: 'power2.inOut',
-                }, '-=0.1');
-            },
-            { threshold: 0.25 }
-        );
+                    // 5 — Progress bar + dot
+                    tl.to([progressBarRef.current, progressDotRef.current], {
+                        opacity: 1, scale: 1,
+                        duration: 0.4,
+                    }, '-=0.2');
 
-        observer.observe(section);
+                    // 6 — Active card reveals
+                    tl.fromTo(cardEls[0], {
+                        boxShadow: '0 0 0px rgba(255,250,250,0)',
+                    }, {
+                        boxShadow: '0 0 24px rgba(255,250,250,0.08)',
+                        duration: 0.6,
+                        ease: 'power2.inOut',
+                    }, '-=0.1');
+                },
+                { threshold: 0.25 }
+            );
+
+            observer.observe(section);
+
+            // Handle context-specific observer cleanup
+            return () => observer.disconnect();
+        }, section);
 
         return () => {
-            observer.disconnect();
-            delayedCallRef.current?.kill();
-            slideTweenRef.current?.kill();
+            ctx.revert();
+            if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
         };
     }, [scheduleNext]);
 
@@ -266,14 +272,14 @@ export function OurJourneyTimeline() {
                     {/* Measurement ticks */}
                     <div ref={ticksRef} className="journey-ruler__ticks" aria-hidden="true">
                         {Array.from({ length: 61 }).map((_, i) => {
-                            const isMajor  = i % 10 === 0;
-                            const isMedium = i % 5  === 0 && !isMajor;
+                            const isMajor = i % 10 === 0;
+                            const isMedium = i % 5 === 0 && !isMajor;
                             return (
                                 <div
                                     key={i}
                                     className={[
                                         'journey-tick',
-                                        isMajor  ? 'journey-tick--major'  : '',
+                                        isMajor ? 'journey-tick--major' : '',
                                         isMedium ? 'journey-tick--medium' : '',
                                         !isMajor && !isMedium ? 'journey-tick--minor' : '',
                                     ].join(' ')}

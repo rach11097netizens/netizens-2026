@@ -91,16 +91,24 @@ function useRightPanelAnimation(activeId: string, ref: React.RefObject<HTMLDivEl
     useEffect(() => {
         const panel = ref.current;
         if (!panel) return;
-        gsap.fromTo(panel, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
-        panel.querySelectorAll('[data-delivery-tag]').forEach((el, i) => {
-            gsap.fromTo(el, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.28, ease: 'back.out(1.3)', delay: 0.08 + i * 0.035 });
-        });
-        panel.querySelectorAll('[data-delivery-list-item]').forEach((el, i) => {
-            gsap.fromTo(el, { opacity: 0, x: -6 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', delay: 0.15 + i * 0.04 });
-        });
-        panel.querySelectorAll('[data-delivery-step]').forEach((el, i) => {
-            gsap.fromTo(el, { opacity: 0, x: -6 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', delay: 0.2 + i * 0.04 });
-        });
+
+        const ctx = gsap.context(() => {
+            gsap.fromTo(panel, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+
+            panel.querySelectorAll('[data-delivery-tag]').forEach((el, i) => {
+                gsap.fromTo(el, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.28, ease: 'back.out(1.3)', delay: 0.08 + i * 0.035 });
+            });
+
+            panel.querySelectorAll('[data-delivery-list-item]').forEach((el, i) => {
+                gsap.fromTo(el, { opacity: 0, x: -6 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', delay: 0.15 + i * 0.04 });
+            });
+
+            panel.querySelectorAll('[data-delivery-step]').forEach((el, i) => {
+                gsap.fromTo(el, { opacity: 0, x: -6 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', delay: 0.2 + i * 0.04 });
+            });
+        }, panel);
+
+        return () => ctx.revert();
     }, [activeId, ref]);
 }
 
@@ -150,8 +158,8 @@ export function FlexibleDeliverySection() {
                                 <div
                                     key={model.id}
                                     className={`rounded-lg border overflow-hidden transition-all duration-300 ${isActive
-                                            ? 'bg-white border-regal-navy/25 shadow-md shadow-regal-navy/5 ring-1 ring-regal-navy/10'
-                                            : 'bg-[#FAF5F5] border-[#e5e7eb] shadow-none'
+                                        ? 'bg-white border-regal-navy/25 shadow-md shadow-regal-navy/5 ring-1 ring-regal-navy/10'
+                                        : 'bg-[#FAF5F5] border-[#e5e7eb] shadow-none'
                                         }`}
                                 >
                                     {/* Tab / accordion trigger — shared */}

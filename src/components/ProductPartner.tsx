@@ -17,81 +17,82 @@ const cards = [
         title: "MVP Development",
         description: "After launch, we stabilize, optimize, and keep shipping without fire drills.",
         image: imgMvp,
-        link: '/mvp-dev',
+        link: "/mvp-development",
     },
     {
         title: "Workflow Digitization",
         description: "Once systems are live, we maintain integrations, performance, and reliability as usage grows.",
         image: imgWorkflow,
-        link: '/workflow-digit',
+        link: "/workflow-digitization",
     },
     {
         title: "AI Consulting",
         description: "After AI goes live, we monitor quality, manage costs, and improve performance over time.",
         image: imgAI,
-        link: '/ai-automate'
+        link: "/ai-consulting",
     },
     {
         title: "Staff Augmentation",
         description: "As teams scale, we maintain standards, DevOps hygiene, and clean handoffs.",
         image: imgStaffAug,
-        link: '/staff-aug',
+        link: "/staff-augmentation",
     },
 ];
 
 export function ProductPartner() {
     const sectionRef = useRef<HTMLElement>(null);
-    const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+    const cardsRef   = useRef<(HTMLDivElement | null)[]>([]);
 
     useEffect(() => {
         const section = sectionRef.current;
         if (!section) return;
 
-        const cardEls = cardsRef.current.filter(Boolean) as HTMLDivElement[];
-        if (cardEls.length < 2) return;
+        // ── gsap.context() scoped to `section` ──────────────────────────────
+        // ctx.revert() kills ScrollTriggers, removes the pin spacer, and
+        // restores the DOM before React unmounts — fixes the blank page on
+        // navigation caused by ST moving the pinned node out of its original
+        // parent (which makes React's removeChild throw NotFoundError).
+        const ctx = gsap.context(() => {
 
-        const total = cardEls.length;
+            const cardEls = cardsRef.current.filter(Boolean) as HTMLDivElement[];
+            if (cardEls.length < 2) return;
 
-        cardEls.forEach((card, i) => {
-            if (i === 0) {
-                gsap.set(card, { y: 0, opacity: 1 });
-            } else {
-                gsap.set(card, { y: "110%", opacity: 0 });
+            const total = cardEls.length;
+
+            cardEls.forEach((card, i) => {
+                if (i === 0) {
+                    gsap.set(card, { y: 0, opacity: 1 });
+                } else {
+                    gsap.set(card, { y: "110%", opacity: 0 });
+                }
+            });
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger:      section,
+                    start:        "top top",
+                    end:          `+=${total * 80}%`,
+                    pin:          true,
+                    scrub:        0.5,
+                    anticipatePin: 1,
+                },
+            });
+
+            for (let i = 0; i < total - 1; i++) {
+                tl.to(cardEls[i], { y: "-40%", opacity: 0, scale: 0.95, duration: 1, ease: "power2.in" })
+                  .fromTo(
+                      cardEls[i + 1],
+                      { y: "110%", opacity: 0 },
+                      { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
+                      "<0.3",
+                  );
             }
-        });
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: section,
-                start: "top top",
-                end: `+=${total * 80}%`,
-                pin: true,
-                scrub: 0.5,
-                anticipatePin: 1,
-            },
-        });
+            tl.to({}, { duration: 0.4 });
 
-        for (let i = 0; i < total - 1; i++) {
-            tl.to(cardEls[i], {
-                y: "-40%",
-                opacity: 0,
-                scale: 0.95,
-                duration: 1,
-                ease: "power2.in",
-            })
-                .fromTo(
-                    cardEls[i + 1],
-                    { y: "110%", opacity: 0 },
-                    { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
-                    "<0.3",
-                );
-        }
+        }, section); // ← scope to section element
 
-        tl.to({}, { duration: 0.4 });
-
-        return () => {
-            ScrollTrigger.getAll().forEach((st) => st.kill());
-        };
+        return () => ctx.revert();
     }, []);
 
     return (
@@ -103,17 +104,17 @@ export function ProductPartner() {
                 <div
                     className="absolute inset-0 w-full h-full mix-blend-screen"
                     style={{
-                        opacity: 0.5,
-                        backgroundImage: `url(${imgSeparatorPattern})`,
+                        opacity:          0.5,
+                        backgroundImage:  `url(${imgSeparatorPattern})`,
                         backgroundRepeat: "repeat",
-                        backgroundSize: "1000px",
+                        backgroundSize:   "1000px",
                     }}
                 />
                 <div
                     className="absolute inset-0 w-full h-full"
                     style={{
                         backgroundImage: "linear-gradient(#ffffff0a 1px, transparent 1px)",
-                        backgroundSize: "100% 32px",
+                        backgroundSize:  "100% 32px",
                     }}
                 />
             </div>
@@ -136,9 +137,7 @@ export function ProductPartner() {
                     {cards.map((card, i) => (
                         <div
                             key={i}
-                            ref={(el) => {
-                                cardsRef.current[i] = el;
-                            }}
+                            ref={(el) => { cardsRef.current[i] = el; }}
                             className="absolute inset-x-0 top-0 w-full bg-white rounded-[16px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden will-change-transform"
                             style={{
                                 zIndex: cards.length + i,

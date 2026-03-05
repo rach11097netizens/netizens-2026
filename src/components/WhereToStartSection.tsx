@@ -51,7 +51,9 @@ export function WhereToStartSection() {
         const section = sectionRef.current;
         const cta = ctaRef.current;
 
-        if (section && cta) {
+        if (!section || !cta) return;
+
+        const ctx = gsap.context(() => {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
@@ -75,7 +77,9 @@ export function WhereToStartSection() {
                     );
                 }
             });
-        }
+        }, sectionRef); // ← scope to section element
+
+        return () => ctx.revert();
     }, []);
 
     return (
