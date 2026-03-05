@@ -17,34 +17,9 @@ import shopifyLogo from '../assets/images/icons/logo/shopify.svg'
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null)
   const headingRef = useRef<HTMLDivElement>(null)
-  // const patternRef = useRef<HTMLDivElement>(null) // For old static grid animation
   const marqueeViewportRef = useRef<HTMLDivElement>(null)
   const marqueeTrackRef = useRef<HTMLDivElement>(null)
   const scrollAnimationRef = useRef<any>(null)
-
-  // Generate stable random positions for logos (8 logos randomly placed)
-  // For old static grid animation
-  const logoPositions = useMemo(() => {
-    const positions = new Set<number>()
-    while (positions.size < 8) {
-      positions.add(Math.floor(Math.random() * 64))
-    }
-    return Array.from(positions)
-  }, [])
-
-  // Generate stable opacity values for pattern squares
-  // Squares with logos always get opacity 1 for clear visibility
-  // For old static grid animation
-  const squareOpacities = useMemo(() => {
-    return Array.from({ length: 64 }, (_, i) => {
-      // If square has a logo, always use opacity 1
-      if (logoPositions.includes(i)) {
-        return 1
-      }
-      // Otherwise, random opacity
-      return Math.random() > 0.7 ? 1 : 0.3
-    })
-  }, [logoPositions])
 
   // Marquee grid configuration
   const gridCols = 6
@@ -176,15 +151,19 @@ const Hero = () => {
 
         // Wait for layout to calculate accurate heights
         const initMarquee = () => {
-          const totalHeight = track.scrollHeight
-          const singleSetHeight = totalHeight / 2
+          // Double check refs still exist within the context
+          if (!track || !viewport) return;
 
-          if (singleSetHeight === 0 || totalHeight === 0) {
-            setTimeout(initMarquee, 50)
-            return
+          const totalHeight = track.scrollHeight;
+          const singleSetHeight = totalHeight / 2;
+
+          if (singleSetHeight <= 0) {
+            // Retry once more after a short delay if height calculation failed
+            setTimeout(initMarquee, 100);
+            return;
           }
 
-          gsap.set(track, { y: 0 })
+          gsap.set(track, { y: 0 });
 
           const scrollAnimation = gsap.fromTo(track,
             { y: 0 },
@@ -195,32 +174,49 @@ const Hero = () => {
               repeat: -1,
               immediateRender: true,
             }
-          )
+          );
 
-          scrollAnimationRef.current = scrollAnimation
+          scrollAnimationRef.current = scrollAnimation;
 
-          const handleMouseEnter = () => scrollAnimation.timeScale(2.2)
-          const handleMouseLeave = () => scrollAnimation.timeScale(1)
+          const handleMouseEnter = () => scrollAnimation.timeScale(2.2);
+          const handleMouseLeave = () => scrollAnimation.timeScale(1);
 
-          viewport.addEventListener('mouseenter', handleMouseEnter)
-          viewport.addEventListener('mouseleave', handleMouseLeave)
+          viewport.addEventListener('mouseenter', handleMouseEnter);
+          viewport.addEventListener('mouseleave', handleMouseLeave);
 
           // Add custom cleanup to the context
           ctx.add(() => {
-            viewport.removeEventListener('mouseenter', handleMouseEnter)
-            viewport.removeEventListener('mouseleave', handleMouseLeave)
-            scrollAnimation.kill()
-          })
-        }
+            viewport.removeEventListener('mouseenter', handleMouseEnter);
+            viewport.removeEventListener('mouseleave', handleMouseLeave);
+            scrollAnimation.kill();
+          });
+        };
 
-        requestAnimationFrame(() => requestAnimationFrame(initMarquee))
+        // Ensure images are loaded before calculating heights
+        const images = track.querySelectorAll('img');
+        if (images.length === 0) {
+          initMarquee();
+        } else {
+          let loaded = 0;
+          const checkReady = () => {
+            loaded++;
+            if (loaded >= images.length) initMarquee();
+          };
+          images.forEach((img: HTMLImageElement) => {
+            if (img.complete) checkReady();
+            else {
+              img.addEventListener('load', checkReady);
+              img.addEventListener('error', checkReady);
+            }
+          });
+        }
       }
     }, section);
 
     return () => {
       ctx.revert();
     };
-  }, [squareOpacities]);
+  }, []);
 
   return (
     <section ref={heroRef} className="relative flex items-center pt-20 md:pt-24 overflow-hidden">
