@@ -104,7 +104,7 @@ export const Footer = () => {
         <footer className="w-full flex flex-col font-sans">
             {/* Top White Section */}
             <div className="w-full bg-white flex flex-col items-center py-10 md:py-16 px-4 md:px-8">
-                <div className="w-full max-w-[1320px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[auto_1fr_auto] gap-10 md:gap-8 lg:gap-10">
+                <div className="w-full max-w-[1320px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[auto_1fr_auto] gap-0 md:gap-10 xl:gap-16 2xl:gap-20">
 
                     {/* Left: Branding & Newsletter */}
                     <div className="flex flex-col gap-8 w-full max-w-xs md:max-w-sm mx-auto">
@@ -131,7 +131,7 @@ export const Footer = () => {
                     </div>
 
                     {/* Middle: Links Grid */}
-                    <div className="flex flex-col md:flex-row gap-0 md:gap-8 xl:gap-16 w-full max-w-xs md:max-w-full mx-auto">
+                    <div className="flex flex-col md:flex-row gap-0 md:gap-10 xl:gap-16 2xl:gap-20 w-full max-w-xs md:max-w-full mx-auto">
                         <AccordionSection
                             title="Services"
                             isOpen={openAccordion === 'services'}
