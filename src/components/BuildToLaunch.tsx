@@ -1,19 +1,15 @@
 import { useEffect, useRef } from "react";
-
-import { gsap } from "gsap";
+import { Link } from "react-router-dom";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SidePattern } from "./SidePattern";
 
-// Images & Icons
 import iconDarkTick from "../assets/images/navy-dark-tick.svg";
 import iconLightTick from "../assets/images/light-tick.svg";
-
 import imgDiscover from "../assets/images/build-launch/discover-img.svg";
 import imgBuild from "../assets/images/build-launch/build-img.svg";
 import imgLaunch from "../assets/images/build-launch/launch-img.svg";
-import { SidePattern } from "./SidePattern";
-import { Link } from "react-router-dom";
 
-// Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
 export function BuildToLaunch() {

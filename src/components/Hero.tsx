@@ -131,6 +131,9 @@ const Hero = () => {
     // instead of letting GSAP touch already-unmounted DOM nodes.
     let isMounted = true
 
+    // FIX: All GSAP logic, including the marquee, must live inside gsap.context()
+    // so it gets killed synchronously on unmount. We pass the dependencies (isMounted,
+    // images loaded, etc) into the context.
     const ctx = gsap.context(() => {
       // Fade in hero content
       gsap.fromTo(
@@ -138,116 +141,68 @@ const Hero = () => {
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }
       )
+
+      if (isDesktop && marqueeTrackRef.current && marqueeViewportRef.current) {
+        const track = marqueeTrackRef.current
+        const viewport = marqueeViewportRef.current
+        let scrollAnimation: gsap.core.Tween | null = null
+
+        const startMarquee = () => {
+          if (!isMounted) return
+
+          const totalHeight = track.scrollHeight
+          const singleSetHeight = totalHeight / 2
+
+          if (window.getComputedStyle(viewport).display === 'none' || singleSetHeight <= 0) return
+
+          gsap.set(track, { y: 0 })
+
+          scrollAnimation = gsap.fromTo(track,
+            { y: 0 },
+            { y: -singleSetHeight, duration: 40, ease: 'none', repeat: -1, immediateRender: true }
+          )
+
+          const handleMouseEnter = () => scrollAnimation?.timeScale(2.2)
+          const handleMouseLeave = () => scrollAnimation?.timeScale(1)
+
+          viewport.addEventListener('mouseenter', handleMouseEnter)
+          viewport.addEventListener('mouseleave', handleMouseLeave)
+
+          // Add cleanups to the context so ctx.revert() undoes the event listeners
+          ctx.add(() => {
+            viewport.removeEventListener('mouseenter', handleMouseEnter)
+            viewport.removeEventListener('mouseleave', handleMouseLeave)
+          })
+        }
+
+        const images = track.querySelectorAll('img')
+        if (images.length === 0) {
+          // If no images, start immediately
+          startMarquee()
+        } else {
+          // Wait for images to load before starting the marquee
+          let loaded = 0
+          const checkReady = () => {
+            loaded++
+            if (loaded >= images.length && isMounted) startMarquee()
+          }
+
+          images.forEach((img: HTMLImageElement) => {
+            if (img.complete) {
+              checkReady()
+            } else {
+              img.addEventListener('load', checkReady, { once: true })
+              img.addEventListener('error', checkReady, { once: true })
+            }
+          })
+        }
+      }
     }, section)
 
-    // FIX: Marquee runs OUTSIDE gsap.context so we can cancel it cleanly
-    // before ctx.revert() is called. ctx.add() inside async chains was the
-    // root cause — it ran AFTER revert(), creating orphaned tweens that
-    // tried to removeChild on unmounted nodes → crashing React.
-    let scrollAnimation: gsap.core.Tween | null = null
-    let rafId: number | null = null
-    let timeoutId: ReturnType<typeof setTimeout> | null = null
-    let imageListeners: Array<{ img: HTMLImageElement; load: () => void; error: () => void }> = []
-
-    const startMarquee = () => {
-      const track = marqueeTrackRef.current
-      const viewport = marqueeViewportRef.current
-
-      // FIX: Always guard with isMounted before touching DOM
-      if (!isMounted || !track || !viewport) return
-
-      rafId = requestAnimationFrame(() => {
-        if (!isMounted || !track || !viewport) return
-
-        const totalHeight = track.scrollHeight
-        const singleSetHeight = totalHeight / 2
-
-        if (window.getComputedStyle(viewport).display === 'none') return
-
-        if (singleSetHeight <= 0) return
-
-        gsap.set(track, { y: 0 })
-
-        scrollAnimation = gsap.fromTo(track,
-          { y: 0 },
-          { y: -singleSetHeight, duration: 40, ease: 'none', repeat: -1, immediateRender: true }
-        )
-
-        const handleMouseEnter = () => scrollAnimation?.timeScale(2.2)
-        const handleMouseLeave = () => scrollAnimation?.timeScale(1)
-
-        viewport.addEventListener('mouseenter', handleMouseEnter)
-        viewport.addEventListener('mouseleave', handleMouseLeave)
-
-        // Store cleanup on the animation object for later
-        ;(scrollAnimation as any)._cleanup = () => {
-          viewport.removeEventListener('mouseenter', handleMouseEnter)
-          viewport.removeEventListener('mouseleave', handleMouseLeave)
-        }
-      })
-    }
-
-    const initMarquee = () => {
-      if (!isMounted) return
-
-      const track = marqueeTrackRef.current
-      if (!track) return
-
-      const images = track.querySelectorAll('img')
-      if (images.length === 0) {
-        startMarquee()
-        return
-      }
-
-      let loaded = 0
-      const checkReady = () => {
-        loaded++
-        if (loaded >= images.length && isMounted) startMarquee()
-      }
-
-      images.forEach((img: HTMLImageElement) => {
-        if (img.complete) {
-          checkReady()
-        } else {
-          const loadFn = () => checkReady()
-          const errorFn = () => checkReady()
-          img.addEventListener('load', loadFn)
-          img.addEventListener('error', errorFn)
-          imageListeners.push({ img, load: loadFn, error: errorFn })
-        }
-      })
-    }
-
-    if (isDesktop) {
-      // Small delay to let layout stabilise, but only if still mounted
-      timeoutId = setTimeout(() => {
-        if (isMounted) initMarquee()
-      }, 50)
-    }
-
     return () => {
-      // FIX: Signal all async callbacks to abort immediately
       isMounted = false
-
-      // Cancel any pending timers/frames
-      if (timeoutId !== null) clearTimeout(timeoutId)
-      if (rafId !== null) cancelAnimationFrame(rafId)
-
-      // Remove all image listeners
-      imageListeners.forEach(({ img, load, error }) => {
-        img.removeEventListener('load', load)
-        img.removeEventListener('error', error)
-      })
-      imageListeners = []
-
-      // Kill marquee animation and its event listeners
-      if (scrollAnimation) {
-        ;(scrollAnimation as any)._cleanup?.()
-        scrollAnimation.kill()
-        scrollAnimation = null
-      }
-
-      // Revert GSAP context (fade-in animations)
+      // Revert GSAP context — this instantly kills the fade-in, the marquee (if it started),
+      // and removes the mouseenter/leave event listeners via the ctx.add() cleanup block.
       ctx.revert()
     }
   }, [isDesktop])

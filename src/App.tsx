@@ -15,16 +15,9 @@ import FAQpage from './pages/faq'
 
 
 function App() {
+  // GSAP plugins are now registered synchronously in the components that need them.
   useEffect(() => {
-    // Initialize GSAP ScrollTrigger
-    const initScrollAnimations = async () => {
-      const { gsap } = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-
-      gsap.registerPlugin(ScrollTrigger)
-    }
-
-    initScrollAnimations()
+    // Only scroll restoration needed here now
   }, [])
 
   return (
