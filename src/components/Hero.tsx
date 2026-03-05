@@ -134,7 +134,7 @@ const Hero = () => {
     // FIX: All GSAP logic, including the marquee, must live inside gsap.context()
     // so it gets killed synchronously on unmount. We pass the dependencies (isMounted,
     // images loaded, etc) into the context.
-    const ctx = gsap.context(() => {
+    const ctx = gsap.context((self) => {
       // Fade in hero content
       gsap.fromTo(
         headingRef.current!.children,
@@ -169,7 +169,9 @@ const Hero = () => {
           viewport.addEventListener('mouseleave', handleMouseLeave)
 
           // Add cleanups to the context so ctx.revert() undoes the event listeners
-          ctx.add(() => {
+          // FIX: Use `self.add` instead of closing over `ctx` to avoid ReferenceError
+          // when startMarquee executes synchronously for already-cached images.
+          self.add(() => {
             viewport.removeEventListener('mouseenter', handleMouseEnter)
             viewport.removeEventListener('mouseleave', handleMouseLeave)
           })

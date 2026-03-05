@@ -55,7 +55,7 @@ export function BuildToLaunch() {
             tl.to(c1, { scale: 0.9, opacity: 0.2, y: -40, duration: 1 })
                 .to(c2, { scale: 0.95, opacity: 0.5, y: -20, duration: 1 }, "<")
                 .to(c3, { y: 0, opacity: 1, duration: 1 }, "<");
-        }, sectionRef); // Scope to the section element
+        }, sectionRef.current); // Scope to the section element
 
         return () => {
             // Cleanup GSAP context
