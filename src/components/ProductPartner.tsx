@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SidePattern } from "./SidePattern";
@@ -41,9 +41,9 @@ const cards = [
 
 export function ProductPartner() {
     const sectionRef = useRef<HTMLElement>(null);
-    const cardsRef   = useRef<(HTMLDivElement | null)[]>([]);
+    const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const section = sectionRef.current;
         if (!section) return;
 
@@ -69,23 +69,23 @@ export function ProductPartner() {
 
             const tl = gsap.timeline({
                 scrollTrigger: {
-                    trigger:      section,
-                    start:        "top top",
-                    end:          `+=${total * 80}%`,
-                    pin:          true,
-                    scrub:        0.5,
+                    trigger: section,
+                    start: "top top",
+                    end: `+=${total * 80}%`,
+                    pin: true,
+                    scrub: 0.5,
                     anticipatePin: 1,
                 },
             });
 
             for (let i = 0; i < total - 1; i++) {
                 tl.to(cardEls[i], { y: "-40%", opacity: 0, scale: 0.95, duration: 1, ease: "power2.in" })
-                  .fromTo(
-                      cardEls[i + 1],
-                      { y: "110%", opacity: 0 },
-                      { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
-                      "<0.3",
-                  );
+                    .fromTo(
+                        cardEls[i + 1],
+                        { y: "110%", opacity: 0 },
+                        { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
+                        "<0.3",
+                    );
             }
 
             tl.to({}, { duration: 0.4 });
@@ -104,17 +104,17 @@ export function ProductPartner() {
                 <div
                     className="absolute inset-0 w-full h-full mix-blend-screen"
                     style={{
-                        opacity:          0.5,
-                        backgroundImage:  `url(${imgSeparatorPattern})`,
+                        opacity: 0.5,
+                        backgroundImage: `url(${imgSeparatorPattern})`,
                         backgroundRepeat: "repeat",
-                        backgroundSize:   "1000px",
+                        backgroundSize: "1000px",
                     }}
                 />
                 <div
                     className="absolute inset-0 w-full h-full"
                     style={{
                         backgroundImage: "linear-gradient(#ffffff0a 1px, transparent 1px)",
-                        backgroundSize:  "100% 32px",
+                        backgroundSize: "100% 32px",
                     }}
                 />
             </div>

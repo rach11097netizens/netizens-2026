@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -21,7 +21,7 @@ export function BuildToLaunch() {
     const card2Ref = useRef<HTMLDivElement>(null);
     const card3Ref = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!sectionRef.current || !leftColRef.current || !rightColRef.current) return;
 
         const c1 = card1Ref.current;

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import React from 'react'
 import { SidePattern } from './SidePattern'
 import patternBg from '../assets/images/pattern-bg.png'
@@ -24,7 +24,7 @@ interface AudienceCard {
 }
 
 const WhoWeWorkWith = () => {
-  const sectionRef  = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
   const cardStackRef = useRef<HTMLDivElement>(null)
 
   const audiences: AudienceCard[] = [
@@ -74,8 +74,8 @@ const WhoWeWorkWith = () => {
     },
   ]
 
-  useEffect(() => {
-    const section   = sectionRef.current
+  useLayoutEffect(() => {
+    const section = sectionRef.current
     const cardStack = cardStackRef.current
     if (!section || !cardStack) return
 
@@ -89,7 +89,7 @@ const WhoWeWorkWith = () => {
     const ctx = gsap.context(() => {
 
       const cardEls = Array.from(cardStack.querySelectorAll<HTMLElement>('.deck-card'))
-      const total   = cardEls.length
+      const total = cardEls.length
 
       cardEls.forEach((el, i) => {
         el.style.zIndex = `${total + i}`
@@ -119,22 +119,22 @@ const WhoWeWorkWith = () => {
 
       revealChipsIfNeeded(0)
 
-      const SEG       = 1.3
-      const HOLD      = 0.4
+      const SEG = 1.3
+      const HOLD = 0.4
       const TOTAL_DUR = (total - 1) * SEG + HOLD
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger:      section,
-          start:        'top top',
-          end:          `+=${total * 80}%`,
-          pin:          true,
-          pinSpacing:   true,
-          scrub:        0.5,
+          trigger: section,
+          start: 'top top',
+          end: `+=${total * 80}%`,
+          pin: true,
+          pinSpacing: true,
+          scrub: 0.5,
           anticipatePin: 1,
           onUpdate(self) {
-            const t         = self.progress * TOTAL_DUR
-            const EARLY     = 0.15
+            const t = self.progress * TOTAL_DUR
+            const EARLY = 0.15
             let activeIndex = 0
             for (let i = total - 1; i >= 1; i--) {
               if (t >= i * SEG - EARLY) { activeIndex = i; break }
@@ -196,9 +196,9 @@ const WhoWeWorkWith = () => {
               className="deck-card absolute top-0 left-0 w-full h-full"
               style={{
                 transformOrigin: 'center center',
-                willChange:      'transform, opacity',
-                borderRadius:    '34px',
-                boxShadow:       '0 4px 6px -1px rgba(0,0,0,0.06), 0 20px 25px -5px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
+                willChange: 'transform, opacity',
+                borderRadius: '34px',
+                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.06), 0 20px 25px -5px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
               }}
             >
               <div
@@ -241,9 +241,9 @@ const WhoWeWorkWith = () => {
                       visibility: 'visible',
                       animationDelay: `${chipIndex * 0.08}s`,
                     }
-                    if (chip.left)       wrapperStyle.left   = chip.left
-                    if (chip.right)      wrapperStyle.right  = chip.right
-                    if (chip.containerW) wrapperStyle.width  = chip.containerW
+                    if (chip.left) wrapperStyle.left = chip.left
+                    if (chip.right) wrapperStyle.right = chip.right
+                    if (chip.containerW) wrapperStyle.width = chip.containerW
                     if (chip.containerH) wrapperStyle.height = chip.containerH
 
                     return (
