@@ -172,52 +172,57 @@ const Hero = () => {
 
         // Wait for layout to calculate accurate heights
         const initMarquee = () => {
-          // Double check refs still exist and context is active
+          // Double check refs still exist
           if (!track || !viewport) return;
 
-          const totalHeight = track.scrollHeight;
-          const singleSetHeight = totalHeight / 2;
+          // Crucial: measure after a frame to ensure layout is stable
+          requestAnimationFrame(() => {
+            const totalHeight = track.scrollHeight;
+            const singleSetHeight = totalHeight / 2;
 
-          // If on mobile or element is hidden, don't try to animate
-          if (window.getComputedStyle(viewport).display === 'none') return;
+            // If element is hidden (e.g. on mobile/resize), don't try to animate
+            if (window.getComputedStyle(viewport).display === 'none') return;
 
-          if (singleSetHeight <= 0) {
-            // Retry once more after a short delay if height calculation failed
-            if (retryCount < 5) {
-              retryCount++;
-              setTimeout(initMarquee, 150);
-            }
-            return;
-          }
-
-          // Wrap the actual animation production in ctx.add for proper tracking
-          ctx.add(() => {
-            gsap.set(track, { y: 0 });
-
-            const scrollAnimation = gsap.fromTo(track,
-              { y: 0 },
-              {
-                y: -singleSetHeight,
-                duration: 40,
-                ease: 'none',
-                repeat: -1,
-                immediateRender: true,
+            if (singleSetHeight <= 0) {
+              if (retryCount < 5) {
+                retryCount++;
+                setTimeout(initMarquee, 150);
               }
-            );
+              return;
+            }
 
-            scrollAnimationRef.current = scrollAnimation;
-
-            const handleMouseEnter = () => scrollAnimation.timeScale(2.2);
-            const handleMouseLeave = () => scrollAnimation.timeScale(1);
-
-            viewport.addEventListener('mouseenter', handleMouseEnter);
-            viewport.addEventListener('mouseleave', handleMouseLeave);
-
-            // Cleanup
+            // Create the animation - gsap.context tracks this automatically 
+            // if we are inside the context and it's not async.
+            // Since this IS async (setTimeout/loaded), we use ctx.add specifically
+            // but we must be careful NOT to kill it immediately.
             ctx.add(() => {
-              viewport.removeEventListener('mouseenter', handleMouseEnter);
-              viewport.removeEventListener('mouseleave', handleMouseLeave);
-              scrollAnimation.kill();
+              gsap.set(track, { y: 0 });
+
+              const scrollAnimation = gsap.fromTo(track,
+                { y: 0 },
+                {
+                  y: -singleSetHeight,
+                  duration: 40,
+                  ease: 'none',
+                  repeat: -1,
+                  immediateRender: true,
+                }
+              );
+
+              scrollAnimationRef.current = scrollAnimation;
+
+              const handleMouseEnter = () => scrollAnimation.timeScale(2.2);
+              const handleMouseLeave = () => scrollAnimation.timeScale(1);
+
+              viewport.addEventListener('mouseenter', handleMouseEnter);
+              viewport.addEventListener('mouseleave', handleMouseLeave);
+
+              // Correct way to register cleanup for this specific async block
+              return () => {
+                viewport.removeEventListener('mouseenter', handleMouseEnter);
+                viewport.removeEventListener('mouseleave', handleMouseLeave);
+                scrollAnimation.kill();
+              };
             });
           });
         };
