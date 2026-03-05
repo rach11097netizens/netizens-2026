@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import imgReact from "../assets/images/tech-stack/react.png";
 import imgNextjsFrontend from "../assets/images/tech-stack/nextjs-frontend.png";
@@ -52,7 +52,6 @@ interface CategoryCardProps {
 interface TintProps { r: number; c: number; }
 interface AccentCellDef { r: number; c: number; color: string; }
 interface TintCellDef { r: number; c: number; }
-interface SidePatternProps { flip?: boolean; }
 
 // ── useWindowWidth ────────────────────────────────────────────────────────────
 function useWindowWidth(): number {
