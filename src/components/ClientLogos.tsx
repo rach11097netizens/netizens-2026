@@ -123,7 +123,7 @@ const ClientLogos = () => {
 
       createMarquee(track1Ref.current, 1);  // left
       createMarquee(track2Ref.current, -1); // right
-    }, sectionRef);
+    }, sectionRef.current);
 
     return () => {
       ctx.revert();

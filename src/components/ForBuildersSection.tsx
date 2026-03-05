@@ -129,7 +129,7 @@ const ForBuildersSection = () => {
                 { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
                 '-=0.2',
             );
-        }, sectionRef); // ← scope to section element
+        }, sectionRef.current); // ← scope to section element
 
         return () => {
             ctx.revert();

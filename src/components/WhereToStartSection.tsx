@@ -77,7 +77,7 @@ export function WhereToStartSection() {
                     );
                 }
             });
-        }, sectionRef); // ← scope to section element
+        }, sectionRef.current); // ← scope to section element
 
         return () => ctx.revert();
     }, []);

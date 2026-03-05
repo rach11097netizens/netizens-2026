@@ -17,7 +17,7 @@ const Testimonials = () => {
     const section = sectionRef.current;
     if (!section) return;
 
-    const ctx = gsap.context(() => {
+    const ctx = gsap.context((self) => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -118,6 +118,12 @@ const Testimonials = () => {
         };
         card.addEventListener('mouseenter', hoverIn);
         card.addEventListener('mouseleave', hoverOut);
+
+        // Cleanup event listeners
+        self.add(() => {
+          card.removeEventListener('mouseenter', hoverIn);
+          card.removeEventListener('mouseleave', hoverOut);
+        });
       });
     }, section);
 

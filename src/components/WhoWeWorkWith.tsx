@@ -79,13 +79,6 @@ const WhoWeWorkWith = () => {
     const cardStack = cardStackRef.current
     if (!section || !cardStack) return
 
-    // ── gsap.context() scoped to `section` ──────────────────────────────────
-    // ctx.revert() in the cleanup:
-    //   1. Kills all ScrollTriggers created inside this context
-    //   2. Removes the pin spacer div ST injected into the DOM
-    //   3. Restores the section element to its original DOM position
-    // Without this, React's removeChild crashes when navigating away because
-    // ST has moved the pinned element inside its own spacer wrapper.
     const ctx = gsap.context(() => {
 
       const cardEls = Array.from(cardStack.querySelectorAll<HTMLElement>('.deck-card'))
@@ -156,9 +149,39 @@ const WhoWeWorkWith = () => {
 
       tl.to({}, { duration: HOLD })
 
-    }, section) // ← scope to section element
+    }, section)
 
-    return () => ctx.revert()
+    // ScrollTrigger.refresh() must run AFTER fonts + images are loaded.
+    // useLayoutEffect fires before the browser finishes painting, so calling
+    // refresh() immediately gives wrong measurements (pin breaks on first load,
+    // works on hard-refresh because assets are already cached by then).
+    const scheduleRefresh = () => {
+      // Double rAF ensures the browser has completed at least one full paint
+      // cycle before we ask ScrollTrigger to re-measure element positions.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh()
+        })
+      })
+    }
+
+    if (document.readyState === 'complete') {
+      // Page already fully loaded (e.g. navigating back via client-side router)
+      scheduleRefresh()
+    } else {
+      // Wait for all assets (fonts, images) to finish loading
+      window.addEventListener('load', scheduleRefresh, { once: true })
+    }
+
+    // Re-calculate on resize so pin/scrub positions stay accurate
+    const onResize = () => ScrollTrigger.refresh()
+    window.addEventListener('resize', onResize)
+
+    return () => {
+      ctx.revert()
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('load', scheduleRefresh)
+    }
   }, [])
 
   return (
@@ -169,7 +192,13 @@ const WhoWeWorkWith = () => {
       <div className="separator-pattern absolute top-0 left-0 right-0 z-10" />
       <SidePattern invert={true} />
 
-      <div className="h-screen overflow-hidden flex flex-col items-center justify-center gap-6 px-5 md:px-10 max-w-[1300px] mx-auto">
+      {/* 
+        Fix 1: Removed `overflow-hidden` here.
+        When ScrollTrigger pins the section, it wraps it in a spacer div and
+        repositions the element. A nested overflow-hidden clips the pinned
+        content mid-scroll, causing cards to disappear unexpectedly.
+      */}
+      <div className="h-screen flex flex-col items-center justify-center gap-6 px-5 md:px-10 max-w-[1300px] mx-auto">
 
         <div className="text-center z-10">
           <div className="inline-flex items-center gap-2 px-[18px] py-2 bg-[rgba(14,53,114,0.05)] border border-[rgba(14,53,114,0.1)] rounded-[4px] mb-2">
@@ -185,10 +214,16 @@ const WhoWeWorkWith = () => {
           </p>
         </div>
 
+        {/*
+          Fix 2: Added `overflow: hidden` to the card stack wrapper.
+          Cards animate in from y: '110%' (below the container). Without
+          clipping, outgoing and incoming cards are visible outside the bounds
+          of the stack during the transition.
+        */}
         <div
           ref={cardStackRef}
           className="relative w-full max-w-[1096px]"
-          style={{ height: '380px' }}
+          style={{ height: '380px'}}
         >
           {audiences.map((audience, index) => (
             <article

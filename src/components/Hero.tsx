@@ -219,9 +219,7 @@ const Hero = () => {
               <span className="text-xs sm:text-sm font-bold text-[#0E3572]">Not a vendor. Your tech delivery partner.</span>
             </div>
 
-            <h1 style={{
-              fontSize: isMobile ? 22 : isDesktop ? 30 : 26,
-            }} className="text-2xl md:text-4xl xl:text-[46px] !leading-[1.2] font-normal text-black">
+            <h1 className="text-2xl md:text-4xl xl:text-[46px] !leading-[1.2] font-normal text-black">
               A Custom Software Development Company Focused on Business Outcomes
             </h1>
 
