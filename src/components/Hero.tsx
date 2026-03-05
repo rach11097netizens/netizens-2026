@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, useState } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { BookCallButton } from './BookCallButton'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
@@ -19,23 +19,6 @@ const Hero = () => {
   const headingRef = useRef<HTMLDivElement>(null)
   const marqueeViewportRef = useRef<HTMLDivElement>(null)
   const marqueeTrackRef = useRef<HTMLDivElement>(null)
-
-  // ── Breakpoints ───────────────────────────────────────────────────────────────
-  const BP_SM = 640
-  const BP_LG = 1024
-
-  // ── useWindowWidth ────────────────────────────────────────────────────────────
-  function useWindowWidth(): number {
-    const [width, setWidth] = useState<number>(
-      typeof window !== "undefined" ? window.innerWidth : BP_LG + 1
-    )
-    useEffect(() => {
-      const handler = () => setWidth(window.innerWidth)
-      window.addEventListener("resize", handler)
-      return () => window.removeEventListener("resize", handler)
-    }, [])
-    return width
-  }
 
   // Marquee grid configuration
   const gridCols = 6
@@ -118,10 +101,6 @@ const Hero = () => {
     reactLogo, figmaLogo, flutterLogo, shopifyLogo,
   ]
 
-  const width = useWindowWidth()
-  const isMobile = width < BP_SM
-  const isDesktop = width >= BP_LG
-
   useEffect(() => {
     const section = heroRef.current
     if (!section || !headingRef.current) return
@@ -142,7 +121,7 @@ const Hero = () => {
         { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }
       )
 
-      if (isDesktop && marqueeTrackRef.current && marqueeViewportRef.current) {
+      if (marqueeTrackRef.current && marqueeViewportRef.current) {
         const track = marqueeTrackRef.current
         const viewport = marqueeViewportRef.current
         let scrollAnimation: gsap.core.Tween | null = null
@@ -207,7 +186,7 @@ const Hero = () => {
       // and removes the mouseenter/leave event listeners via the ctx.add() cleanup block.
       ctx.revert()
     }
-  }, [isDesktop])
+  }, [])
 
   return (
     <section ref={heroRef} className="relative flex items-center pt-20 md:pt-24 overflow-hidden">
