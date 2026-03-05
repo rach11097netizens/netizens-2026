@@ -19,7 +19,6 @@ const Hero = () => {
   const headingRef = useRef<HTMLDivElement>(null)
   const marqueeViewportRef = useRef<HTMLDivElement>(null)
   const marqueeTrackRef = useRef<HTMLDivElement>(null)
-  const scrollAnimationRef = useRef<any>(null)
 
   // ── Breakpoints ───────────────────────────────────────────────────────────────
   const BP_SM = 640
@@ -41,29 +40,22 @@ const Hero = () => {
   // Marquee grid configuration
   const gridCols = 6
   const cellsPerRow = gridCols
-  const totalRows = 16 // Total rows for the marquee (will be duplicated for infinite scroll)
-  const totalCells = totalRows * cellsPerRow // 96 cells total
-  const numLogos = 25 // Fill ~50% of cells with logos for dense, visually appealing grid
+  const totalRows = 16
+  const totalCells = totalRows * cellsPerRow
+  const numLogos = 25
 
-  // Fill grid densely with logos - no empty boxes!
   const marqueeLogoPositions = useMemo(() => {
     const positions: number[] = []
     const usedPositions = new Set<number>()
 
-    // Fill the grid densely - create multiple clusters throughout
-    // This ensures logos are everywhere, not just in a few spots
-
-    // Create 5-6 large clusters spread across the grid
     const numClusters = 6
     const logosPerCluster = Math.floor(numLogos / numClusters)
 
     for (let cluster = 0; cluster < numClusters; cluster++) {
-      // Spread clusters across different areas of the grid
       const areaStart = Math.floor((totalCells / numClusters) * cluster)
       const areaEnd = Math.floor((totalCells / numClusters) * (cluster + 1))
       const clusterStart = areaStart + Math.floor(Math.random() * (areaEnd - areaStart - 20))
 
-      // Create a dense cluster (3x3 or 4x2 block)
       const clusterPositions: number[] = []
       for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 3; col++) {
@@ -74,32 +66,27 @@ const Hero = () => {
         }
       }
 
-      // Add logos from this cluster
       clusterPositions.slice(0, logosPerCluster).forEach(pos => {
         positions.push(pos)
         usedPositions.add(pos)
       })
     }
 
-    // Fill remaining logos - place them near existing clusters for density
     while (positions.length < numLogos) {
       let randomPos: number
 
       if (positions.length > 0 && Math.random() > 0.1) {
-        // 90% chance to place near existing logo
         const existingPos = positions[Math.floor(Math.random() * positions.length)]
         const existingRow = Math.floor(existingPos / cellsPerRow)
         const existingCol = existingPos % cellsPerRow
 
-        // Place within 2-3 cells for tight clustering
-        const rowOffset = Math.floor(Math.random() * 5) - 2 // -2 to 2
-        const colOffset = Math.floor(Math.random() * 5) - 2 // -2 to 2
+        const rowOffset = Math.floor(Math.random() * 5) - 2
+        const colOffset = Math.floor(Math.random() * 5) - 2
 
         const newRow = Math.max(0, Math.min(totalRows - 1, existingRow + rowOffset))
         const newCol = Math.max(0, Math.min(cellsPerRow - 1, existingCol + colOffset))
         randomPos = newRow * cellsPerRow + newCol
       } else {
-        // 10% chance for random placement
         randomPos = Math.floor(Math.random() * totalCells)
       }
 
@@ -108,22 +95,17 @@ const Hero = () => {
         usedPositions.add(randomPos)
       }
 
-      // Safety break
-      if (usedPositions.size >= totalCells * 0.6) {
-        break
-      }
+      if (usedPositions.size >= totalCells * 0.6) break
     }
 
-    return positions.sort((a, b) => a - b) // Sort for consistency
+    return positions.sort((a, b) => a - b)
   }, [])
 
-  // Define block fill positions (checkered pattern)
   const marqueeBlockFillPositions = useMemo(() => {
     const positions: number[] = []
     for (let i = 0; i < totalRows * cellsPerRow; i++) {
       const row = Math.floor(i / cellsPerRow)
       const col = i % cellsPerRow
-      // Add block fills in a checkered pattern, avoiding logo positions
       if (!marqueeLogoPositions.includes(i) && (row + col) % 4 === 0 && Math.random() > 0.5) {
         positions.push(i)
       }
@@ -132,14 +114,8 @@ const Hero = () => {
   }, [marqueeLogoPositions, totalRows, cellsPerRow])
 
   const logos = [
-    laravelLogo,
-    oracleLogo,
-    wordpressLogo,
-    pythonLogo,
-    reactLogo,
-    figmaLogo,
-    flutterLogo,
-    shopifyLogo,
+    laravelLogo, oracleLogo, wordpressLogo, pythonLogo,
+    reactLogo, figmaLogo, flutterLogo, shopifyLogo,
   ]
 
   const width = useWindowWidth()
@@ -147,111 +123,134 @@ const Hero = () => {
   const isDesktop = width >= BP_LG
 
   useEffect(() => {
-    const section = heroRef.current;
-    if (!section || !headingRef.current) return;
+    const section = heroRef.current
+    if (!section || !headingRef.current) return
+
+    // FIX: Track whether this effect is still alive.
+    // If navigation happens during async callbacks, we bail out early
+    // instead of letting GSAP touch already-unmounted DOM nodes.
+    let isMounted = true
 
     const ctx = gsap.context(() => {
       // Fade in hero content
       gsap.fromTo(
         headingRef.current!.children,
         { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power3.out',
-        }
+        { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }
       )
+    }, section)
 
-      // NEW MARQUEE ANIMATION - Infinite vertical scroll
-      if (marqueeTrackRef.current && marqueeViewportRef.current && isDesktop) {
-        const track = marqueeTrackRef.current
-        const viewport = marqueeViewportRef.current
-        let retryCount = 0;
+    // FIX: Marquee runs OUTSIDE gsap.context so we can cancel it cleanly
+    // before ctx.revert() is called. ctx.add() inside async chains was the
+    // root cause — it ran AFTER revert(), creating orphaned tweens that
+    // tried to removeChild on unmounted nodes → crashing React.
+    let scrollAnimation: gsap.core.Tween | null = null
+    let rafId: number | null = null
+    let timeoutId: ReturnType<typeof setTimeout> | null = null
+    let imageListeners: Array<{ img: HTMLImageElement; load: () => void; error: () => void }> = []
 
-        // Wait for layout to calculate accurate heights
-        const initMarquee = () => {
-          // Double check refs still exist
-          if (!track || !viewport) return;
+    const startMarquee = () => {
+      const track = marqueeTrackRef.current
+      const viewport = marqueeViewportRef.current
 
-          // Crucial: measure after a frame to ensure layout is stable
-          requestAnimationFrame(() => {
-            const totalHeight = track.scrollHeight;
-            const singleSetHeight = totalHeight / 2;
+      // FIX: Always guard with isMounted before touching DOM
+      if (!isMounted || !track || !viewport) return
 
-            // If element is hidden (e.g. on mobile/resize), don't try to animate
-            if (window.getComputedStyle(viewport).display === 'none') return;
+      rafId = requestAnimationFrame(() => {
+        if (!isMounted || !track || !viewport) return
 
-            if (singleSetHeight <= 0) {
-              if (retryCount < 5) {
-                retryCount++;
-                setTimeout(initMarquee, 150);
-              }
-              return;
-            }
+        const totalHeight = track.scrollHeight
+        const singleSetHeight = totalHeight / 2
 
-            // Create the animation - gsap.context tracks this automatically 
-            // if we are inside the context and it's not async.
-            // Since this IS async (setTimeout/loaded), we use ctx.add specifically
-            // but we must be careful NOT to kill it immediately.
-            ctx.add(() => {
-              gsap.set(track, { y: 0 });
+        if (window.getComputedStyle(viewport).display === 'none') return
 
-              const scrollAnimation = gsap.fromTo(track,
-                { y: 0 },
-                {
-                  y: -singleSetHeight,
-                  duration: 40,
-                  ease: 'none',
-                  repeat: -1,
-                  immediateRender: true,
-                }
-              );
+        if (singleSetHeight <= 0) return
 
-              scrollAnimationRef.current = scrollAnimation;
+        gsap.set(track, { y: 0 })
 
-              const handleMouseEnter = () => scrollAnimation.timeScale(2.2);
-              const handleMouseLeave = () => scrollAnimation.timeScale(1);
+        scrollAnimation = gsap.fromTo(track,
+          { y: 0 },
+          { y: -singleSetHeight, duration: 40, ease: 'none', repeat: -1, immediateRender: true }
+        )
 
-              viewport.addEventListener('mouseenter', handleMouseEnter);
-              viewport.addEventListener('mouseleave', handleMouseLeave);
+        const handleMouseEnter = () => scrollAnimation?.timeScale(2.2)
+        const handleMouseLeave = () => scrollAnimation?.timeScale(1)
 
-              // Correct way to register cleanup for this specific async block
-              return () => {
-                viewport.removeEventListener('mouseenter', handleMouseEnter);
-                viewport.removeEventListener('mouseleave', handleMouseLeave);
-                scrollAnimation.kill();
-              };
-            });
-          });
-        };
+        viewport.addEventListener('mouseenter', handleMouseEnter)
+        viewport.addEventListener('mouseleave', handleMouseLeave)
 
-        // Ensure images are loaded before calculating heights
-        const images = track.querySelectorAll('img');
-        if (images.length === 0) {
-          initMarquee();
-        } else {
-          let loaded = 0;
-          const checkReady = () => {
-            loaded++;
-            if (loaded >= images.length) initMarquee();
-          };
-          images.forEach((img: HTMLImageElement) => {
-            if (img.complete) checkReady();
-            else {
-              img.addEventListener('load', checkReady);
-              img.addEventListener('error', checkReady);
-            }
-          });
+        // Store cleanup on the animation object for later
+        ;(scrollAnimation as any)._cleanup = () => {
+          viewport.removeEventListener('mouseenter', handleMouseEnter)
+          viewport.removeEventListener('mouseleave', handleMouseLeave)
         }
+      })
+    }
+
+    const initMarquee = () => {
+      if (!isMounted) return
+
+      const track = marqueeTrackRef.current
+      if (!track) return
+
+      const images = track.querySelectorAll('img')
+      if (images.length === 0) {
+        startMarquee()
+        return
       }
-    }, section);
+
+      let loaded = 0
+      const checkReady = () => {
+        loaded++
+        if (loaded >= images.length && isMounted) startMarquee()
+      }
+
+      images.forEach((img: HTMLImageElement) => {
+        if (img.complete) {
+          checkReady()
+        } else {
+          const loadFn = () => checkReady()
+          const errorFn = () => checkReady()
+          img.addEventListener('load', loadFn)
+          img.addEventListener('error', errorFn)
+          imageListeners.push({ img, load: loadFn, error: errorFn })
+        }
+      })
+    }
+
+    if (isDesktop) {
+      // Small delay to let layout stabilise, but only if still mounted
+      timeoutId = setTimeout(() => {
+        if (isMounted) initMarquee()
+      }, 50)
+    }
 
     return () => {
-      ctx.revert();
-    };
-  }, [isDesktop]);
+      // FIX: Signal all async callbacks to abort immediately
+      isMounted = false
+
+      // Cancel any pending timers/frames
+      if (timeoutId !== null) clearTimeout(timeoutId)
+      if (rafId !== null) cancelAnimationFrame(rafId)
+
+      // Remove all image listeners
+      imageListeners.forEach(({ img, load, error }) => {
+        img.removeEventListener('load', load)
+        img.removeEventListener('error', error)
+      })
+      imageListeners = []
+
+      // Kill marquee animation and its event listeners
+      if (scrollAnimation) {
+        ;(scrollAnimation as any)._cleanup?.()
+        scrollAnimation.kill()
+        scrollAnimation = null
+      }
+
+      // Revert GSAP context (fade-in animations)
+      ctx.revert()
+    }
+  }, [isDesktop])
 
   return (
     <section ref={heroRef} className="relative flex items-center pt-20 md:pt-24 overflow-hidden">
@@ -259,24 +258,20 @@ const Hero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
           {/* Left Content */}
           <div ref={headingRef} className="col-span-12 lg:col-span-7 space-y-5 py-10 lg:py-0 text-center lg:text-left">
-            {/* Pre-header */}
             <div className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 bg-gray-100 rounded-sm">
               <span className="text-xs sm:text-sm font-bold text-[#0E3572]">Not a vendor. Your tech delivery partner.</span>
             </div>
 
-            {/* Main Heading */}
             <h1 style={{
               fontSize: isMobile ? 22 : isDesktop ? 30 : 26,
             }} className="text-2xl md:text-4xl xl:text-[46px] !leading-[1.2] font-normal text-black">
               A Custom Software Development Company Focused on Business Outcomes
             </h1>
 
-            {/* Description */}
             <p className="text-xs md:text-sm text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
               We design and build custom software, improve existing products, automate workflows with AI where it helps, and support teams as they scale.
             </p>
 
-            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <BookCallButton />
               <Link to="/how-we-work" className="px-8 py-4 border-2 border-gray-300 text-black text-sm rounded-md hover:bg-black hover:text-white hover:border-black transition-colors font-medium">
@@ -284,61 +279,43 @@ const Hero = () => {
               </Link>
             </div>
 
-            {/* Sub-text */}
             <p className="text-xs text-gray-500">
               You don't need a perfect brief. <span className='font-bold text-black'>You need the right questions</span>
             </p>
           </div>
 
-          {/* Right Pattern - Marquee Animation (HIDDEN on mobile, desktop only) */}
+          {/* Right Pattern - Marquee Animation (desktop only) */}
           <div ref={marqueeViewportRef} className="col-span-5 hidden lg:block marquee-viewport">
             <div ref={marqueeTrackRef} className="marquee-track">
-              {/* First set of cells - will be duplicated for infinite scroll */}
               {Array.from({ length: totalRows * cellsPerRow }).map((_, i) => {
                 const hasLogo = marqueeLogoPositions.includes(i)
                 const positionIndex = hasLogo ? marqueeLogoPositions.indexOf(i) : -1
-                // Cycle through available logos when we have more positions than logos
                 const logoIndex = hasLogo ? positionIndex % logos.length : -1
                 const hasBlockFill = marqueeBlockFillPositions.includes(i)
-
                 return (
                   <div key={`first-${i}`} className="marquee-cell">
                     {hasBlockFill && <div className="marquee-block-fill" />}
                     {hasLogo && logoIndex >= 0 && (
                       <div className="icon-card">
-                        <img
-                          src={logos[logoIndex]}
-                          alt={`Logo ${logoIndex + 1}`}
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none'
-                          }}
-                        />
+                        <img src={logos[logoIndex]} alt={`Logo ${logoIndex + 1}`}
+                          onError={(e) => { e.currentTarget.style.display = 'none' }} />
                       </div>
                     )}
                   </div>
                 )
               })}
-
-              {/* Duplicate set for infinite scroll */}
               {Array.from({ length: totalRows * cellsPerRow }).map((_, i) => {
                 const hasLogo = marqueeLogoPositions.includes(i)
                 const positionIndex = hasLogo ? marqueeLogoPositions.indexOf(i) : -1
-                // Cycle through available logos when we have more positions than logos
                 const logoIndex = hasLogo ? positionIndex % logos.length : -1
                 const hasBlockFill = marqueeBlockFillPositions.includes(i)
-
                 return (
                   <div key={`second-${i}`} className="marquee-cell">
                     {hasBlockFill && <div className="marquee-block-fill" />}
                     {hasLogo && logoIndex >= 0 && (
                       <div className="icon-card">
-                        <img
-                          src={logos[logoIndex]}
-                          alt={`Logo ${logoIndex + 1}`}
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none'
-                          }}
-                        />
+                        <img src={logos[logoIndex]} alt={`Logo ${logoIndex + 1}`}
+                          onError={(e) => { e.currentTarget.style.display = 'none' }} />
                       </div>
                     )}
                   </div>
@@ -353,4 +330,3 @@ const Hero = () => {
 }
 
 export default Hero
-

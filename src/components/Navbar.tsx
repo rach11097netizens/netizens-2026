@@ -22,17 +22,17 @@ const Navbar = () => {
     }
 
     const services = [
-        { label: "Product Development", href: "/mvp-development" },
-        { label: "Staff Augmentation", href: "/staff-augmentation" },
-        { label: "AI Consulting & Automation", href: "/ai-consulting" },
-        { label: "Workflow Digitization", href: "/workflow-digitization" },
-        { label: "Support & Scale", href: "/support-and-scale" },
+        { label: "Product Development", to: "/mvp-development" },
+        { label: "Staff Augmentation", to: "/staff-augmentation" },
+        { label: "AI Consulting & Automation", to: "/ai-consulting" },
+        { label: "Workflow Digitization", to: "/workflow-digitization" },
+        { label: "Support & Scale", to: "/support-and-scale" },
     ]
 
     const company = [
-        { label: "About", href: "/about-us" },
-        { label: "Careers", href: "#careers" },
-        { label: "FAQ", href: "/faq" },
+        { label: "About", to: "/about-us" },
+        { label: "Careers", to: "#careers" },
+        { label: "FAQ", to: "/faq" },
     ]
 
     useEffect(() => {
@@ -101,14 +101,14 @@ const Navbar = () => {
                             {servicesOpen && (
                                 // <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
                                 //     {services.map((service, index) => (
-                                //         <a
+                                //         <Link
                                 //             key={index}
-                                //             href={`#${service.toLowerCase().replace(/\s+/g, '-')}`}
+                                //             to={`#${service.toLowerCase().replace(/\s+/g, '-')}`}
                                 //             className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-black transition-colors"
                                 //             onClick={() => setServicesOpen(false)}
                                 //         >
                                 //             {service}
-                                //         </a>
+                                //         </Link>
                                 //     ))}
                                 // </div>
                                 <div className="absolute top-[65px] left-1/2 -translate-x-1/2 w-[1320px] lg:w-[1320px] bg-gray-100 border-[1.5px] border-[rgba(14,53,114,0.2)] shadow-[0px_20px_40px_rgba(0,0,0,0.08)] rounded-[18px] overflow-hidden grid grid-cols-3 grid-rows-2 gap-[1px] z-50">
@@ -329,8 +329,8 @@ const Navbar = () => {
 
                         {/* Regular Menu Items */}
                         <Link to="/how-we-work" className="text-gray-700 uppercase text-sm hover:text-black transition-colors">How We Work</Link>
-                        <a href="#case-studies" className="text-gray-700 uppercase text-sm hover:text-black transition-colors">Case Studies</a>
-                        <a href="#insights" className="text-gray-700 uppercase text-sm hover:text-black transition-colors">Insights</a>
+                        <Link to="#case-studies" className="text-gray-700 uppercase text-sm hover:text-black transition-colors">Case Studies</Link>
+                        <Link to="#insights" className="text-gray-700 uppercase text-sm hover:text-black transition-colors">Insights</Link>
 
                         {/* Company Dropdown */}
                         <div
@@ -360,9 +360,9 @@ const Navbar = () => {
                                                 About Us
                                             </Link>
                                         ) : (
-                                            <a
+                                            <Link
                                                 key={index}
-                                                href={item.href}
+                                                to={item.to}
                                                 className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-black transition-colors"
                                                 onClick={() => {
                                                     setCompanyOpen(false);
@@ -370,7 +370,7 @@ const Navbar = () => {
                                                 }}
                                             >
                                                 {item.label}
-                                            </a>
+                                            </Link>
                                         )
                                     ))}
                                 </div>
@@ -411,9 +411,9 @@ const Navbar = () => {
                                 {mobileServicesOpen && (
                                     <div className="pl-4 mt-2 space-y-2">
                                         {services.map((service, index) => (
-                                            <a
+                                            <Link
                                                 key={index}
-                                                href={service.href}
+                                                to={service.to}
                                                 className="block text-gray-600 hover:text-black text-sm"
                                                 onClick={() => {
                                                     setMobileServicesOpen(false)
@@ -422,7 +422,7 @@ const Navbar = () => {
                                                 }}
                                             >
                                                 {service.label}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </div>
                                 )}
@@ -457,9 +457,9 @@ const Navbar = () => {
                                                     About Us
                                                 </Link>
                                             ) : (
-                                                <a
+                                                <Link
                                                     key={index}
-                                                    href={item.href}
+                                                    to={item.to}
                                                     className="block text-gray-600 hover:text-black text-sm"
                                                     onClick={() => {
                                                         setMobileCompanyOpen(false)
@@ -468,7 +468,7 @@ const Navbar = () => {
                                                     }}
                                                 >
                                                     {item.label}
-                                                </a>
+                                                </Link>
                                             )
                                         ))}
                                     </div>
@@ -483,20 +483,20 @@ const Navbar = () => {
                             >
                                 How We Work
                             </Link>
-                            <a
-                                href="#case-studies"
+                            <Link
+                                to="#case-studies"
                                 className="text-gray-700 hover:text-black"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 Case Studies
-                            </a>
-                            <a
-                                href="#insights"
+                            </Link>
+                            <Link
+                                to="#insights"
                                 className="text-gray-700 hover:text-black"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 Insights
-                            </a>
+                            </Link>
 
                             <BookCallButton className="w-full text-left inline-block" showArrow={false} />
                         </div>

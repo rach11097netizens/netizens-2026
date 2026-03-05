@@ -138,11 +138,11 @@ export const Footer = () => {
                             onToggle={() => toggleAccordion('services')}
                         >
                             <div className="flex flex-col gap-3 font-sans font-normal text-sm text-carbon-black opacity-80 pb-2 md:pb-0">
-                                <a href="/mvp-development" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Product Development</a>
-                                <a href="/staff-augmentation" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Staff Augmentation</a>
-                                <a href="/ai-consulting" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">AI Consulting & Automation</a>
-                                <a href="/workflow-digitization" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Workflow Digitization</a>
-                                <a href="/support-and-scale" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Support & Scale</a>
+                                <Link to="/mvp-development" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Product Development</Link>
+                                <Link to="/staff-augmentation" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Staff Augmentation</Link>
+                                <Link to="/ai-consulting" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">AI Consulting & Automation</Link>
+                                <Link to="/workflow-digitization" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Workflow Digitization</Link>
+                                <Link to="/support-and-scale" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Support & Scale</Link>
                             </div>
                         </AccordionSection>
 
@@ -152,9 +152,9 @@ export const Footer = () => {
                             onToggle={() => toggleAccordion('company')}
                         >
                             <div className="flex flex-col gap-3 font-sans font-normal text-sm text-carbon-black opacity-80 pb-2 md:pb-0">
-                                <a href="/about-us" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">About</a>
+                                <Link to="/about-us" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">About</Link>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Case Studies</a>
-                                <a href="/how-we-work" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">How We Work</a>
+                                <Link to="/how-we-work" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">How We Work</Link>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Insights</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Careers</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Contact</a>

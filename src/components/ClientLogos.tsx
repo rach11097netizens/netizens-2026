@@ -1,4 +1,9 @@
 import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
 import alDentalStudio from "../assets/images/client-logos/aldentalstudio.svg"
 import athleticSolutions from "../assets/images/client-logos/athleticsolutions.svg"
 import cazeAI from "../assets/images/client-logos/cazeai.svg"
@@ -77,64 +82,51 @@ const ClientLogos = () => {
   const track2Ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    let cancelled = false;
+    if (!sectionRef.current) return;
 
-    const init = async () => {
-      const { gsap } = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      // Fade-in
+      gsap.fromTo(
+        sectionRef.current,
+        { opacity: 0, y: 16 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+          },
+        }
+      );
 
-      if (cancelled || !sectionRef.current) return;
+      // ✅ helper for perfect marquee
+      const createMarquee = (el: HTMLElement | null, direction = 1) => {
+        if (!el) return;
 
-      const ctx = gsap.context(() => {
-        // Fade-in
+        const distance = el.scrollWidth / 2;
+        const speed = 60;
+        const duration = distance / speed;
+
         gsap.fromTo(
-          sectionRef.current,
-          { opacity: 0, y: 16 },
+          el,
+          { x: direction === 1 ? 0 : -distance },
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 85%",
-            },
+            x: direction === 1 ? -distance : 0,
+            duration,
+            ease: "none",
+            repeat: -1,
           }
         );
+      };
 
-        // ✅ helper for perfect marquee
-        const createMarquee = (el: HTMLElement | null, direction = 1) => {
-          if (!el) return;
-
-          const distance = el.scrollWidth / 2;
-          const speed = 60;
-          const duration = distance / speed;
-
-          gsap.fromTo(
-            el,
-            { x: direction === 1 ? 0 : -distance },
-            {
-              x: direction === 1 ? -distance : 0,
-              duration,
-              ease: "none",
-              repeat: -1,
-            }
-          );
-        };
-
-        createMarquee(track1Ref.current, 1);  // left
-        createMarquee(track2Ref.current, -1); // right
-      }, sectionRef);
-
-      return ctx;
-    };
-
-    const ctxPromise = init();
+      createMarquee(track1Ref.current, 1);  // left
+      createMarquee(track2Ref.current, -1); // right
+    }, sectionRef);
 
     return () => {
-      cancelled = true;
-      ctxPromise.then(ctx => ctx?.revert());
+      ctx.revert();
     };
   }, []);
 
