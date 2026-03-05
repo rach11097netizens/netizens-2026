@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { SidePattern } from './SidePattern'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
 import tabImg1 from '../assets/images/tab-img-1.svg'
 import tabImg2 from '../assets/images/tab-img-2.svg'
 import tabImg3 from '../assets/images/tab-img-3.svg'
@@ -80,66 +85,54 @@ const ForBuildersSection = () => {
 
     // Scroll‑reveal animation
     useEffect(() => {
-        let cancelled = false;
+        if (!sectionRef.current) return;
 
-        const init = async () => {
-            const { gsap } = await import('gsap');
-            const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-            gsap.registerPlugin(ScrollTrigger);
-            gsapRef.current = gsap;
+        gsapRef.current = gsap;
 
-            if (cancelled || !sectionRef.current) return;
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 75%',
+                    toggleActions: 'play none none none',
+                },
+            });
 
-            const ctx = gsap.context(() => {
-                const tl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: 'top 75%',
-                        toggleActions: 'play none none none',
-                    },
-                });
+            // Heading fade-up
+            tl.fromTo(
+                '.builders-heading',
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+            );
 
-                // Heading fade-up
-                tl.fromTo(
-                    '.builders-heading',
-                    { opacity: 0, y: 30 },
-                    { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-                );
+            // Tab cards slide in from left
+            const cards = sectionRef.current!.querySelectorAll('.builders-tab');
+            tl.fromTo(
+                cards,
+                { opacity: 0, x: -40 },
+                { opacity: 1, x: 0, duration: 0.5, stagger: 0.12, ease: 'power3.out' },
+                '-=0.3',
+            );
 
-                // Tab cards slide in from left
-                const cards = sectionRef.current!.querySelectorAll('.builders-tab');
-                tl.fromTo(
-                    cards,
-                    { opacity: 0, x: -40 },
-                    { opacity: 1, x: 0, duration: 0.5, stagger: 0.12, ease: 'power3.out' },
-                    '-=0.3',
-                );
+            // Illustration slide in from right
+            tl.fromTo(
+                '.builders-illustration',
+                { opacity: 0, x: 40 },
+                { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' },
+                '-=0.4',
+            );
 
-                // Illustration slide in from right
-                tl.fromTo(
-                    '.builders-illustration',
-                    { opacity: 0, x: 40 },
-                    { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' },
-                    '-=0.4',
-                );
-
-                // CTA bar slide up
-                tl.fromTo(
-                    '.builders-cta',
-                    { opacity: 0, y: 30 },
-                    { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
-                    '-=0.2',
-                );
-            }, sectionRef); // ← scope to section element
-
-            return ctx
-        };
-
-        const ctxPromise = init();
+            // CTA bar slide up
+            tl.fromTo(
+                '.builders-cta',
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
+                '-=0.2',
+            );
+        }, sectionRef); // ← scope to section element
 
         return () => {
-            cancelled = true;
-            ctxPromise.then(ctx => ctx?.revert());
+            ctx.revert();
         };
     }, []);
 
