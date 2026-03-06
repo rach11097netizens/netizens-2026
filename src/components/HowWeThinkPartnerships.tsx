@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import Link from 'next/link';
 import imgSeparatorPattern from "../assets/images/pattern.png";
 import { SidePattern } from "./SidePattern";
 import iconBusinessConstraints from "../assets/images/about-partners/business-constraints.svg";
 import iconBalance from "../assets/images/about-partners/balance.svg";
 import iconDocument from "../assets/images/about-partners/document.svg";
 import iconGrow from "../assets/images/about-partners/grow.svg";
+import Image from 'next/image';
 
 const cards = [
   {
@@ -75,7 +76,7 @@ export function HowWeThinkPartnerships() {
               className="bg-[#274A81] rounded-[10px] p-2 md:p-4 flex flex-col items-start gap-6 min-h-[240px]  transition-all duration-300"
             >
               <div className="flex-shrink-0">
-                <img src={card.icon} alt="" className="w-14 h-14 md:w-16 md:h-16 object-contain" />
+                <Image src={card.icon} alt="" className="w-14 h-14 md:w-16 md:h-16 object-contain" />
               </div>
               <p className="font-headings text-base md:text-lg text-white leading-snug">
                 {card.description}
@@ -84,7 +85,7 @@ export function HowWeThinkPartnerships() {
           ))}
         </div>
 
-        <Link to="/how-we-work" 
+        <Link href="/how-we-work"
           className="bg-white text-[#0E3572] text-xs sm:text-[14px] font-normal px-5 sm:px-[34px] py-3 sm:py-[18px] rounded-[4px] w-max mx-auto cursor-pointer hover:opacity-90 transition-opacity"
           style={{
             boxShadow:

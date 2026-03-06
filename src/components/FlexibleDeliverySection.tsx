@@ -1,8 +1,10 @@
+"use client";
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ChevronDown } from 'lucide-react';
 import iconTick from '../assets/images/navy-dark-tick.svg';
 import imgSeparatorPattern from '../assets/images/pattern.png';
+import Image from 'next/image';
 
 interface DeliveryModel {
     id: string;
@@ -191,7 +193,7 @@ export function FlexibleDeliverySection() {
                                                 <ul className="flex flex-col gap-3">
                                                     {model.whatYouGet.map((item, i) => (
                                                         <li key={i} className="flex items-start gap-3">
-                                                            <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
+                                                            <Image src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
                                                             <span className="font-sans text-sm text-gray-600 leading-[22px]">{item}</span>
                                                         </li>
                                                     ))}
@@ -229,7 +231,7 @@ export function FlexibleDeliverySection() {
                                                     <ul className="flex flex-col gap-2">
                                                         {model.whatYouGet.map((item, i) => (
                                                             <li key={i} className="flex items-start gap-3">
-                                                                <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
+                                                                <Image src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
                                                                 <span className="font-sans text-sm text-gray-600 leading-[22px]">{item}</span>
                                                             </li>
                                                         ))}
@@ -242,7 +244,7 @@ export function FlexibleDeliverySection() {
                                                     <ul className="flex flex-col gap-2">
                                                         {model.whenToChoose.map((item, i) => (
                                                             <li key={i} className="flex items-start gap-3">
-                                                                <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
+                                                                <Image src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
                                                                 <span className="font-sans text-sm text-gray-600 leading-[22px]">{item}</span>
                                                             </li>
                                                         ))}
@@ -326,7 +328,7 @@ export function FlexibleDeliverySection() {
                                 <ul className="flex flex-col gap-3">
                                     {active.whenToChoose.map((item, i) => (
                                         <li key={i} data-delivery-list-item className="flex items-start gap-3">
-                                            <img src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
+                                            <Image src={iconTick} alt="" className="shrink-0 mt-0.5 w-5 h-5" />
                                             <span className="font-sans text-sm text-gray-600 leading-[22px]">{item}</span>
                                         </li>
                                     ))}

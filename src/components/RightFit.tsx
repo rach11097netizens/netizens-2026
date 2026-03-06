@@ -1,6 +1,7 @@
 import imgSeparatorPattern from "../assets/images/pattern.png";
 import iconLightTick from "../assets/images/light-tick.svg";
 import iconNavyTick from "../assets/images/navy-dark-tick.svg";
+import Image from "next/image";
 
 interface RightFitProps {
     theme?: "dark" | "light";
@@ -163,7 +164,7 @@ export function RightFit({
                         <ul className="flex flex-col gap-2">
                             {goodFitItems.map((item, idx) => (
                                 <li key={idx} className="flex items-center gap-2">
-                                    <img src={s.goodTickIcon} alt="check" className="w-6 h-6 shrink-0" />
+                                    <Image src={s.goodTickIcon} alt="check" className="w-6 h-6 shrink-0" />
                                     <span className={`font-sans font-medium text-[14px] leading-[22px] ${s.goodItemText}`}>
                                         {item}
                                     </span>

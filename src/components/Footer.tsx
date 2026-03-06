@@ -1,18 +1,31 @@
+"use client";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import logo from "../assets/images/logo.svg";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import uae from "../assets/images/icons/uae.svg";
 import us from "../assets/images/icons/us.svg";
 import india from "../assets/images/icons/in.svg";
 import brazil from "../assets/images/icons/br.svg";
+import Image from "next/image";
 
 const FacebookIcon = () => (
     <svg width="11" height="18" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.5957 10.125L10.0845 6.86742H7.02823V4.75348C7.02823 3.86227 7.45517 2.99355 8.82398 2.99355H10.2134V0.220078C10.2134 0.220078 8.95255 0 7.74702 0C5.23008 0 3.58489 1.56023 3.58489 4.38469V6.86742H0.787109V10.125H3.58489V18H7.02823V10.125H9.5957Z" fill="currentColor" /></svg>
 );
 
-const PinterestIcon = () => (
-    <svg width="15" height="20" viewBox="0 0 15 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.96875 0.253906C3.96094 0.253906 0 2.92578 0 7.25C0 10 1.54687 11.5625 2.48437 11.5625C2.87109 11.5625 3.09375 10.4844 3.09375 10.1797C3.09375 9.81641 2.16797 9.04297 2.16797 7.53125C2.16797 4.39063 4.55859 2.16406 7.65234 2.16406C10.3125 2.16406 12.2812 3.67578 12.2812 6.45312C12.2812 8.52734 11.4492 12.418 8.75391 12.418C7.78125 12.418 6.94922 11.7148 6.94922 10.707C6.94922 9.23047 7.98047 7.80078 7.98047 6.27734C7.98047 3.69141 4.3125 4.16016 4.3125 7.28516C4.3125 7.94141 4.39453 8.66797 4.6875 9.26562C4.14844 11.5859 3.04688 15.043 3.04688 17.4336C3.04688 18.1719 3.15234 18.8984 3.22266 19.6367C3.35547 19.7852 3.28906 19.7695 3.49219 19.6953C5.46094 17 5.39063 16.4727 6.28125 12.9453C6.76172 13.8594 8.00391 14.3516 8.98828 14.3516C13.1367 14.3516 15 10.3086 15 6.66406C15 2.78516 11.6484 0.253906 7.96875 0.253906Z" fill="currentColor" /></svg>
+const InstagramIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_2594_397)">
+            <path d="M17.9825 5.29205C17.9404 4.33561 17.7857 3.67813 17.5641 3.10835C17.3355 2.50358 16.9839 1.96214 16.5233 1.51201C16.0731 1.05489 15.5281 0.699676 14.9303 0.474702C14.3573 0.253174 13.7032 0.0984567 12.7468 0.0563313C11.7832 0.0105489 11.4773 0 9.0335 0C6.58966 0 6.28378 0.0105489 5.32379 0.0527447C4.36739 0.0949404 3.70987 0.249728 3.14026 0.471115C2.53532 0.699676 1.99388 1.05131 1.54375 1.51201C1.08663 1.9621 0.73159 2.50713 0.50644 3.1049C0.284913 3.67813 0.13023 4.3321 0.0880696 5.28846C0.0423224 6.25204 0.0317383 6.55792 0.0317383 9.00176C0.0317383 11.4456 0.0423224 11.7515 0.084483 12.7115C0.126679 13.6679 0.281467 14.3254 0.50303 14.8952C0.73159 15.4999 1.08663 16.0414 1.54375 16.4915C1.99388 16.9486 2.5389 17.3038 3.13668 17.5288C3.70984 17.7503 4.3638 17.9051 5.32038 17.9472C6.28019 17.9895 6.58625 17.9999 9.03009 17.9999C11.4739 17.9999 11.7798 17.9895 12.7398 17.9472C13.6962 17.905 14.3537 17.7504 14.9233 17.5288C15.5216 17.2975 16.0649 16.9438 16.5184 16.4902C16.972 16.0367 17.3258 15.4934 17.5571 14.8952C17.7785 14.322 17.9334 13.6679 17.9755 12.7115C18.0177 11.7515 18.0283 11.4456 18.0283 9.00176C18.0283 6.55792 18.0247 6.252 17.9825 5.29205ZM16.3616 12.6411C16.3228 13.5202 16.1752 13.9949 16.0521 14.3114C15.7497 15.0955 15.1273 15.7179 14.3431 16.0204C14.0267 16.1435 13.5485 16.2911 12.6729 16.3297C11.7235 16.372 11.4388 16.3824 9.03708 16.3824C6.63541 16.3824 6.3471 16.372 5.40111 16.3297C4.52203 16.2911 4.04733 16.1435 3.73086 16.0204C3.34066 15.8761 2.98548 15.6476 2.69714 15.3487C2.39825 15.0568 2.16969 14.7052 2.02545 14.315C1.90238 13.9985 1.75473 13.5202 1.71616 12.6447C1.67382 11.6953 1.66341 11.4104 1.66341 9.00876C1.66341 6.60708 1.67382 6.31878 1.71616 5.37296C1.75473 4.49388 1.90238 4.01918 2.02545 3.70271C2.16969 3.31233 2.39825 2.95722 2.70072 2.66881C2.99244 2.36992 3.34407 2.14136 3.73445 1.9973C4.05092 1.87423 4.52921 1.72654 5.4047 1.68783C6.3541 1.64563 6.63899 1.63508 9.04049 1.63508C11.4458 1.63508 11.7305 1.64563 12.6765 1.68783C13.5555 1.72658 14.0302 1.87419 14.3467 1.99726C14.7369 2.14136 15.0921 2.36992 15.3804 2.66881C15.6793 2.9607 15.9079 3.31233 16.0521 3.70271C16.1752 4.01918 16.3228 4.49729 16.3616 5.37296C16.4038 6.32236 16.4143 6.60708 16.4143 9.00876C16.4143 11.4104 16.4038 11.6917 16.3616 12.6411Z" fill="currentColor" />
+            <path d="M9.03362 4.37801C6.48085 4.37801 4.40967 6.44905 4.40967 9.00196C4.40967 11.5549 6.48085 13.6259 9.03362 13.6259C11.5865 13.6259 13.6576 11.5549 13.6576 9.00196C13.6576 6.44905 11.5865 4.37801 9.03362 4.37801ZM9.03362 12.0014C7.37751 12.0014 6.03413 10.6582 6.03413 9.00196C6.03413 7.34571 7.37751 6.00254 9.03358 6.00254C10.6898 6.00254 12.033 7.34571 12.033 9.00196C12.033 10.6582 10.6898 12.0014 9.03362 12.0014ZM14.92 4.19516C14.92 4.79132 14.4366 5.27467 13.8403 5.27467C13.2442 5.27467 12.7609 4.79132 12.7609 4.19516C12.7609 3.59893 13.2442 3.11572 13.8404 3.11572C14.4366 3.11572 14.92 3.5989 14.92 4.19516Z" fill="currentColor" />
+        </g>
+        <defs>
+            <clipPath id="clip0_2594_397">
+                <rect width="18" height="18" fill="white" />
+            </clipPath>
+        </defs>
+    </svg>
+
 );
 
 const XIcon = () => (
@@ -23,8 +36,13 @@ const LinkedInIcon = () => (
     <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.58143 15.7501H0.264286V5.23488H3.58143V15.7501ZM1.92107 3.80051C0.860357 3.80051 0 2.93566 0 1.89152C7.59214e-09 1.38998 0.202398 0.908987 0.562669 0.554346C0.92294 0.199704 1.41157 0.000468788 1.92107 0.000468788C2.43057 0.000468788 2.9192 0.199704 3.27947 0.554346C3.63974 0.908987 3.84214 1.38998 3.84214 1.89152C3.84214 2.93566 2.98143 3.80051 1.92107 3.80051ZM15.9964 15.7501H12.6864V10.6314C12.6864 9.41144 12.6614 7.84699 10.9618 7.84699C9.23714 7.84699 8.97286 9.17238 8.97286 10.5435V15.7501H5.65929V5.23488H8.84071V6.66926H8.88714C9.33 5.84309 10.4118 4.97121 12.0257 4.97121C15.3829 4.97121 16 7.14738 16 9.97395V15.7501H15.9964Z" fill="currentColor" /></svg>
 );
 
-const SkypeIcon = () => (
-    <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.0638 11.7109C17.1804 11.1641 17.2527 10.582 17.2527 10C17.2527 5.56641 13.5603 1.98047 9.00402 1.98047C8.40536 1.98047 7.81071 2.04688 7.2442 2.16406C6.4808 1.58984 5.53259 1.25 4.5 1.25C2.01696 1.25 0 3.21094 0 5.625C0 6.62891 0.349554 7.55078 0.936161 8.28906C0.819643 8.83594 0.747321 9.41797 0.747321 10C0.747321 14.4336 4.43973 18.0195 8.99598 18.0195C9.59464 18.0195 10.1893 17.9531 10.7558 17.8359C11.5192 18.4063 12.4674 18.7461 13.496 18.7461C15.979 18.7461 17.996 16.7852 17.996 14.3711C18 13.3711 17.6504 12.4492 17.0638 11.7109ZM9.24509 15.2852C6.60938 15.2852 4.40357 14.1445 4.40357 12.7461C4.40357 12.1211 4.76518 11.5508 5.58884 11.5508C6.84241 11.5508 6.95893 13.3047 9.12857 13.3047C10.1612 13.3047 10.8281 12.8594 10.8281 12.2773C10.8281 11.5469 10.1853 11.4336 9.14062 11.1836C6.62946 10.582 4.40759 10.3242 4.40759 7.77734C4.40759 5.46484 6.76205 4.60938 8.79107 4.60938C11.0049 4.60938 13.2429 5.46484 13.2429 6.77344C13.2429 7.43359 12.7848 8.01562 12.0254 8.01562C10.8884 8.01562 10.8522 6.70703 9.01205 6.70703C7.97946 6.70703 7.32455 6.98047 7.32455 7.58594C7.32455 8.35937 8.16027 8.4375 10.1009 8.875C11.7643 9.23828 13.7451 9.92187 13.7451 11.9062C13.7451 14.2148 11.4509 15.2852 9.24509 15.2852Z" fill="currentColor" /></svg>
+const TeamsIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15.5598 5.8815C16.4312 5.8815 17.1402 5.17266 17.1402 4.30128C17.0572 2.20626 14.062 2.2068 13.9796 4.30128C13.9794 5.17266 14.6882 5.8815 15.5598 5.8815ZM17.0356 7.2306H14.2571C14.3468 7.39188 14.3923 7.57548 14.3893 7.76052V12.4852C14.4 12.9702 14.3387 13.4541 14.2075 13.9212C14.1664 14.0622 14.1202 14.2017 14.0689 14.3393C14.3493 14.4401 14.6407 14.4911 14.9381 14.4909C16.3844 14.4909 17.5499 13.3252 17.5499 11.8926V7.74504C17.5498 7.60866 17.4956 7.4779 17.3992 7.38145C17.3027 7.285 17.172 7.23074 17.0356 7.2306ZM13.8523 7.65072C13.8109 7.4187 13.6039 7.23564 13.3667 7.2306H9.46949V12.7741C9.46921 13.0435 9.36206 13.3017 9.17157 13.4922C8.98107 13.6827 8.72279 13.7899 8.45339 13.7902H5.53613C6.71369 17.7656 12.0062 18.0101 13.5555 14.1966C13.7697 13.6542 13.8734 13.0744 13.8602 12.4913V7.7544C13.861 7.71967 13.8583 7.68494 13.8523 7.65072ZM8.45357 4.2417C8.72295 4.24194 8.98124 4.34904 9.17174 4.53951C9.36224 4.72997 9.46939 4.98824 9.46967 5.25762V5.85414C9.58847 5.87232 9.70583 5.8815 9.82013 5.8815C13.004 5.74992 13.004 1.2123 9.82013 1.0809C8.21165 1.05336 7.01087 2.7279 7.54331 4.2417H8.45357Z" fill="currentColor" />
+        <path d="M8.94061 12.7743V5.25772C8.94047 5.12864 8.88912 5.0049 8.79784 4.91365C8.70655 4.8224 8.58279 4.77109 8.45372 4.771H0.937095C0.808036 4.77114 0.684302 4.82246 0.593026 4.9137C0.501751 5.00494 0.450386 5.12866 0.450195 5.25772V12.7743C0.450291 12.9034 0.50162 13.0272 0.59291 13.1185C0.684201 13.2098 0.807991 13.2611 0.937095 13.2612H8.45372C8.58281 13.2611 8.70657 13.2097 8.79785 13.1185C8.88913 13.0272 8.94047 12.9034 8.94061 12.7743ZM6.93776 7.36696C6.93776 7.43713 6.90988 7.50443 6.86026 7.55406C6.81063 7.60368 6.74333 7.63156 6.67315 7.63156H5.43512V11.4585C5.43512 11.5287 5.40724 11.596 5.35762 11.6456C5.30799 11.6953 5.24069 11.7231 5.17052 11.7231H4.21328C4.1431 11.7231 4.0758 11.6953 4.02617 11.6456C3.97655 11.596 3.94868 11.5287 3.94868 11.4585V7.63156H2.71766C2.64748 7.63156 2.58018 7.60368 2.53055 7.55406C2.48093 7.50443 2.45306 7.43713 2.45306 7.36696V6.57316C2.45306 6.427 2.5715 6.30856 2.71766 6.30856H6.67315C6.81931 6.30856 6.93776 6.427 6.93776 6.57316V7.36696Z" fill="currentColor" />
+        <path d="M2.98242 7.10267H4.21344C4.3596 7.10267 4.47804 7.22111 4.47804 7.36727V11.1943H4.90608V7.36709C4.90608 7.22111 5.02452 7.10249 5.17068 7.10249H6.40872V6.83789H2.98242V7.10267Z" fill="currentColor" />
+    </svg>
+
 );
 
 const NewsletterArrow = () => (
@@ -109,8 +127,8 @@ export const Footer = () => {
                     {/* Left: Branding & Newsletter */}
                     <div className="flex flex-col gap-8 w-full max-w-xs md:max-w-sm mx-auto">
                         <div className="h-[82px] w-[276px] overflow-hidden">
-                            <Link to="/">
-                                <img src={logo} alt="Netizens" className="w-full h-auto max-h-[82px] object-contain object-left" />
+                            <Link href="/">
+                                <Image src={logo} alt="Netizens" className="w-full h-auto max-h-[82px] object-contain object-left" />
                             </Link>
                         </div>
                         <div className="flex flex-col gap-2 w-full">
@@ -138,11 +156,11 @@ export const Footer = () => {
                             onToggle={() => toggleAccordion('services')}
                         >
                             <div className="flex flex-col gap-3 font-sans font-normal text-sm text-carbon-black opacity-80 pb-2 md:pb-0">
-                                <Link to="/mvp-development" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Product Development</Link>
-                                <Link to="/staff-augmentation" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Staff Augmentation</Link>
-                                <Link to="/ai-consulting" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">AI Consulting & Automation</Link>
-                                <Link to="/workflow-digitization" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Workflow Digitization</Link>
-                                <Link to="/support-and-scale" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Support & Scale</Link>
+                                <Link href="/mvp-development" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Product Development</Link>
+                                <Link href="/staff-augmentation" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Staff Augmentation</Link>
+                                <Link href="/ai-consulting" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">AI Consulting & Automation</Link>
+                                <Link href="/workflow-digitization" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Workflow Digitization</Link>
+                                <Link href="/support-and-scale" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Support & Scale</Link>
                             </div>
                         </AccordionSection>
 
@@ -152,9 +170,9 @@ export const Footer = () => {
                             onToggle={() => toggleAccordion('company')}
                         >
                             <div className="flex flex-col gap-3 font-sans font-normal text-sm text-carbon-black opacity-80 pb-2 md:pb-0">
-                                <Link to="/about-us" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">About</Link>
+                                <Link href="/about-us" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">About</Link>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Case Studies</a>
-                                <Link to="/how-we-work" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">How We Work</Link>
+                                <Link href="/how-we-work" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">How We Work</Link>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Insights</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Careers</a>
                                 <a href="#" className="hover:text-regal-navy hover:underline underline-offset-4 decoration-regal-navy/30 transition-all">Contact</a>
@@ -167,10 +185,10 @@ export const Footer = () => {
                             onToggle={() => toggleAccordion('ourPresence')}
                         >
                             <div className="flex flex-col gap-3 opacity-80 pb-2 md:pb-0">
-                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">India <img src={india} width="24" alt="" /></p>
-                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">US <img src={us} width="24" alt="" /></p>
-                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">UAE <img src={uae} width="24" alt="" /></p>
-                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">Brazil <img src={brazil} width="24" alt="" /></p>
+                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">India <Image src={india} width="24" alt="" /></p>
+                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">US <Image src={us} width="24" alt="" /></p>
+                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">UAE <Image src={uae} width="24" alt="" /></p>
+                                <p className="flex flex-row-reverse justify-end items-center gap-2 font-sans font-normal text-sm text-carbon-black underline-offset-4 decoration-regal-navy/30 transition-all">Brazil <Image src={brazil} width="24" alt="" /></p>
                             </div>
                         </AccordionSection>
                     </div>
@@ -188,13 +206,13 @@ export const Footer = () => {
                             </a>
 
                             <div className="flex items-center gap-4 w-full">
-                                <a href="#" className="bg-regal-navy/10 hover:bg-regal-navy/20 transition-colors flex-1 flex items-center justify-between px-4 py-2 rounded-md group">
+                                <a href="tel:+917777940642" className="bg-regal-navy/10 hover:bg-regal-navy/20 transition-colors flex-1 flex items-center justify-between px-4 py-2 rounded-md group">
                                     <span className="font-sans font-medium text-sm text-regal-navy">Call Us</span>
                                     <span className="text-regal-navy w-5 h-5 flex items-center justify-center transform group-hover:scale-110 transition-transform">
                                         <PhoneIcon />
                                     </span>
                                 </a>
-                                <a href="#" className="bg-regal-navy/10 hover:bg-regal-navy/20 transition-colors flex-1 flex items-center justify-between px-4 py-2 rounded-md group">
+                                <a href="https://wa.me/+919313440642" className="bg-regal-navy/10 hover:bg-regal-navy/20 transition-colors flex-1 flex items-center justify-between px-4 py-2 rounded-md group">
                                     <span className="font-sans font-medium text-sm text-regal-navy">Whatsapp</span>
                                     <span className="text-regal-navy w-5 h-5 flex items-center justify-center transform group-hover:scale-110 transition-transform">
                                         <WhatsappIcon />
@@ -205,20 +223,20 @@ export const Footer = () => {
                             <hr className="border-t border-carbon-black/10 my-1 w-full" />
 
                             <div className="flex items-center gap-2">
-                                <a href="#" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+                                <a href="https://www.facebook.com/netizenstech" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
                                     <FacebookIcon />
                                 </a>
-                                <a href="#" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
-                                    <PinterestIcon />
+                                <a href="https://www.instagram.com/lyrcomercialsrl/" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+                                    <InstagramIcon />
                                 </a>
-                                <a href="#" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+                                <a href="https://x.com/netizenstech" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
                                     <XIcon />
                                 </a>
-                                <a href="#" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+                                <a href="https://www.linkedin.com/company/netizenstechnologies/posts/?feedView=all" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
                                     <LinkedInIcon />
                                 </a>
                                 <a href="#" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
-                                    <SkypeIcon />
+                                    <TeamsIcon />
                                 </a>
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -5,6 +6,7 @@ import sprintImg from '../assets/images/where-to-start-image/sprint-based-image.
 import projectImg from '../assets/images/where-to-start-image/prject-based-delivery-image.svg';
 import retainerImg from '../assets/images/where-to-start-image/try-retainer-based-delivery-image.svg';
 import { BookCallButton } from './BookCallButton';
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -141,7 +143,7 @@ export function WhereToStartSection() {
 
                             {/* Illustration */}
                             <div className="w-full h-[145px] rounded-lg overflow-hidden bg-gradient-to-b from-[#1a3f79] to-[#002a6b] flex items-center justify-center">
-                                <img
+                                <Image
                                     src={card.image}
                                     alt={card.title}
                                     className="w-full h-full object-contain"

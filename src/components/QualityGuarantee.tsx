@@ -1,6 +1,7 @@
 import shieldVector from "../assets/images/quality-shield-vector.svg";
 import tickIcon from "../assets/images/big-single-tick.svg";
 import { SidePattern } from "./SidePattern";
+import Image from "next/image";
 
 interface QualityItem {
     title: string;
@@ -101,9 +102,9 @@ export function QualityGuarantee(props: QualityGuaranteeProps) {
                             </div>
                         )}
                         <div className="relative w-[200px] h-[240px] lg:w-[250px] lg:h-[300px] flex items-center justify-center">
-                            <img src={shieldVector} alt="" className="absolute inset-0 w-full h-full object-contain" />
+                            <Image src={shieldVector} alt="" className="absolute inset-0 w-full h-full object-contain" />
                             <div className="relative flex flex-col items-center gap-2 lg:gap-3 px-4 -mt-7 lg:-mt-10">
-                                <img src={tickIcon} alt="" className="w-10 h-10 lg:w-[50px] lg:h-[50px]" />
+                                <Image src={tickIcon} alt="" className="w-10 h-10 lg:w-[50px] lg:h-[50px]" />
                                 <h3 className="font-headings font-normal text-base lg:text-lg text-white text-center leading-snug lg:leading-[25px]">
                                     {centerTitle}
                                 </h3>

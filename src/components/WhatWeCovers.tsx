@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import discoveryCallImage from '../assets/images/discovery-call-main-image.svg';
 import { SidePattern } from './SidePattern';
 
@@ -44,7 +45,7 @@ export function WhatWeCovers() {
 
                 {/* Illustration + inline separator */}
                 <div className="w-full overflow-hidden">
-                    <img
+                    <Image
                         src={discoveryCallImage}
                         alt="Discovery Call Process illustration"
                         className="w-full h-auto object-contain block"

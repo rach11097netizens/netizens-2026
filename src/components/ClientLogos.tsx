@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -34,6 +35,7 @@ import takeoutKit from "../assets/images/client-logos/takeoutkit.svg"
 import tarotTeas from "../assets/images/client-logos/tarotteas.svg"
 import uppTeam from "../assets/images/client-logos/uppteam.svg"
 import voiceApps from "../assets/images/client-logos/voiceapps.svg"
+import Image from 'next/image';
 
 interface LogoItem {
   src: string
@@ -57,8 +59,8 @@ const LOGOS: LogoItem[] = [
   { src: tarotTeas, alt: "Tarot Teas", href: "https://tarotteas.com/" },
   { src: emilyWeldCollins, alt: "Emily Weld Collins", href: "https://emilyweldcollins.com/" },
   { src: alDentalStudio, alt: "AL Dental Studio", href: "https://aldentalstudio.com/" },
-  { src: skylarkAI, alt: "Skylark AI", href: "https://skylarkai.com/", isMask: true },
-  { src: cazeAI, alt: "Caze AI", href: "https://napsys.ai/", isMask: true },
+  { src: skylarkAI, alt: "Skylark AI", href: "https://skylarkai.com/" },
+  { src: cazeAI, alt: "Caze AI", href: "https://napsys.ai/" },
   { src: coconutFilms, alt: "Coconut Films", href: "https://www.coconutfilms.co.in/" },
   { src: ppc, alt: "Pitch Perfekt Collective", href: "https://pitchperfektcollective.com/" },
   { src: athleticSolutions, alt: "Athletic Solutions", href: "https://athsolutions.shop/" },
@@ -144,30 +146,14 @@ const ClientLogos = () => {
                  transition-colors duration-200 rounded-sm"
       aria-label={logo.alt}
     >
-      {logo.isMask ? (
-        // Navy-tinted logos use CSS mask so the colour matches Figma
-        <div
-          className="w-[96px] h-[28px]"
-          style={{
-            backgroundColor: 'rgba(14,53,114,0.6)',
-            maskImage: `url('${logo.src}')`,
-            WebkitMaskImage: `url('${logo.src}')`,
-            maskRepeat: 'no-repeat',
-            WebkitMaskRepeat: 'no-repeat',
-            maskSize: 'contain',
-            WebkitMaskSize: 'contain',
-            maskPosition: 'center',
-            WebkitMaskPosition: 'center',
-          }}
-        />
-      ) : (
-        <img
-          src={logo.src}
-          alt={logo.alt}
-          className="w-[130px] h-[44px] object-contain"
-          loading="lazy"
-        />
-      )}
+      <Image
+        src={logo.src}
+        alt={logo.alt}
+        className="w-auto h-auto object-contain"
+        loading="lazy"
+        width={130}
+        height={44}
+      />
     </a>
   )
 

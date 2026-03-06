@@ -1,3 +1,4 @@
+"use client";
 import { useState } from 'react';
 import { SidePattern } from './SidePattern';
 import blogImg1 from '../assets/images/blog/blog-1.png';
@@ -5,6 +6,7 @@ import blogImg2 from '../assets/images/blog/blog-2.png';
 import blogImg3 from '../assets/images/blog/blog-3.png';
 import blogImg4 from '../assets/images/blog/blog-4.png';
 import blogImg5 from '../assets/images/blog/blog-5.png';
+import Image from 'next/image';
 
 const blogPosts = [
     {
@@ -124,7 +126,7 @@ export const BlogInsights = () => {
                 `}
                             >
                                 {/* Blog image */}
-                                <img
+                                <Image
                                     src={post.image}
                                     alt={post.title}
                                     className="absolute inset-0 w-full h-full object-cover"

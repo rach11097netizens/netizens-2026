@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import Link from 'next/link';
 import { SidePattern } from "./SidePattern";
 import { ArrowRight } from "lucide-react";
 import teamImage from "../assets/images/about-us-team-image.png";
+import Image from 'next/image';
 
 export function JoinTheTeamSection() {
   return (
@@ -21,14 +22,14 @@ export function JoinTheTeamSection() {
           <p className="font-sans text-[15px] md:text-base text-charcoal/80 leading-[26px]">
             We&apos;re always looking for engineers, designers, and problem-solvers who value structure, clarity, and impact.
           </p>
-          <Link to="/book-call" className="px-8 py-4 bg-button-gradient text-white text-sm rounded-button transition-colors flex items-center justify-center gap-2 font-medium">
-            Join the team
+          <Link href="/book-call" className="px-8 py-4 bg-button-gradient text-white text-sm rounded-button transition-colors flex items-center justify-center gap-2 font-medium">
+            View open roles
             <ArrowRight size={20} />
           </Link>
         </div>
 
         <div className="w-full flex justify-center">
-          <img
+          <Image
             src={teamImage}
             alt="Netizens team"
             className="w-full h-auto object-contain"

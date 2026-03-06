@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -9,6 +10,7 @@ import serviceImg2 from '../assets/images/service-img-2.svg'
 import serviceImg3 from '../assets/images/service-img-3.svg'
 import serviceImg4 from '../assets/images/service-img-4.svg'
 import serviceImg5 from '../assets/images/service-img-5.svg'
+import Image from 'next/image';
 
 const WhatWeHelp = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -106,7 +108,7 @@ const WhatWeHelp = () => {
                 className={`service-card group p-4 lg:p-8 bg-[#FFFAFA] border border-gray-200 rounded-md transition-all duration-300 ${colSpan}`}
               >
                 {/* Icon Placeholder */}
-                <img src={service.image} alt={service.title} className="w-full h-[180px] lg:h-[220px] object-contain object-center mb-5" />
+                <Image src={service.image} alt={service.title} className="w-full h-[180px] lg:h-[220px] object-contain object-center mb-5" />
 
                 <div className="space-y-2 lg:space-y-4">
                   {/* Content */}

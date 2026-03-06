@@ -1,6 +1,7 @@
-import { useEffect, useRef, useMemo } from 'react'
+"use client";
+import { useEffect, useRef, useMemo, useState } from 'react'
 import { BookCallButton } from './BookCallButton'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -13,6 +14,7 @@ import reactLogo from '../assets/images/icons/logo/react.svg'
 import figmaLogo from '../assets/images/icons/logo/figma.svg'
 import flutterLogo from '../assets/images/icons/logo/flutter.svg'
 import shopifyLogo from '../assets/images/icons/logo/shopify.svg'
+import Image from 'next/image';
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null)
@@ -27,7 +29,12 @@ const Hero = () => {
   const totalCells = totalRows * cellsPerRow
   const numLogos = 25
 
-  const marqueeLogoPositions = useMemo(() => {
+  // ✅ FIX 1: useState instead of useMemo — Math.random() only runs client-side
+  const [marqueeLogoPositions, setMarqueeLogoPositions] = useState<number[]>([])
+  const [marqueeBlockFillPositions, setMarqueeBlockFillPositions] = useState<number[]>([])
+
+  useEffect(() => {
+    // --- Logo positions ---
     const positions: number[] = []
     const usedPositions = new Set<number>()
 
@@ -81,20 +88,21 @@ const Hero = () => {
       if (usedPositions.size >= totalCells * 0.6) break
     }
 
-    return positions.sort((a, b) => a - b)
-  }, [])
+    const sortedPositions = positions.sort((a, b) => a - b) // ✅ FIX 2: no return, just sort
+    setMarqueeLogoPositions(sortedPositions)
 
-  const marqueeBlockFillPositions = useMemo(() => {
-    const positions: number[] = []
+    // --- Block fill positions (also uses Math.random, so compute here too) ---
+    const fillPositions: number[] = []
     for (let i = 0; i < totalRows * cellsPerRow; i++) {
       const row = Math.floor(i / cellsPerRow)
       const col = i % cellsPerRow
-      if (!marqueeLogoPositions.includes(i) && (row + col) % 4 === 0 && Math.random() > 0.5) {
-        positions.push(i)
+      if (!sortedPositions.includes(i) && (row + col) % 4 === 0 && Math.random() > 0.5) {
+        fillPositions.push(i)
       }
     }
-    return positions
-  }, [marqueeLogoPositions, totalRows, cellsPerRow])
+    setMarqueeBlockFillPositions(fillPositions) // ✅ FIX 3: client-only, no hydration mismatch
+
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const logos = [
     laravelLogo, oracleLogo, wordpressLogo, pythonLogo,
@@ -105,14 +113,8 @@ const Hero = () => {
     const section = heroRef.current
     if (!section || !headingRef.current) return
 
-    // FIX: Track whether this effect is still alive.
-    // If navigation happens during async callbacks, we bail out early
-    // instead of letting GSAP touch already-unmounted DOM nodes.
     let isMounted = true
 
-    // FIX: All GSAP logic, including the marquee, must live inside gsap.context()
-    // so it gets killed synchronously on unmount. We pass the dependencies (isMounted,
-    // images loaded, etc) into the context.
     const ctx = gsap.context((self) => {
       // Fade in hero content
       gsap.fromTo(
@@ -147,9 +149,6 @@ const Hero = () => {
           viewport.addEventListener('mouseenter', handleMouseEnter)
           viewport.addEventListener('mouseleave', handleMouseLeave)
 
-          // Add cleanups to the context so ctx.revert() undoes the event listeners
-          // FIX: Use `self.add` instead of closing over `ctx` to avoid ReferenceError
-          // when startMarquee executes synchronously for already-cached images.
           self.add(() => {
             viewport.removeEventListener('mouseenter', handleMouseEnter)
             viewport.removeEventListener('mouseleave', handleMouseLeave)
@@ -158,10 +157,8 @@ const Hero = () => {
 
         const images = track.querySelectorAll('img')
         if (images.length === 0) {
-          // If no images, start immediately
           startMarquee()
         } else {
-          // Wait for images to load before starting the marquee
           let loaded = 0
           const checkReady = () => {
             loaded++
@@ -182,8 +179,6 @@ const Hero = () => {
 
     return () => {
       isMounted = false
-      // Revert GSAP context — this instantly kills the fade-in, the marquee (if it started),
-      // and removes the mouseenter/leave event listeners via the ctx.add() cleanup block.
       ctx.revert()
     }
   }, [])
@@ -208,13 +203,13 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <BookCallButton />
-              <Link to="/how-we-work" className="px-8 py-4 border-2 border-gray-300 text-black text-sm rounded-md hover:bg-black hover:text-white hover:border-black transition-colors font-medium">
+              <Link href="/how-we-work" className="px-8 py-4 border-2 border-gray-300 text-black text-sm rounded-md hover:bg-black hover:text-white hover:border-black transition-colors font-medium">
                 How We Work
               </Link>
             </div>
 
             <p className="text-xs text-gray-500">
-              You don't need a perfect brief. <span className='font-bold text-black'>You need the right questions</span>
+              You don't need a perfect brief. <span className='font-bold text-black'>You need the right questions.</span>
             </p>
           </div>
 
@@ -231,7 +226,7 @@ const Hero = () => {
                     {hasBlockFill && <div className="marquee-block-fill" />}
                     {hasLogo && logoIndex >= 0 && (
                       <div className="icon-card">
-                        <img src={logos[logoIndex]} alt={`Logo ${logoIndex + 1}`}
+                        <Image src={logos[logoIndex]} alt={`Logo ${logoIndex + 1}`}
                           onError={(e) => { e.currentTarget.style.display = 'none' }} />
                       </div>
                     )}
@@ -248,7 +243,7 @@ const Hero = () => {
                     {hasBlockFill && <div className="marquee-block-fill" />}
                     {hasLogo && logoIndex >= 0 && (
                       <div className="icon-card">
-                        <img src={logos[logoIndex]} alt={`Logo ${logoIndex + 1}`}
+                        <Image src={logos[logoIndex]} alt={`Logo ${logoIndex + 1}`}
                           onError={(e) => { e.currentTarget.style.display = 'none' }} />
                       </div>
                     )}

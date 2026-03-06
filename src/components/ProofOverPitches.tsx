@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -13,6 +14,7 @@ import updatesIcon from '../assets/images/proof-to-pitches/updates-icon.svg';
 import supportIcon from '../assets/images/proof-to-pitches/support-icon.svg';
 import scaleIcon from '../assets/images/proof-to-pitches/scale-icon.svg';
 import sprintsIcon from '../assets/images/proof-to-pitches/sprint-icon.svg';
+import Image from 'next/image';
 
 const ProofOverPitches = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -181,12 +183,12 @@ const ProofOverPitches = () => {
 
           {/* Top connector - exact Figma SVG */}
           <div className="connector-top w-full max-w-[880px] h-[50px] sm:h-[80px] relative">
-            <img
+            <Image
               src={connectorTopSvg}
               alt=""
               className="w-[80%] lg:w-full h-full mx-auto hidden sm:block"
             />
-            <img
+            <Image
               src={connectorVerticalSvg}
               alt=""
               className="h-full w-[50px] mx-auto block sm:hidden"
@@ -200,7 +202,7 @@ const ProofOverPitches = () => {
                 key={index}
                 className="info-chip flex-1 flex flex-col gap-2 items-center justify-center px-4 lg:px-8 py-4 lg:py-[18px] bg-[rgba(14,53,114,0.1)] border border-[rgba(255,250,250,0.1)]"
               >
-                <img src={chip.icon} alt="Icon" className="w-[30px] h-[30px]" />
+                <Image src={chip.icon} alt="Icon" className="w-[30px] h-[30px]" />
                 <p className="text-xs lg:text-base font-medium text-[#0E3572] font-['Plus_Jakarta_Sans'] leading-[22px] text-center whitespace-nowrap">
                   {chip.title}
                 </p>
@@ -210,12 +212,12 @@ const ProofOverPitches = () => {
 
           {/* Bottom connector - exact Figma SVG */}
           <div className="connector-bottom w-full max-w-[880px] h-[50px] sm:h-[80px] relative">
-            <img
+            <Image
               src={connectorBottomSvg}
               alt=""
               className="w-[80%] lg:w-full h-full mx-auto hidden sm:block"
             />
-            <img
+            <Image
               src={connectorVerticalSvg}
               alt=""
               className="h-full w-[50px] mx-auto block sm:hidden"
@@ -240,7 +242,7 @@ const ProofOverPitches = () => {
 
           {/* Vertical connector line 1 - exact Figma SVG */}
           <div className="vertical-line-1 flex items-center justify-center h-[50px] w-[6px] mx-auto">
-            <img
+            <Image
               src={connectorVerticalSvg}
               alt=""
               className="h-full w-[50px]"
@@ -267,7 +269,7 @@ const ProofOverPitches = () => {
 
           {/* Vertical connector line 2 - exact Figma SVG */}
           <div className="vertical-line-2 flex items-center justify-center h-[50px] w-[6px] mx-auto">
-            <img
+            <Image
               src={connectorVerticalSvg}
               alt=""
               className="h-full w-[50px]"

@@ -1,6 +1,7 @@
+"use client";
 import { useEffect, useRef, useState } from 'react'
 import { SidePattern } from './SidePattern'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import gsap from 'gsap'
 
 interface Milestone {
@@ -526,7 +527,7 @@ const HowWeEngage = () => {
 
         {/* CTA */}
         <Link
-          to="/how-we-work"
+          href="/how-we-work"
           className="bg-white text-[#0E3572] text-xs sm:text-[14px] font-normal px-5 sm:px-[34px] py-3 sm:py-[18px] rounded-[4px] cursor-pointer hover:opacity-90 transition-opacity"
           style={{
             boxShadow:

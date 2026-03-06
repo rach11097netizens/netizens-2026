@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom";
+"use client";
+import Link from 'next/link'
 import { SidePattern } from "./SidePattern";
+import Image from 'next/image';
 
 interface DeliveryCard {
     number: number;
@@ -65,7 +67,7 @@ export function DeliveryModel({
                                 </p>
                             </div>
                             <div className="flex items-center justify-center mt-2 md:flex-1 md:items-end md:mt-0">
-                                <img
+                                <Image
                                     src={mainCard.image}
                                     alt={mainCard.title}
                                     className="w-full max-w-[280px] md:max-w-[580px] h-auto object-contain"
@@ -94,7 +96,7 @@ export function DeliveryModel({
                                 </p>
                             </div>
                             <div className="flex items-center justify-center mt-2 md:flex-1 md:items-end md:mt-0">
-                                <img
+                                <Image
                                     src={card.image}
                                     alt={card.title}
                                     className="w-full max-w-[280px] h-auto object-contain"
@@ -104,7 +106,7 @@ export function DeliveryModel({
                     ))}
                 </div>
 
-                <Link to="/how-we-work" className="px-8 py-4 bg-button-gradient text-white text-sm rounded-button transition-colors flex items-center justify-center gap-2 font-medium">
+                <Link href="/how-we-work" className="px-8 py-4 bg-button-gradient text-white text-sm rounded-button transition-colors flex items-center justify-center gap-2 font-medium">
                     See How We Work
                 </Link>
             </div>

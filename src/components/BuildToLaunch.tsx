@@ -1,5 +1,6 @@
-import { useLayoutEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+"use client";
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import Link from 'next/link'
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SidePattern } from "./SidePattern";
@@ -9,6 +10,7 @@ import iconLightTick from "../assets/images/light-tick.svg";
 import imgDiscover from "../assets/images/build-launch/discover-img.svg";
 import imgBuild from "../assets/images/build-launch/build-img.svg";
 import imgLaunch from "../assets/images/build-launch/launch-img.svg";
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -111,7 +113,7 @@ export function BuildToLaunch() {
                                             "Technical feasibility review"
                                         ].map((item, idx) => (
                                             <li key={idx} className="flex items-center gap-3">
-                                                <img src={iconDarkTick} alt="tick" className="w-[18px] h-[18px]" />
+                                                <Image src={iconDarkTick} alt="tick" className="w-[18px] h-[18px]" />
                                                 <span className="font-sans text-sm text-regal-navy">{item}</span>
                                             </li>
                                         ))}
@@ -119,7 +121,7 @@ export function BuildToLaunch() {
                                 </div>
                             </div>
                             <div className="flex-1 rounded-lg overflow-hidden flex items-center justify-center ">
-                                <img src={imgDiscover} alt="Discover Phase" className="w-full h-auto object-cover" />
+                                <Image src={imgDiscover} alt="Discover Phase" className="w-full h-auto object-cover" />
                             </div>
                         </div>
 
@@ -143,7 +145,7 @@ export function BuildToLaunch() {
                                             "Continuous feedback loops"
                                         ].map((item, idx) => (
                                             <li key={idx} className="flex items-center gap-3">
-                                                <img src={iconDarkTick} alt="tick" className="w-[18px] h-[18px]" />
+                                                <Image src={iconDarkTick} alt="tick" className="w-[18px] h-[18px]" />
                                                 <span className="font-sans text-sm text-regal-navy">{item}</span>
                                             </li>
                                         ))}
@@ -151,7 +153,7 @@ export function BuildToLaunch() {
                                 </div>
                             </div>
                             <div className="flex-1 rounded-lg overflow-hidden flex items-center justify-center ">
-                                <img src={imgBuild} alt="Build Phase" className="w-full h-auto object-cover" />
+                                <Image src={imgBuild} alt="Build Phase" className="w-full h-auto object-cover" />
                             </div>
                         </div>
 
@@ -175,7 +177,7 @@ export function BuildToLaunch() {
                                             "V2 and scaling recommendations"
                                         ].map((item, idx) => (
                                             <li key={idx} className="flex items-center gap-3">
-                                                <img src={iconDarkTick} alt="tick" className="w-[18px] h-[18px]" />
+                                                <Image src={iconDarkTick} alt="tick" className="w-[18px] h-[18px]" />
                                                 <span className="font-sans text-sm text-regal-navy">{item}</span>
                                             </li>
                                         ))}
@@ -183,7 +185,7 @@ export function BuildToLaunch() {
                                 </div>
                             </div>
                             <div className="flex-1 rounded-lg overflow-hidden flex items-center justify-center ">
-                                <img src={imgLaunch} alt="Launch Phase" className="w-full h-auto object-cover" />
+                                <Image src={imgLaunch} alt="Launch Phase" className="w-full h-auto object-cover" />
                             </div>
                         </div>
 
@@ -213,7 +215,7 @@ export function BuildToLaunch() {
 
                             {/* Model 1 */}
                             <div className="flex items-start gap-4">
-                                <img src={iconLightTick} alt="tick" className="w-6 h-6 mt-0.5 shrink-0" />
+                                <Image src={iconLightTick} alt="tick" className="w-6 h-6 mt-0.5 shrink-0" />
                                 <div className="flex flex-col gap-1">
                                     <h4 className="font-sans font-bold text-sm text-white">Fixed Scope</h4>
                                     <p className="font-sans font-medium text-xs text-white/80">Best for clearly defined MVPs</p>
@@ -222,7 +224,7 @@ export function BuildToLaunch() {
 
                             {/* Model 2 */}
                             <div className="flex items-start gap-4">
-                                <img src={iconLightTick} alt="tick" className="w-6 h-6 mt-0.5 shrink-0" />
+                                <Image src={iconLightTick} alt="tick" className="w-6 h-6 mt-0.5 shrink-0" />
                                 <div className="flex flex-col gap-1">
                                     <h4 className="font-sans font-bold text-sm text-white">Sprints</h4>
                                     <p className="font-sans font-medium text-xs text-white/80">Ideal for evolving ideas and fast validation</p>
@@ -231,7 +233,7 @@ export function BuildToLaunch() {
 
                             {/* Model 3 */}
                             <div className="flex items-start gap-4">
-                                <img src={iconLightTick} alt="tick" className="w-6 h-6 mt-0.5 shrink-0" />
+                                <Image src={iconLightTick} alt="tick" className="w-6 h-6 mt-0.5 shrink-0" />
                                 <div className="flex flex-col gap-1">
                                     <h4 className="font-sans font-bold text-sm text-white">Dedicated Teams</h4>
                                     <p className="font-sans font-medium text-xs text-white/80">Ongoing product development and scale</p>
@@ -241,7 +243,7 @@ export function BuildToLaunch() {
                         </div>
 
                         <div className="mt-2 w-full">
-                            <Link to="/how-we-work" className="w-full py-4 bg-white hover:bg-gray-50 text-carbon-black font-sans font-medium text-sm rounded transition-colors duration-200 border border-black/10 shadow-sm flex items-center justify-center">
+                            <Link href="/how-we-work" className="w-full py-4 bg-white hover:bg-gray-50 text-carbon-black font-sans font-medium text-sm rounded transition-colors duration-200 border border-black/10 shadow-sm flex items-center justify-center">
                                 Learn how we build
                             </Link>
                         </div>

@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 
 import imgReact from "../assets/images/tech-stack/react.png";
@@ -18,6 +19,8 @@ import imgLlm from "../assets/images/tech-stack/llm-integrations.png";
 import imgAiWorkflows from "../assets/images/tech-stack/ai-workflows.png";
 import imgAutomation from "../assets/images/tech-stack/automation-agents.png";
 import { SidePattern } from "./SidePattern";
+import Image from "next/image";
+import { StaticImageData } from "next/image";
 
 // ── Design Tokens ─────────────────────────────────────────────────────────────
 const NAVY = "#0e3572";
@@ -36,7 +39,7 @@ const BP_LG = 1024;  // full desktop bento
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface TechItem {
-    src: string;
+    src: StaticImageData | string;
     label: string;
     border?: boolean;
 }
@@ -55,15 +58,16 @@ interface TintCellDef { r: number; c: number; }
 
 // ── useWindowWidth ────────────────────────────────────────────────────────────
 function useWindowWidth(): number {
-    const [width, setWidth] = useState<number>(
-        typeof window !== "undefined" ? window.innerWidth : BP_LG + 1
-    );
-    useEffect(() => {
-        const handler = () => setWidth(window.innerWidth);
-        window.addEventListener("resize", handler);
-        return () => window.removeEventListener("resize", handler);
-    }, []);
-    return width;
+  const [width, setWidth] = useState<number>(0); // ✅ always 0 on server
+
+  useEffect(() => {
+    setWidth(window.innerWidth); // ✅ only runs on client after mount
+    const handler = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+
+  return width;
 }
 
 // ── TechIcon ──────────────────────────────────────────────────────────────────
@@ -79,7 +83,7 @@ const TechIcon: React.FC<TechItem & { size?: number }> = ({
             display: "flex", alignItems: "center", justifyContent: "center",
             padding: 8, boxSizing: "border-box", flexShrink: 0,
         }}>
-            <img src={src} alt={label} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+            <Image src={src} alt={label} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
         </div>
         <span style={{
             fontFamily: fontSans, fontSize: 11, color: CHARCOAL,
@@ -237,11 +241,14 @@ const mobileCategories = [
 // ── Main Component ────────────────────────────────────────────────────────────
 export const TechStack: React.FC = () => {
     const width = useWindowWidth();
-    const isMobile = width < BP_SM;
-    const isDesktop = width >= BP_LG;
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
+    const isMobile = mounted && width < BP_SM;
+    const isDesktop = mounted && width >= BP_LG;
 
     return (
-        <section style={{ width: "100%", background: "#f9f9f9", fontFamily: fontSans }}>
+        <section style={{ width: "100%", fontFamily: fontSans }}>
             <div style={{ display: "flex", alignItems: "stretch", width: "100%" }}>
 
                 {/* Left gutter — desktop only */}

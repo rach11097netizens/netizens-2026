@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback } from 'react'
+"use client";
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import favIcon from '../assets/images/favicon.svg'
 import { SidePattern } from './SidePattern'
 import { SeparatorPattern } from './SeparatorPattern'
+import Image from 'next/image';
 
 // Types 
 interface FAQItem {
@@ -188,7 +190,7 @@ const FAQ_CATEGORIES: FAQCategory[] = [
 const AgentAvatar = () => (
   <div className="flex-shrink-0 w-[36px] h-[36px] rounded-full border border-[#0e3572] bg-[rgba(179,179,179,0.09)] p-[4px] flex items-center justify-center">
     <div className="w-[28px] h-[28px] rounded-full bg-white flex items-center justify-center overflow-hidden">
-      <img src={favIcon} alt="Netizens" className="w-[22px] h-[22px] object-contain" />
+      <Image src={favIcon} alt="Netizens" className="w-[22px] h-[22px] object-contain" />
     </div>
   </div>
 )

@@ -1,3 +1,4 @@
+"use client";
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,7 +9,8 @@ import imgMvp from "../assets/images/product-partner/mvp-developement-img.svg";
 import imgWorkflow from "../assets/images/product-partner/workflow-digitization-img.svg";
 import imgAI from "../assets/images/product-partner/ai-consulting-img.svg";
 import imgStaffAug from "../assets/images/product-partner/staff-aug-img.svg";
-import { Link } from "react-router-dom";
+import Link from 'next/link';
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -152,12 +154,12 @@ export function ProductPartner() {
                                     <p className="font-sans font-medium text-sm md:text-base text-gray-600/75 leading-[22px] max-w-[360px]">
                                         {card.description}
                                     </p>
-                                    <Link to={card.link} className="text-sm uppercase text-[#0e3572] font-semibold hover:underline">
+                                    <Link href={card.link} className="text-sm uppercase text-[#0e3572] font-semibold hover:underline">
                                         Learn more
                                     </Link>
                                 </div>
                                 <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
-                                    <img
+                                    <Image
                                         src={card.image}
                                         alt={card.title}
                                         className="w-full max-w-[460px] h-auto object-contain"

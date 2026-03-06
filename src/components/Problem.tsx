@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -5,6 +6,7 @@ import { Button } from "./Button";
 import pattern from "../assets/images/pattern.png";
 import { ExternalLink } from "lucide-react";
 import { SidePattern } from "./SidePattern";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -187,7 +189,7 @@ export const Problem = ({ badge, heading, cards, innerCta, banner }: ProblemProp
                                     </p>
                                     {card.icon && (
                                         <div className="absolute bottom-4 right-8 opacity-40">
-                                            <img src={card.icon} alt={card.title} className="w-12 h-12 object-contain" />
+                                            <Image src={card.icon} alt={card.title} className="w-12 h-12 object-contain" />
                                         </div>
                                     )}
                                 </div>
@@ -209,7 +211,7 @@ export const Problem = ({ badge, heading, cards, innerCta, banner }: ProblemProp
                 <div ref={finalBannerRef} className="w-full max-w-[1016px] relative">
                     <div className="bg-regal-navy rounded-[10px] px-6 md:px-10 py-6 md:py-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden shadow-lg w-full">
                         <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none">
-                            <img src={pattern} alt="" className="w-full opacity-10" />
+                            <Image src={pattern} alt="" className="w-full opacity-10" />
                         </div>
                         <div className="relative z-10 flex-1">
                             {banner.content}

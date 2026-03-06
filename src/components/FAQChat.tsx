@@ -1,8 +1,10 @@
+"use client";
 import { useState, useEffect, useCallback } from 'react';
 import imgSeparatorPattern from '../assets/images/pattern.png';
 import favIcon from '../assets/images/favicon.svg';
 import { SidePattern } from './SidePattern';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export interface FAQItem {
     question: string;
@@ -18,7 +20,7 @@ interface FAQChatProps {
 const AgentAvatar = () => (
     <div className="flex-shrink-0 w-[36px] h-[36px] rounded-full border border-[#0e3572] bg-[rgba(179,179,179,0.09)] p-[4px] flex items-center justify-center">
         <div className="w-[28px] h-[28px] rounded-full bg-white flex items-center justify-center overflow-hidden">
-            <img src={favIcon} alt="Netizens" className="w-[22px] h-[22px] object-contain" />
+            <Image src={favIcon} alt="Netizens" className="w-[22px] h-[22px] object-contain" />
         </div>
     </div>
 );
@@ -219,7 +221,7 @@ export const FAQChat = ({ faqs, theme = 'dark' }: FAQChatProps) => {
                     </div>
                 </div>
 
-                <Link to="/faq" className="rounded-md w-full sm:w-auto h-auto px-8 py-4 text-[14px] text-regal-navy hover:!text-regal-navy bg-white hover:bg-white/90">
+                <Link href="/faq" className="rounded-md w-full sm:w-auto h-auto px-8 py-4 text-[14px] text-regal-navy hover:!text-regal-navy bg-white hover:bg-white/90">
                     See all FAQs
                 </Link>
             </div>

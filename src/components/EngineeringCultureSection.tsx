@@ -6,6 +6,7 @@ import iconCleanArch from "../assets/images/engine-culture/clean-arch.svg";
 import iconMaintainCode from "../assets/images/engine-culture/maintain-code.svg";
 import iconLongReliable from "../assets/images/engine-culture/long-reliable.svg";
 import iconProdThinking from "../assets/images/engine-culture/prod-thinking.svg";
+import Image from "next/image";
 
 const cards = [
   {
@@ -69,7 +70,7 @@ export function EngineeringCultureSection() {
             >
               <div className="flex flex-col gap-4 relative z-10">
                 <div className="bg-[#E8ECF0] rounded-[8px] p-1.5 w-fit">
-                  <img src={card.icon} alt={card.title} className="w-16 h-16 object-contain" />
+                  <Image src={card.icon} alt={card.title} className="w-16 h-16 object-contain" />
                 </div>
                 <h3 className="font-headings font-normal text-lg md:text-[18px] text-carbon-black leading-[25px]">
                   {card.title}

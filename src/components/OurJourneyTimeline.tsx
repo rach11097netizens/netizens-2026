@@ -1,3 +1,4 @@
+"use client";
 import { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import imgSeparatorPattern from '../assets/images/pattern.png';

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import iconNavyTick from "../assets/images/navy-dark-tick.svg";
 import imgWhatDefinesUs from "../assets/images/what-defines-us-img.svg";
 
@@ -22,7 +23,7 @@ export function WhatDefinesUs({ image = imgWhatDefinesUs, imageAlt = "Netizens t
           {/* Left: Image / Media */}
           <div className="relative w-full aspect-[4/3] lg:aspect-auto lg:min-h-[500px] overflow-hidden">
             {image ? (
-              <img
+              <Image
                 src={image}
                 alt={imageAlt}
                 className="w-full h-full object-cover"
@@ -62,7 +63,7 @@ export function WhatDefinesUs({ image = imgWhatDefinesUs, imageAlt = "Netizens t
                     key={label}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-regal-navy/20 bg-[#0E3572]/5"
                   >
-                    <img src={iconNavyTick} alt="" className="w-4 h-4 shrink-0" />
+                    <Image src={iconNavyTick} alt="" className="w-4 h-4 shrink-0" />
                     <span className="font-sans font-medium text-[14px] text-regal-navy">
                       {label}
                     </span>

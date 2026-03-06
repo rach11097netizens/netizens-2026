@@ -1,8 +1,11 @@
+"use client";
 import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import Link from 'next/link';
 import { BookCallButton } from "./BookCallButton";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
+import { usePathname } from 'next/navigation'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +29,8 @@ export function Hero({
   imageAlt,
 }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
+
+  const pathname = usePathname()
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -102,15 +107,17 @@ export function Hero({
           <BookCallButton>
             {primaryCta}
           </BookCallButton>
-          <Link to="/how-we-work" className="px-8 py-4 border-2 border-gray-300 text-black text-sm rounded-md hover:bg-black hover:text-white hover:border-black transition-colors font-medium">
-            {secondaryCta}
-          </Link>
+          {pathname !== '/how-we-work' && (
+            <Link href="/how-we-work" className="px-8 py-4 border-2 border-gray-300 text-black text-sm rounded-md hover:bg-black hover:text-white hover:border-black transition-colors font-medium">
+              {secondaryCta}
+            </Link>
+          )}
         </div>
       </div>
 
       <div className="hero-animate-image w-full lg:w-[50%] flex items-center justify-center relative">
         <div className="relative w-full max-w-[648px] flex items-center justify-center">
-          <img
+          <Image
             src={image}
             alt={imageAlt}
             className="w-full h-auto object-contain"

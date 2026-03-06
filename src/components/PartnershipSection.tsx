@@ -1,9 +1,11 @@
+"use client";
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SidePattern } from './SidePattern';
 import partnershipCenterImg from '../assets/images/partnership-center-img.png';
 import netIconSrc from '../assets/images/net-icon.svg';
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -119,7 +121,7 @@ export function PartnershipSection() {
                                 <span className="font-sans font-normal text-base leading-6 text-white">
                                     The Netizens Philosophy
                                 </span>
-                                <img src={netIconSrc} alt="Netizens" className="w-8 h-8 object-contain" />
+                                <Image src={netIconSrc} alt="Netizens" className="w-8 h-8 object-contain" />
                             </div>
                         </div>
                     </div>
@@ -131,7 +133,7 @@ export function PartnershipSection() {
                             <div className="w-[160px] h-[160px] rounded-full overflow-hidden"
                                 style={{ boxShadow: '0 0 40px rgba(62,175,209,0.15), 0 0 80px rgba(14,53,114,0.3)' }}
                             >
-                                <img src={partnershipCenterImg} alt="Partnership" className="w-full h-full object-cover" />
+                                <Image src={partnershipCenterImg} alt="Partnership" className="w-full h-full object-cover" />
                             </div>
                             <div className="flex flex-col gap-3">
                                 {LABEL_ITEMS.map((label, i) => (
@@ -154,7 +156,7 @@ export function PartnershipSection() {
                                 className="absolute rounded-full overflow-hidden w-[200px] aspect-ratio"
                                 style={{ left: 0, top: '50%', transform: 'translateY(-50%)', boxShadow: '0 0 40px rgba(62,175,209,0.15), 0 0 80px rgba(14,53,114,0.3)' }}
                             >
-                                <img src={partnershipCenterImg} alt="Partnership" className="w-full h-full object-cover" />
+                                <Image src={partnershipCenterImg} alt="Partnership" className="w-full h-full object-cover" />
                             </div>
 
                             {/* SVG connector lines overlay - elbow lines from decagon edge points */}

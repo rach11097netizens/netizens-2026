@@ -1,7 +1,9 @@
+"use client";
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import netIconSrc from '../assets/images/net-icon.svg';
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -166,7 +168,7 @@ export function OurPromiseSection() {
                                     '0 0 0 1px rgba(14,53,114,0.12), 0 0 24px rgba(14,53,114,0.25), 0 0 56px rgba(14,53,114,0.1)',
                             }}
                         >
-                            <img
+                            <Image
                                 src={netIconSrc}
                                 alt="Netizens"
                                 className="w-14 md:w-16 h-auto object-contain"

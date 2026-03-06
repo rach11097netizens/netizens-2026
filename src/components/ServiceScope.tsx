@@ -1,6 +1,7 @@
 import { BookCallButton } from "./BookCallButton";
 import imgSeparatorPattern from "../assets/images/pattern.png";
 import { SidePattern } from "./SidePattern";
+import Image from "next/image";
 
 interface ServiceCard {
     icon: string;
@@ -67,7 +68,7 @@ export function ServiceScope({ badge, heading, cards, ctaCards, footerText }: Se
                         >
                             <div className="flex flex-col gap-4 relative z-10">
                                 <div className="bg-white/10 rounded-[8px] p-1.5 w-fit">
-                                    <img src={svc.icon} alt={svc.title} className="w-16 h-16 object-contain" />
+                                    <Image src={svc.icon} alt={svc.title} className="w-16 h-16 object-contain" />
                                 </div>
                                 <h3 className="font-headings font-normal text-lg md:text-[18px] text-white leading-[25px]">
                                     {svc.title}

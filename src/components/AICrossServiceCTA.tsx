@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+"use client";
+import Link from 'next/link'
 import { SidePattern } from "./SidePattern";
 import patternImg from "../assets/images/pattern.png";
 import strengthLayerIcon from "../assets/images/ai-automation-3icon-cta/strength-layer.svg";
 import productiveAiIcon from "../assets/images/ai-automation-3icon-cta/productive-ai.svg";
 import scaleConfidenceIcon from "../assets/images/ai-automation-3icon-cta/scale-with-confidence.svg";
+import Image from 'next/image';
 
 const cards = [
     {
@@ -61,7 +63,7 @@ export function AICrossServiceCTA() {
 
                             <div className="relative z-10 flex flex-col gap-5 flex-1">
                                 <div className="bg-white/10 rounded-[8px] p-1.5 w-fit">
-                                    <img src={card.icon} alt={card.title} className="w-12 h-12 object-contain" />
+                                    <Image src={card.icon} alt={card.title} className="w-12 h-12 object-contain" />
                                 </div>
                                 <h3 className="font-headings font-semibold text-xl text-white leading-snug">
                                     {card.title}
@@ -72,7 +74,7 @@ export function AICrossServiceCTA() {
                             </div>
 
                             <Link
-                                to={card.href}
+                                href={card.href}
                                 className="relative z-10 bg-white text-regal-navy font-sans font-medium text-sm px-6 py-3 rounded-[6px] hover:bg-white/90 transition-colors text-center"
                             >
                                 {card.cta}

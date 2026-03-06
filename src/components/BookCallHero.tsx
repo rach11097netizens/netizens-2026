@@ -1,3 +1,5 @@
+"use client";
+import Image from 'next/image';
 import iconNavyTick from '../assets/images/navy-dark-tick.svg';
 import { Button } from './Button';
 
@@ -11,7 +13,7 @@ const FEATURES = [
 
 export function BookCallHero() {
     return (
-        <section className="relative w-full max-w-7xl mx-auto px-4 py-12 md:py-[70px] flex flex-col lg:flex-row gap-8 lg:gap-6 items-center">
+        <section id='book-call-hero' className="relative w-full max-w-7xl mx-auto px-4 py-12 md:py-[70px] flex flex-col lg:flex-row gap-8 lg:gap-6 items-center">
             {/* Left Content */}
             <div className="flex-1 flex flex-col gap-5 items-start justify-center">
                 {/* Badge */}
@@ -39,7 +41,7 @@ export function BookCallHero() {
                             key={i}
                             className="flex items-center gap-2 bg-white border border-[#0E3572]/40 rounded-full px-3 py-1.5"
                         >
-                            <img src={iconNavyTick} alt="" className="w-6 h-6 shrink-0" />
+                            <Image src={iconNavyTick} alt="" className="w-6 h-6 shrink-0" />
                             <span className="font-sans font-medium text-sm leading-[22px] text-regal-navy">
                                 {feature}
                             </span>

@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom'
+"use client";
+import { useRouter, usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
 interface BookCallButtonProps {
@@ -22,9 +24,20 @@ export const BookCallButton = ({
         white: "bg-white text-regal-navy border border-gray-200"
     }
 
+    const pathname = usePathname()
+    const router = useRouter()
+
+    const handleClick = (e: React.MouseEvent, href: string) => {
+        if (pathname === href) {
+            e.preventDefault()
+            window.scrollTo({ top: 0, behavior: 'smooth' }) // or router.refresh()
+        }
+    }
+
     return (
         <Link
-            to="/book-call"
+            href="/book-call"
+            onClick={(e) => handleClick(e, "/book-call")}
             className={`${baseStyles} ${variants[variant]} ${className}`}
         >
             {children || "Book a Discovery Call"}

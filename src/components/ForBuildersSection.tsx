@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, useRef } from 'react'
 import { SidePattern } from './SidePattern'
 import gsap from 'gsap'
@@ -10,6 +11,7 @@ import tabImg2 from '../assets/images/tab-img-2.svg'
 import tabImg3 from '../assets/images/tab-img-3.svg'
 import patternBg from '../assets/images/pattern-bg.png'
 import { BookCallButton } from './BookCallButton'
+import Image from 'next/image';
 
 /* ─── Tab data ─── */
 interface TabInfo {
@@ -224,7 +226,7 @@ const ForBuildersSection = () => {
                     // style={{ height: '578px' }}
                     >
                         <div ref={illustrationRef} className="w-full h-full bg-[#274b83] rounded-xl">
-                            <img
+                            <Image
                                 src={tabImages[activeTab]}
                                 alt={tabsData[activeTab].title}
                                 className="w-full h-full object-contain rounded-[10px]"

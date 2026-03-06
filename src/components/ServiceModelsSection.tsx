@@ -1,9 +1,11 @@
+"use client";
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SidePattern } from './SidePattern';
 import iconNavyTick from '../assets/images/icons/blue-bullet-icon.svg';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,7 +58,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, items, ct
                 {items.map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                         <div className="mt-0.5 flex-shrink-0">
-                            <img src={iconNavyTick} alt="tick" className="w-5 h-5" />
+                            <Image src={iconNavyTick} alt="tick" className="w-5 h-5" />
                         </div>
                         <span className="font-sans text-[15px] font-medium text-regal-navy">
                             {item}
@@ -65,7 +67,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, items, ct
                 ))}
             </div>
 
-            <Link to={link}
+            <Link href={link}
                 className="w-full bg-regal-navy/10 hover:bg-regal-navy text-regal-navy hover:text-white font-bold py-4 rounded-md transition-all duration-300 flex items-center justify-center gap-2 mt-auto"
             >
                 {cta}

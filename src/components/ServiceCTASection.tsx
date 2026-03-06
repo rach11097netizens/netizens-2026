@@ -14,6 +14,7 @@ export function ServiceCTASection({
     ctaLabel = "Book a Discovery Call",
     subtext,
 }: ServiceCTASectionProps) {
+
     return (
         <section className="relative w-full bg-regal-navy flex flex-col items-center py-20 overflow-hidden">
             <div className="absolute inset-0 pointer-events-none opacity-10">

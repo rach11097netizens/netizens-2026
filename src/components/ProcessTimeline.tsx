@@ -1,7 +1,9 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { SidePattern } from "./SidePattern";
 import { BookCallButton } from "./BookCallButton";
+import Link from "next/link";
 
 interface ProcessStep {
     title: string;
@@ -254,9 +256,9 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
                 {/* CTA */}
                 {ctaLabel && (
                     <div className="text-center mt-10">
-                        <BookCallButton variant="navy-radial" showArrow={false}>
+                        <Link href="/how-we-work" className="px-8 py-4 bg-button-gradient text-white text-sm rounded-button transition-colors flex items-center justify-center gap-2 font-medium">
                             {ctaLabel}
-                        </BookCallButton>
+                        </Link>
                     </div>
                 )}
             </div>

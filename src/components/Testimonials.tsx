@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -9,6 +10,7 @@ import testimonialAvatar1 from '../assets/images/testimonial-avatar-1.png'
 import testimonialAvatar2 from '../assets/images/testimonial-avatar-2.png'
 import testimonialAvatar3 from '../assets/images/testimonial-avatar-3.png'
 import testimonialAvatar4 from '../assets/images/testimonial-avatar-4.png'
+import Image from 'next/image';
 
 const Testimonials = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -131,7 +133,7 @@ const Testimonials = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-[80px] bg-white relative overflow-hidden">
+    <section ref={sectionRef} className="py-[80px] relative overflow-hidden">
       {/* Side line patterns */}
       <SidePattern />
 
@@ -158,7 +160,7 @@ const Testimonials = () => {
             className="testimonial-card card-tall-left flex flex-col gap-[18px] p-[18px] rounded-[10px] w-full lg:w-[312px] h-auto lg:h-[384px] backdrop-blur-[2px] bg-[#EEECF0] border border-[rgba(88,89,91,0.1)] transition-colors duration-300"
           >
             <div className="quote-mark w-[27px] h-[22px] shrink-0">
-              <img
+              <Image
                 src={quoteMarkSvg}
                 alt=""
                 className="w-full h-full block"
@@ -169,7 +171,7 @@ const Testimonials = () => {
             </p>
             <div className="author-info flex gap-2 items-center w-full">
               <div className="avatar-circle w-[42px] h-[42px] rounded-[80px] shrink-0 overflow-hidden relative">
-                <img
+                <Image
                   src={testimonialAvatar1}
                   alt="Sarah Jones"
                   className="absolute w-[168.42%] h-[252.38%] max-w-none"
@@ -198,12 +200,8 @@ const Testimonials = () => {
               </p>
               <div className="author-info flex gap-2 items-center w-full">
                 <div className="avatar-circle w-[42px] h-[42px] rounded-[80px] shrink-0 overflow-hidden relative">
-                  <img
-                    src={testimonialAvatar2}
-                    alt="Ben"
-                    className="absolute h-full max-w-none"
-                    style={{ width: '150.26%', left: '-30.33%', top: '-0.91%' }}
-                  />
+                  <Image src={testimonialAvatar2} alt="Ben" className="absolute h-full max-w-none"
+                    style={{ width: '150.26%', left: '-30.33%', top: '-0.91%' }} />
                 </div>
                 <div className="flex flex-col gap-[6px] justify-center text-[#58595B] w-[313px]">
                   <p className="text-base font-medium font-['Plus_Jakarta_Sans'] leading-[24px]">
@@ -225,7 +223,7 @@ const Testimonials = () => {
               </p>
               <div className="author-info flex gap-2 items-center w-full">
                 <div className="avatar-circle w-[42px] h-[42px] rounded-[100px] shrink-0 overflow-hidden relative">
-                  <img
+                  <Image
                     src={testimonialAvatar3}
                     alt="Myra"
                     className="absolute h-full max-w-none"
@@ -249,7 +247,7 @@ const Testimonials = () => {
             className="testimonial-card card-tall-right flex flex-col gap-[18px] p-[18px] rounded-[10px] w-full lg:w-[312px] h-auto lg:h-[384px] bg-[#EEECF0] border border-[rgba(88,89,91,0.1)] transition-colors duration-300"
           >
             <div className="quote-mark w-[27px] h-[22px] shrink-0">
-              <img
+              <Image
                 src={quoteMarkSvg}
                 alt=""
                 className="w-full h-full block"
@@ -260,7 +258,7 @@ const Testimonials = () => {
             </p>
             <div className="author-info flex gap-2 items-center w-full">
               <div className="avatar-circle w-[42px] h-[42px] rounded-[100px] shrink-0 overflow-hidden relative">
-                <img
+                <Image
                   src={testimonialAvatar4}
                   alt="Jeremiah"
                   className="absolute max-w-none"
