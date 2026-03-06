@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -49,48 +49,59 @@ const stats = [
 
 export function NetizensByNumbers() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const hasAnimated = useRef(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const ctx = gsap.context(() => {
       const counterEls = section.querySelectorAll<HTMLElement>(".stat-number");
 
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top 75%",
-        once: true,
-        onEnter: () => {
-          if (hasAnimated.current) return;
-          hasAnimated.current = true;
+      counterEls.forEach((el, i) => {
+        const target = stats[i].numericValue;
+        const suffix = stats[i].suffix;
+        const obj = { val: 0 };
 
-          counterEls.forEach((el, i) => {
-            const target = stats[i].numericValue;
-            const suffix = stats[i].suffix;
-            const obj = { val: 0 };
-
-            gsap.to(obj, {
-              val: target,
-              duration: 1.8,
-              delay: i * 0.12,
-              ease: "power3.out",
-              force3D: true,
-              onUpdate: () => {
-                el.textContent = Math.round(obj.val) + suffix;
-              },
-              onComplete: () => {
-                el.textContent = target + suffix;
-              },
-            });
-          });
-        },
+        gsap.to(obj, {
+          val: target,
+          duration: 1.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 85%",
+            once: true,
+          },
+          onUpdate: () => {
+            el.textContent = Math.round(obj.val) + suffix;
+          },
+          onComplete: () => {
+            el.textContent = target + suffix;
+          },
+        });
       });
     }, section);
 
+    const scheduleRefresh = () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+        });
+      });
+    };
+
+    if (document.readyState === "complete") {
+      scheduleRefresh();
+    } else {
+      window.addEventListener("load", scheduleRefresh, { once: true });
+    }
+
+    const onResize = () => ScrollTrigger.refresh();
+    window.addEventListener("resize", onResize);
+
     return () => {
       ctx.revert();
+      window.removeEventListener("load", scheduleRefresh);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 

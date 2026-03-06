@@ -195,7 +195,7 @@ export function ProcessTimeline({ badge, heading, steps, ctaLabel }: ProcessTime
                             {/* Card */}
                             <div
                                 ref={(el) => { cardsRef.current[i] = el; }}
-                                className="w-full bg-white rounded-[10px] border p-[18px] flex flex-col gap-[10px] h-[190px] cursor-pointer"
+                                className="w-full bg-white rounded-[10px] border p-[18px] flex flex-col gap-[10px] h-full cursor-pointer"
                                 style={{
                                     opacity: i === 0 ? 1 : 0.5,
                                     borderColor: i === 0 ? "#0E3572" : "rgba(14,53,114,0.1)",

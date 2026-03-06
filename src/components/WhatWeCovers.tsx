@@ -31,7 +31,7 @@ export function WhatWeCovers() {
 
             <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 flex flex-col items-center">
                 {/* Header */}
-                <div className="flex flex-col items-center gap-3 text-center">
+                <div className="flex flex-col items-center gap-3 text-center mb-4 lg:mb-8">
                     <div className="bg-regal-navy/5 border border-regal-navy/10 inline-flex items-center justify-center px-[18px] py-[8px] rounded-[4px]">
                         <span className="font-sans font-bold text-[12px] text-regal-navy text-center">
                             What We'll Cover
