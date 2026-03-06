@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { SidePattern } from "./SidePattern";
-import { BookCallButton } from "./BookCallButton";
 import Link from "next/link";
 
 interface ProcessStep {

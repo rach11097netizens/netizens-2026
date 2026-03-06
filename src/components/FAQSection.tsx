@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import favIcon from '../assets/images/favicon.svg'
 import { SidePattern } from './SidePattern'
 import { SeparatorPattern } from './SeparatorPattern'

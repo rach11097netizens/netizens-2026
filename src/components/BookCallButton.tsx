@@ -25,7 +25,6 @@ export const BookCallButton = ({
     }
 
     const pathname = usePathname()
-    const router = useRouter()
 
     const handleClick = (e: React.MouseEvent, href: string) => {
         if (pathname === href) {

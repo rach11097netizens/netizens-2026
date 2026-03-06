@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BookCallButton } from './BookCallButton'
 import Link from 'next/link'
 import gsap from 'gsap'
