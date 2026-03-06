@@ -105,9 +105,12 @@ const WhoWeWorkWith = () => {
 
       const chipsRevealed = new Array(total).fill(false)
       const revealChipsIfNeeded = (index: number) => {
-        if (index < 0 || index >= total || chipsRevealed[index]) return
-        chipsRevealed[index] = true
-        animateChipsIn(cardEls[index])
+        if (index < 0 || index >= total) return
+        for (let j = 0; j <= index; j++) {
+          if (chipsRevealed[j]) continue
+          chipsRevealed[j] = true
+          animateChipsIn(cardEls[j])
+        }
       }
 
       revealChipsIfNeeded(0)
@@ -120,10 +123,10 @@ const WhoWeWorkWith = () => {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: `+=${total * 80}%`,
+          end: `+=${total * 100}%`,
           pin: true,
           pinSpacing: true,
-          scrub: 0.5,
+          scrub: 1,
           anticipatePin: 1,
           onUpdate(self) {
             const t = self.progress * TOTAL_DUR
@@ -223,7 +226,7 @@ const WhoWeWorkWith = () => {
         <div
           ref={cardStackRef}
           className="relative w-full max-w-[1096px]"
-          style={{ height: '380px'}}
+          style={{ height: '380px' }}
         >
           {audiences.map((audience, index) => (
             <article
