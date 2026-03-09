@@ -88,7 +88,7 @@ const AccordionSection = ({
             tabIndex={0}
             onClick={onToggle}
             onKeyDown={(e) => e.key === 'Enter' && onToggle()}
-            className="flex items-center justify-between w-full border-b border-carbon-black/10 cursor-pointer md:cursor-default md:border-none md:pb-0 md:mb-4"
+            className="flex items-center justify-between w-full py-3 lg:py-0 border-b border-carbon-black/10 cursor-pointer md:cursor-default md:border-none md:pb-0 md:mb-4"
         >
             <h3 className="font-sans font-bold text-sm text-[#0e3572]">{title}</h3>
             {/* Chevron — decorative on mobile, hidden on desktop */}
@@ -122,7 +122,7 @@ export const Footer = () => {
         <footer className="w-full flex flex-col font-sans">
             {/* Top White Section */}
             <div className="w-full bg-white flex flex-col items-center py-10 md:py-16 px-4 md:px-8">
-                <div className="w-full max-w-[1320px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[auto_1fr_auto] gap-4 md:gap-10 xl:gap-16 2xl:gap-20">
+                <div className="w-full max-w-[1320px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[auto_1fr_auto] gap-3 md:gap-10 xl:gap-16 2xl:gap-20">
 
                     {/* Left: Branding & Newsletter */}
                     <div className="flex flex-col gap-8 w-full max-w-xs md:max-w-sm mx-auto">
@@ -224,19 +224,19 @@ export const Footer = () => {
                             <hr className="border-t border-carbon-black/10 my-1 w-full" />
 
                             <div className="flex items-center gap-2">
-                                <a href="https://www.facebook.com/netizenstech" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+                                <a href="https://www.facebook.com/netizenstech" aria-label="Follow us on Facebook" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
                                     <FacebookIcon aria-hidden="true" />
                                 </a>
-                                <a href="https://www.instagram.com/lyrcomercialsrl/" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+                                <a href="https://www.instagram.com/lyrcomercialsrl/" aria-label="Follow us on Instagram" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
                                     <InstagramIcon aria-hidden="true" />
                                 </a>
-                                <a href="https://x.com/netizenstech" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+                                <a href="https://x.com/netizenstech" aria-label="Follow us on X" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
                                     <XIcon aria-hidden="true" />
                                 </a>
-                                <a href="https://www.linkedin.com/company/netizenstechnologies/posts/?feedView=all" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+                                <a href="https://www.linkedin.com/company/netizenstechnologies/posts/?feedView=all" aria-label="Follow us on LinkedIn" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
                                     <LinkedInIcon aria-hidden="true" />
                                 </a>
-                                <a href="#" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+                                <a href="#" aria-label="Follow us on Teams" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
                                     <TeamsIcon aria-hidden="true" />
                                 </a>
                             </div>

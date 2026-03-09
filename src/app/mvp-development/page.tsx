@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     title: "MVP Development Company | From Idea to Scalable Product",
     description: "Launch your MVP faster without cutting corners. We deliver scalable MVP development services for startups and SaaS teams.",
     keywords: ['MVP development company'],
+    // alternates: {
+    //     canonical: "https://netizenstechnologies.com/mvp-development",
+    // }
 };
 
 // FAQ schema for SEO

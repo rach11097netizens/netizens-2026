@@ -62,7 +62,7 @@ export function DeliveryModel({
                                     <span className="text-carbon-black mr-1">{mainCard.number}.</span>
                                     {mainCard.title}
                                 </h3>
-                                <p className="font-sans font-medium text-[13px] md:text-sm text-gray-600/75 leading-[20px] md:leading-[22px]">
+                                <p className="font-sans font-medium text-[13px] md:text-sm text-gray-500 leading-[20px] md:leading-[22px]">
                                     {mainCard.description}
                                 </p>
                             </div>

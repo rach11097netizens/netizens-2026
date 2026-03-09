@@ -1,0 +1,19 @@
+<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1862_7728)">
+<path d="M29.8174 11.8423H41.497V19.1532M25.4927 41.9452H41.497V32.8466" stroke="white" stroke-miterlimit="10" stroke-linejoin="round"/>
+<path d="M1.11719 41.9453H25.4925V50.8828H1.11719V41.9453Z" stroke="white" stroke-miterlimit="10" stroke-linejoin="round"/>
+<path d="M3.11719 44.9453H27.4925V53.8828H3.11719V44.9453Z" fill="white" fill-opacity="0.1"/>
+<path d="M21.0238 46.4141H12.0864" stroke="white" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.11719 33.0078H25.4925V41.9453H1.11719V33.0078Z" stroke="white" stroke-miterlimit="10" stroke-linejoin="round"/>
+<path d="M3.11719 36.0078H27.4925V44.9453H3.11719V36.0078Z" fill="white" fill-opacity="0.1"/>
+<path d="M21.0238 37.4766H12.0864" stroke="white" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.11719 20.5364V4.16406C1.11719 2.48127 2.48127 1.11719 4.16406 1.11719H26.7704C28.4531 1.11719 29.8172 2.48127 29.8172 4.16406V20.5364C29.8172 22.2192 28.4531 23.5833 26.7704 23.5833H4.16406C2.48137 23.5833 1.11719 22.2192 1.11719 20.5364Z" stroke="white" stroke-miterlimit="10" stroke-linejoin="round"/>
+<path d="M29.8172 10.0547H1.11719M37.0138 32.8467C34.306 32.8467 32.1107 30.6516 32.1107 27.9437C32.1107 25.3424 34.1369 23.2154 36.697 23.0519C37.1605 20.8259 39.133 19.1533 41.4967 19.1533C43.8603 19.1533 45.8329 20.8259 46.2965 23.0519C48.8566 23.2154 50.8828 25.3424 50.8828 27.9437C50.8828 30.6516 48.6876 32.8467 45.9798 32.8467H37.0138Z" stroke="white" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path opacity="0.3" d="M38.014 35.8468C35.3061 35.8468 33.1108 33.6516 33.1108 30.9438C33.1108 28.3424 35.137 26.2154 37.6971 26.052C38.1606 23.826 40.1332 22.1533 42.4968 22.1533C44.8604 22.1533 46.8331 23.826 47.2966 26.052C49.8568 26.2154 51.8829 28.3424 51.8829 30.9438C51.8829 33.6516 49.6878 35.8468 46.9799 35.8468H38.014Z" fill="white" fill-opacity="0.3"/>
+</g>
+<defs>
+<clipPath id="clip0_1862_7728">
+<rect width="52" height="52" fill="white"/>
+</clipPath>
+</defs>
+</svg>

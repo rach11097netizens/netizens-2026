@@ -1,1 +1,8 @@
-{}
+{
+  "/support-and-scale/page": "app/support-and-scale/page.js",
+  "/staff-augmentation/page": "app/staff-augmentation/page.js",
+  "/ai-consulting/page": "app/ai-consulting/page.js",
+  "/how-we-work/page": "app/how-we-work/page.js",
+  "/about-us/page": "app/about-us/page.js",
+  "/page": "app/page.js"
+}

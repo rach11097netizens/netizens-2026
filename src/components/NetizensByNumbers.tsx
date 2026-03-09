@@ -129,7 +129,7 @@ export function NetizensByNumbers() {
               <span className="font-mono font-medium text-[15px] md:text-base text-[#103C87]">
                 {stat.category}
               </span>
-              <span className="font-sans text-[14px] leading-[22px] text-[#7B8599]">
+              <span className="font-sans text-[14px] leading-[22px] text-gray-500">
                 {stat.description}
               </span>
             </div>

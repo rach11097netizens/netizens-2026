@@ -148,9 +148,7 @@ export const MvpProblem = () => {
                     </div>
                     {/* Placeholder for right side alignment */}
                     <div className="w-[42px]">
-                        <button>
-                            <ExternalLink size={20} className="text-gray-600" />
-                        </button>
+                        <ExternalLink size={20} className="text-gray-600" />
                     </div>
                 </div>
 
@@ -206,7 +204,7 @@ export const MvpProblem = () => {
                                     <h3 className="font-headings font-normal text-lg text-carbon-black leading-snug">
                                         {problem.title}
                                     </h3>
-                                    <p className="font-sans font-medium text-sm text-gray-600/80 leading-relaxed flex-1">
+                                    <p className="font-sans font-medium text-sm text-gray-500 leading-relaxed flex-1">
                                         {problem.description}
                                     </p>
                                 </div>
