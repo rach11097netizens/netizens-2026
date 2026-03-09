@@ -365,7 +365,7 @@ const HowWeEngage = () => {
                     className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
                     style={{
                       fontSize: `${dims.titleSize}px`,
-                      color: 'rgba(255,250,250,0.5)',
+                      color: 'rgba(255,250,250)',
                       lineHeight: 'normal',
                       fontFamily: "'Sora', sans-serif",
                     }}
@@ -376,7 +376,7 @@ const HowWeEngage = () => {
                     className="font-normal whitespace-nowrap overflow-hidden text-ellipsis"
                     style={{
                       fontSize: `${dims.subtitleSize}px`,
-                      color: 'rgba(255,250,250,0.5)',
+                      color: 'rgba(255,250,250)',
                       lineHeight: 'normal',
                     }}
                   >

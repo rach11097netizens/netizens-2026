@@ -1,7 +1,1 @@
-{
-  "/workflow-digitization/page": "app/workflow-digitization/page.js",
-  "/about-us/page": "app/about-us/page.js",
-  "/mvp-development/page": "app/mvp-development/page.js",
-  "/page": "app/page.js",
-  "/book-call/page": "app/book-call/page.js"
-}
+{}

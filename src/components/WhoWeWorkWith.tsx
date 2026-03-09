@@ -252,7 +252,7 @@ const WhoWeWorkWith = () => {
                     {audience.title}
                   </h3>
                   <p
-                    className="deck-card-desc text-xs sm:text-sm lg:text-base font-medium relative shrink-0 w-full text-[rgba(88,89,91,0.75)]"
+                    className="deck-card-desc text-xs sm:text-sm lg:text-base font-medium relative shrink-0 w-full text-[#58595B]"
                     style={{ lineHeight: '22px' }}
                   >
                     {audience.description}

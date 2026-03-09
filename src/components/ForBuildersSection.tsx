@@ -177,7 +177,7 @@ const ForBuildersSection = () => {
                 {/* ── Two‑column layout ── */}
                 <div className="flex flex-col md:flex-row justify-between mb-[34px]" style={{ gap: '24px' }}>
                     {/* Left – tab cards */}
-                    <div className="flex flex-col gap-[18px] shrink-0 w-full md:w-[350px] lg:w-[424px]">
+                    <div role="tablist" className="flex flex-col gap-[18px] shrink-0 w-full md:w-[350px] lg:w-[424px]">
                         {tabsData.map((tab, idx) => {
                             const isActive = activeTab === idx
                             return (
@@ -221,7 +221,7 @@ const ForBuildersSection = () => {
                     </div>
 
                     {/* Right – illustration */}
-                    <div
+                    <div role="tabpanel"
                         className="builders-illustration flex-1 rounded-[10px] overflow-hidden relative"
                     // style={{ height: '578px' }}
                     >

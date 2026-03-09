@@ -88,9 +88,9 @@ const AccordionSection = ({
             tabIndex={0}
             onClick={onToggle}
             onKeyDown={(e) => e.key === 'Enter' && onToggle()}
-            className="flex items-center justify-between w-full py-3 border-b border-carbon-black/10 cursor-pointer md:cursor-default md:border-none md:pb-0 md:mb-4"
+            className="flex items-center justify-between w-full border-b border-carbon-black/10 cursor-pointer md:cursor-default md:border-none md:pb-0 md:mb-4"
         >
-            <h4 className="font-sans font-bold text-sm text-[#0e3572]">{title}</h4>
+            <h3 className="font-sans font-bold text-sm text-[#0e3572]">{title}</h3>
             {/* Chevron — decorative on mobile, hidden on desktop */}
             <ChevronDown
                 size={18}
@@ -142,7 +142,8 @@ export const Footer = () => {
                                     className="bg-transparent border-none outline-none font-sans font-medium text-sm text-carbon-black/80 placeholder:text-gray-600/40 flex-1 w-full"
                                 />
                                 <button className="bg-[#0e3572] hover:bg-[#0b2a5b] transition-colors flex items-center justify-center rounded-full shrink-0 h-9 w-9 text-white outline-none active:scale-95">
-                                    <NewsletterArrow />
+                                    <NewsletterArrow aria-hidden="true" />
+                                    <span className="sr-only">Arrow Submit Button</span>
                                 </button>
                             </div>
                         </div>
@@ -224,24 +225,23 @@ export const Footer = () => {
 
                             <div className="flex items-center gap-2">
                                 <a href="https://www.facebook.com/netizenstech" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
-                                    <FacebookIcon />
+                                    <FacebookIcon aria-hidden="true" />
                                 </a>
                                 <a href="https://www.instagram.com/lyrcomercialsrl/" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
-                                    <InstagramIcon />
+                                    <InstagramIcon aria-hidden="true" />
                                 </a>
                                 <a href="https://x.com/netizenstech" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
-                                    <XIcon />
+                                    <XIcon aria-hidden="true" />
                                 </a>
                                 <a href="https://www.linkedin.com/company/netizenstechnologies/posts/?feedView=all" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
-                                    <LinkedInIcon />
+                                    <LinkedInIcon aria-hidden="true" />
                                 </a>
                                 <a href="#" className="text-[#0e3572] border border-regal-navy/10 hover:bg-regal-navy hover:text-white transition-all w-9 h-9 rounded-full flex items-center justify-center shrink-0">
-                                    <TeamsIcon />
+                                    <TeamsIcon aria-hidden="true" />
                                 </a>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
