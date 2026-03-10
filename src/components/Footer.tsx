@@ -254,7 +254,7 @@ export const Footer = () => {
                     <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 font-sans text-xs md:text-sm text-[#FFFAFA] opacity-90">
                         <a href="/privacy-policy" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">Privacy Policy</a>
                         <a href="/terms-of-services" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">Terms & Conditions</a>
-                        <a href="#" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">Cookie Policy</a>
+                        {/* <a href="#" className="hover:text-white hover:underline underline-offset-4 transition-all duration-200">Cookie Policy</a> */}
                     </div>
                 </div>
             </div>
