@@ -154,7 +154,7 @@ export function ProductPartner() {
                                     <p className="font-sans font-medium text-sm md:text-base text-gray-600/75 leading-[22px] max-w-[360px]">
                                         {card.description}
                                     </p>
-                                    <Link href={card.link} className="text-sm uppercase text-[#0e3572] font-semibold hover:underline">
+                                    <Link href={card.link} aria-label={`Learn more about ${card.title}`} className="text-sm uppercase text-[#0e3572] font-semibold hover:underline">
                                         Learn more
                                     </Link>
                                 </div>

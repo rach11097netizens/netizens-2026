@@ -42,7 +42,7 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
                 const isFirst = index === 0;
 
                 // First item (Home) uses full charcoal color, subsequent items use 40% opacity
-                const textColorClass = isFirst ? 'text-gray-600' : 'text-gray-400';
+                const textColorClass = isFirst ? '[#0e3572]' : 'text-gray-600';
 
                 return (
                     <React.Fragment key={index}>

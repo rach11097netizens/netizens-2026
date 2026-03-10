@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Navbar from '../components/Navbar'
 import { Footer } from '../components/Footer'
+import { ConditionalLayout } from '@/components/ConditionalLayout'
 
 export const metadata: Metadata = {
     title: 'Custom Software Development Company for MVPs, AI & Scaling | Netizens Technologies',
@@ -46,14 +47,9 @@ export default function RootLayout({
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
                 />
-
-                <div className="flex flex-col min-h-screen">
-                    <Navbar />
-                    <main className="flex-grow">
-                        {children}
-                    </main>
-                    <Footer />
-                </div>
+                <ConditionalLayout>
+                    {children}
+                </ConditionalLayout>
             </body>
         </html>
     )

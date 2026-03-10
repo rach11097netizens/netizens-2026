@@ -383,10 +383,11 @@ const Navbar = () => {
                     <Link href="/book-call" className="px-2.5 lg:px-6 py-2.5 ml-auto lg:ml-0 bg-button-gradient text-sm text-white rounded-button transition-colors">
                         <span className="hidden md:block">Book a Discovery Call</span>
                         <span className="block md:hidden"><PhoneIncoming size={16} /></span>
+                        <span className="sr-only">Book a discovery call</span>
                     </Link>
 
                     {/* Mobile Menu Button */}
-                    <button
+                    <button aria-label="Menu"
                         className="lg:hidden text-gray-700"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
