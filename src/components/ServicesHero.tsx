@@ -86,7 +86,7 @@ export function Hero({
   return (
     <section
       ref={sectionRef}
-      className="relative w-full max-w-7xl mx-auto px-4 py-8 md:py-12 flex flex-col items-center justify-between lg:flex-row gap-4 lg:gap-6 xl:gap-24 overflow-hidden z-10"
+      className="relative w-full max-w-7xl mx-auto px-4 py-8 md:py-12 flex flex-col items-center justify-between lg:flex-row gap-4 lg:gap-6 overflow-hidden z-10"
     >
       <div className="flex flex-col items-center lg:items-start justify-center text-center lg:text-left w-full lg:w-[50%] gap-6">
         <div className="hero-animate-item flex items-center justify-center px-[18px] py-[8px] bg-[#0E3572]/5 border border-[#0E3572]/10 rounded-[4px]">
