@@ -8,7 +8,7 @@ import iconV2Ready from "@/assets/images/proto-to-prod-icons/v2-readiness.svg";
 import iconOngoingImprove from "@/assets/images/proto-to-prod-icons/on-going-improve.svg";
 import { BlogInsights } from '@/components/BlogInsights';
 import { FAQChat } from '@/components/FAQChat';
-import heroImg from '@/assets/images/product-developement.svg';
+import heroImg from '@/assets/images/product-developement-animated.svg';
 import { Hero } from '@/components/ServicesHero';
 import { SeparatorPattern } from '@/components/SeparatorPattern';
 import ClientLogos from '@/components/ClientLogos';

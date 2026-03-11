@@ -25,8 +25,8 @@ const SECTIONS: PolicySection[] = [
                 <p className="text-charcoal font-sans text-sm leading-[1.8] mb-3">This may include:</p>
                 <ul className="list-none flex flex-col gap-2 mb-4 pl-0">
                     {["Name", "Email address", "Phone number", "Company name", "Job title", "Project details or inquiry information"].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -34,8 +34,8 @@ const SECTIONS: PolicySection[] = [
                 <p className="text-charcoal font-sans text-sm leading-[1.8] mb-3">This information is typically collected when you:</p>
                 <ul className="list-none flex flex-col gap-2 mb-4 pl-0">
                     {["Submit a contact form", "Book a discovery call", "Subscribe to updates", "Request information about our services"].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -45,8 +45,8 @@ const SECTIONS: PolicySection[] = [
                 <p className="text-charcoal font-sans text-sm leading-[1.8] mb-3">We may also collect non-personal information such as:</p>
                 <ul className="list-none flex flex-col gap-2 mb-4 pl-0">
                     {["Browser type", "Device information", "IP address", "Pages visited", "Time spent on pages", "Referral source"].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -73,8 +73,8 @@ const SECTIONS: PolicySection[] = [
                         "Communicate updates or relevant insights",
                         "Maintain security and prevent misuse",
                     ].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -93,8 +93,8 @@ const SECTIONS: PolicySection[] = [
                 <p className="text-charcoal font-sans text-sm leading-[1.8] mb-3">Our website may use cookies and similar tracking technologies to:</p>
                 <ul className="list-none flex flex-col gap-2 mb-4 pl-0">
                     {["Understand user behavior", "Improve website functionality", "Measure marketing performance", "Enhance user experience"].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -113,8 +113,8 @@ const SECTIONS: PolicySection[] = [
                 <p className="text-charcoal font-sans text-sm leading-[1.8] mb-3">We may use third-party services such as:</p>
                 <ul className="list-none flex flex-col gap-2 mb-4 pl-0">
                     {["Analytics platforms (e.g., Google Analytics)", "Scheduling tools", "Marketing platforms", "Hosting providers"].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -135,8 +135,8 @@ const SECTIONS: PolicySection[] = [
                 </p>
                 <ul className="list-none flex flex-col gap-2 mb-4 pl-0">
                     {["Unauthorized access", "Loss", "Misuse", "Alteration"].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -157,8 +157,8 @@ const SECTIONS: PolicySection[] = [
                 </p>
                 <ul className="list-none flex flex-col gap-2 mb-4 pl-0">
                     {["Respond to inquiries", "Provide services", "Maintain records", "Meet legal or business obligations"].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -184,8 +184,8 @@ const SECTIONS: PolicySection[] = [
                         "Request deletion of your information",
                         "Withdraw consent to communications",
                     ].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -287,7 +287,7 @@ export const PrivacyPolicy: FC = () => {
                 </p>
 
                 {/* Intro */}
-                <p className="font-sans text-sm leading-[1.8] text-charcoal max-w-3xl mt-1">
+                <p className="font-sans text-sm leading-[1.8] text-charcoal mt-1">
                     Netizens Technologies ("Netizens", "we", "our", or "us") respects your privacy and is committed to
                     protecting your personal information. This Privacy Policy explains how we collect, use, disclose,
                     and safeguard your information when you visit our website or interact with our services.

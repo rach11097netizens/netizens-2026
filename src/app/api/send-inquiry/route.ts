@@ -21,7 +21,7 @@ function isValidUrl(url: string): boolean {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, countryCode, phone, companyName, companyWebsite, service } = body;
+    const { name, email, countryCode, phone, companyName, companyWebsite, services } = body;
 
     // ── Server-side validation ──────────────────────────────────────────────
     const errors: Record<string, string> = {};
@@ -34,7 +34,8 @@ export async function POST(req: NextRequest) {
     if (!companyName?.trim()) errors.companyName = "Company name is required.";
     if (!companyWebsite?.trim()) errors.companyWebsite = "Company website is required.";
     else if (!isValidUrl(companyWebsite)) errors.companyWebsite = "Please enter a valid URL (include https://).";
-    if (!service?.trim()) errors.service = "Please select a service.";
+    if (!Array.isArray(services) || services.length === 0)
+      errors.services = "Please select at least one service.";
 
     if (Object.keys(errors).length > 0) {
       return NextResponse.json({ success: false, errors }, { status: 422 });
@@ -48,7 +49,7 @@ export async function POST(req: NextRequest) {
       phone: phone.trim(),
       companyName: companyName.trim(),
       companyWebsite: companyWebsite.trim(),
-      service: service.trim(),
+      services: services.map((s: string) => s.trim()),
     };
 
     const { success } = await sendInquiryEmail(payload);

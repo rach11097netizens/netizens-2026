@@ -34,14 +34,8 @@ interface Country {
 interface RestCountryRaw {
     name: { common: string };
     cca2: string;
-    idd: {
-        root: string;
-        suffixes: string[];
-    };
-    flags: {
-        svg?: string;
-        png?: string;
-    };
+    idd: { root: string; suffixes: string[] };
+    flags: { svg?: string; png?: string };
 }
 
 interface CountryCodeDropdownProps {
@@ -57,7 +51,7 @@ interface FormFields {
     phone: string;
     companyName: string;
     companyWebsite: string;
-    service: string;
+    services: string[];
 }
 
 type FormErrors = Partial<Record<keyof FormFields, string>>;
@@ -66,37 +60,24 @@ type FormErrors = Partial<Record<keyof FormFields, string>>;
 
 function validateFields(fields: FormFields): FormErrors {
     const errors: FormErrors = {};
-
-    if (!fields.name.trim())
-        errors.name = "Name is required.";
-
-    if (!fields.email.trim())
-        errors.email = "Email address is required.";
+    if (!fields.name.trim()) errors.name = "Name is required.";
+    if (!fields.email.trim()) errors.email = "Email address is required.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
         errors.email = "Please enter a valid email address.";
-
-    if (!fields.phone.trim())
-        errors.phone = "Phone number is required.";
+    if (!fields.phone.trim()) errors.phone = "Phone number is required.";
     else if (!/^\d{5,15}$/.test(fields.phone.replace(/\s/g, "")))
         errors.phone = "Please enter a valid phone number (digits only).";
-
-    if (!fields.companyName.trim())
-        errors.companyName = "Company name is required.";
-
-    if (!fields.companyWebsite.trim())
-        errors.companyWebsite = "Company website is required.";
+    if (!fields.companyName.trim()) errors.companyName = "Company name is required.";
+    if (!fields.companyWebsite.trim()) errors.companyWebsite = "Company website is required.";
     else {
         try { new URL(fields.companyWebsite); }
         catch { errors.companyWebsite = "Please enter a valid URL (include https://)."; }
     }
-
-    if (!fields.service)
-        errors.service = "Please select a service.";
-
+    if (fields.services.length === 0) errors.services = "Please select at least one service.";
     return errors;
 }
 
-// ─── Hook: fetch all countries from RestCountries API ────────────────────────
+// ─── Hook: fetch countries ────────────────────────────────────────────────────
 
 function useCountryCodes(): { countries: Country[]; loading: boolean } {
     const [countries, setCountries] = useState<Country[]>([]);
@@ -137,22 +118,50 @@ function useCountryCodes(): { countries: Country[]; loading: boolean } {
     return { countries, loading };
 }
 
-// ─── Shared input className helper ───────────────────────────────────────────
+// ─── Shared input className ───────────────────────────────────────────────────
 
 function inputClass(hasError: boolean): string {
-    return `w-full h-[52px] px-4 py-3 rounded-[10px] border text-sm font-sans text-charcoal placeholder:text-charcoal bg-white focus:outline-none focus:ring-2 transition-all ${
+    return `w-full h-[52px] px-4 pt-5 pb-2 rounded-[10px] border text-sm font-sans text-charcoal bg-white focus:outline-none focus:ring-2 transition-all ${
         hasError
             ? 'border-red-400 focus:ring-red-200 focus:border-red-400'
             : 'border-black/10 focus:ring-regal-navy/20 focus:border-regal-navy/30'
     }`;
 }
 
+// ─── Floating Label ───────────────────────────────────────────────────────────
+
+const FloatingLabel: FC<{
+    htmlFor: string;
+    children: React.ReactNode;
+    hasError?: boolean;
+    floated: boolean;
+}> = ({ htmlFor, children, hasError, floated }) => (
+    <label
+        htmlFor={htmlFor}
+        className={`
+            absolute left-4 font-sans pointer-events-none select-none transition-all duration-200 origin-left
+            ${floated
+                ? 'top-0 -translate-y-1/2 text-[10px] font-semibold uppercase tracking-wide bg-white px-1 rounded'
+                : 'top-1/2 -translate-y-1/2 text-sm'
+            }
+            ${hasError
+                ? 'text-red-400'
+                : floated
+                    ? 'text-regal-navy'
+                    : 'text-charcoal/50'
+            }
+        `}
+    >
+        {children}
+    </label>
+);
+
 // ─── Inline field error ───────────────────────────────────────────────────────
 
 const FieldError: FC<{ message?: string }> = ({ message }) =>
-    message ? <p className="text-xs text-red-500 -mt-1 ml-1">{message}</p> : null;
+    message ? <p className="text-xs text-red-500 mt-0.5 ml-1">{message}</p> : null;
 
-// ─── Custom Country Code Dropdown ────────────────────────────────────────────
+// ─── Country Code Dropdown ────────────────────────────────────────────────────
 
 const CountryCodeDropdown: FC<CountryCodeDropdownProps> = ({ countries, loading, selected, onSelect }) => {
     const [open, setOpen] = useState<boolean>(false);
@@ -160,7 +169,6 @@ const CountryCodeDropdown: FC<CountryCodeDropdownProps> = ({ countries, loading,
     const dropdownRef = useRef<HTMLDivElement>(null);
     const searchRef = useRef<HTMLInputElement>(null);
 
-    // Default to India once loaded
     useEffect(() => {
         if (countries.length && !selected) {
             const india = countries.find((c) => c.cca2 === 'in' && c.dialCode === '+91');
@@ -168,7 +176,6 @@ const CountryCodeDropdown: FC<CountryCodeDropdownProps> = ({ countries, loading,
         }
     }, [countries, selected, onSelect]);
 
-    // Close on outside click
     useEffect(() => {
         function handleClickOutside(e: globalThis.MouseEvent): void {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -180,27 +187,19 @@ const CountryCodeDropdown: FC<CountryCodeDropdownProps> = ({ countries, loading,
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Auto-focus search when opened
     useEffect(() => {
         if (open) setTimeout(() => searchRef.current?.focus(), 50);
     }, [open]);
 
-    const filtered: Country[] = countries.filter(
+    const filtered = countries.filter(
         (c) =>
             c.name.toLowerCase().includes(search.toLowerCase()) ||
             c.dialCode.includes(search) ||
             c.cca2.toLowerCase().includes(search.toLowerCase())
     );
 
-    const handleSelect = (country: Country): void => {
-        onSelect(country);
-        setOpen(false);
-        setSearch('');
-    };
-
     return (
         <div ref={dropdownRef} className="relative shrink-0">
-            {/* Trigger */}
             <button
                 type="button"
                 onClick={() => setOpen((prev) => !prev)}
@@ -222,7 +221,6 @@ const CountryCodeDropdown: FC<CountryCodeDropdownProps> = ({ countries, loading,
                 </svg>
             </button>
 
-            {/* Panel */}
             {open && (
                 <div role="listbox" className="absolute z-50 top-[56px] left-0 w-[290px] bg-white rounded-[10px] border border-black/10 overflow-hidden" style={{ boxShadow: '0px 8px 30px rgba(0,0,0,0.13)' }}>
                     <div className="p-2 border-b border-black/5 sticky top-0 bg-white">
@@ -250,7 +248,7 @@ const CountryCodeDropdown: FC<CountryCodeDropdownProps> = ({ countries, loading,
                                 <li key={`${c.cca2}-${c.dialCode}`} role="option" aria-selected={isActive}>
                                     <button
                                         type="button"
-                                        onClick={() => handleSelect(c)}
+                                        onClick={() => { onSelect(c); setOpen(false); setSearch(''); }}
                                         className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm font-sans transition-colors hover:bg-[#0E3572]/5 ${isActive ? 'bg-[#0E3572]/8 text-regal-navy font-semibold' : 'text-charcoal'}`}
                                     >
                                         <img src={c.flag} alt={c.cca2.toUpperCase()} className="w-6 h-4 object-cover rounded-[2px] border border-black/5 shrink-0" />
@@ -261,6 +259,153 @@ const CountryCodeDropdown: FC<CountryCodeDropdownProps> = ({ countries, loading,
                             );
                         })}
                     </ul>
+                </div>
+            )}
+        </div>
+    );
+};
+
+// ─── Multi-Select Services Dropdown ──────────────────────────────────────────
+
+interface ServicesDropdownProps {
+    selected: string[];
+    onChange: (services: string[]) => void;
+    hasError: boolean;
+}
+
+const ServicesDropdown: FC<ServicesDropdownProps> = ({ selected, onChange, hasError }) => {
+    const [open, setOpen] = useState<boolean>(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(e: globalThis.MouseEvent): void {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const toggle = (service: string): void => {
+        onChange(
+            selected.includes(service)
+                ? selected.filter((s) => s !== service)
+                : [...selected, service]
+        );
+    };
+
+    const isFloated = selected.length > 0 || open;
+    const displayValue = selected.join(", ");
+
+    return (
+        <div ref={dropdownRef} className="relative w-full">
+            <button
+                id="services-dropdown"
+                type="button"
+                onClick={() => setOpen((prev) => !prev)}
+                aria-haspopup="listbox"
+                aria-expanded={open}
+                className={`
+                    w-full h-[52px] px-4 flex items-center justify-between gap-2 rounded-[10px] border
+                    text-sm font-sans bg-white focus:outline-none focus:ring-2 transition-all cursor-pointer text-left
+                    ${hasError
+                        ? 'border-red-400 focus:ring-red-200 focus:border-red-400'
+                        : open
+                            ? 'border-regal-navy/30 ring-2 ring-regal-navy/20'
+                            : 'border-black/10 focus:ring-regal-navy/20 focus:border-regal-navy/30'
+                    }
+                `}
+            >
+                <span className={`flex-1 truncate text-charcoal transition-opacity duration-150 ${isFloated ? 'opacity-100 pt-3' : 'opacity-0'}`}>
+                    {displayValue}
+                </span>
+                <svg
+                    className={`w-3 h-3 text-charcoal/40 transition-transform duration-200 shrink-0 ${open ? 'rotate-180' : ''}`}
+                    viewBox="0 0 12 8"
+                    fill="none"
+                >
+                    <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+            </button>
+
+            <label
+                htmlFor="services-dropdown"
+                className={`
+                    absolute left-4 font-sans pointer-events-none select-none transition-all duration-200 origin-left
+                    ${isFloated
+                        ? 'top-0 -translate-y-1/2 text-[10px] font-semibold uppercase tracking-wide bg-white px-1 rounded'
+                        : 'top-1/2 -translate-y-1/2 text-sm'
+                    }
+                    ${hasError
+                        ? 'text-red-400'
+                        : isFloated
+                            ? 'text-regal-navy'
+                            : 'text-charcoal/50'
+                    }
+                `}
+            >
+                Services Interested In
+            </label>
+
+            {open && (
+                <div
+                    role="listbox"
+                    aria-multiselectable="true"
+                    className="absolute z-50 top-[56px] left-0 w-full bg-white rounded-[10px] border border-black/10 overflow-hidden"
+                    style={{ boxShadow: '0px 8px 30px rgba(0,0,0,0.13)' }}
+                >
+                    <div className="px-4 py-2.5 border-b border-black/5 flex items-center justify-between">
+                        <span className="text-xs font-semibold text-charcoal/50 uppercase tracking-wide">
+                            Select all that apply
+                        </span>
+                        {selected.length > 0 && (
+                            <button
+                                type="button"
+                                onClick={() => onChange([])}
+                                className="text-xs text-regal-navy/60 hover:text-regal-navy font-medium transition-colors"
+                            >
+                                Clear all
+                            </button>
+                        )}
+                    </div>
+
+                    <ul className="py-1">
+                        {SERVICES.map((service) => {
+                            const isChecked = selected.includes(service);
+                            return (
+                                <li key={service} role="option" aria-selected={isChecked}>
+                                    <button
+                                        type="button"
+                                        onClick={() => toggle(service)}
+                                        className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm font-sans transition-colors hover:bg-[#0E3572]/5 ${isChecked ? 'text-regal-navy' : 'text-charcoal'}`}
+                                    >
+                                        <span className={`w-4 h-4 rounded-[4px] border flex items-center justify-center shrink-0 transition-colors ${isChecked ? 'bg-regal-navy border-regal-navy' : 'bg-white border-black/20'}`}>
+                                            {isChecked && (
+                                                <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                                                    <path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            )}
+                                        </span>
+                                        <span className="flex-1">{service}</span>
+                                    </button>
+                                </li>
+                            );
+                        })}
+                    </ul>
+
+                    <div className="px-4 py-2.5 border-t border-black/5 flex items-center justify-between">
+                        <span className="text-xs text-charcoal/40 font-medium">
+                            {selected.length === 0 ? 'None selected' : `${selected.length} of ${SERVICES.length} selected`}
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => setOpen(false)}
+                            className="text-xs font-semibold text-regal-navy hover:text-regal-navy/70 transition-colors"
+                        >
+                            Done
+                        </button>
+                    </div>
                 </div>
             )}
         </div>
@@ -280,14 +425,22 @@ export const BookCallHero: FC = () => {
         phone: '',
         companyName: '',
         companyWebsite: '',
-        service: '',
+        services: [],
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [submitError, setSubmitError] = useState<string>('');
 
-    const handleChange = (field: keyof FormFields, value: string): void => {
+    // ── Focus tracking for floating labels ─────────────────────────────────
+    const [focusedField, setFocusedField] = useState<keyof FormFields | null>(null);
+
+    const isFloated = (field: keyof FormFields, value: string | string[]): boolean => {
+        const hasValue = Array.isArray(value) ? value.length > 0 : !!value;
+        return hasValue || focusedField === field;
+    };
+
+    const handleChange = (field: keyof FormFields, value: string | string[]): void => {
         setFields((prev) => ({ ...prev, [field]: value }));
         if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
         if (submitError) setSubmitError('');
@@ -296,13 +449,11 @@ export const BookCallHero: FC = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setSubmitError('');
-
         const validationErrors = validateFields(fields);
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
-
         setSubmitting(true);
         try {
             const res = await fetch('/api/send-inquiry', {
@@ -313,11 +464,8 @@ export const BookCallHero: FC = () => {
                     countryCode: selectedCountry?.dialCode ?? '',
                 }),
             });
-
             const data = await res.json();
-
             if (res.ok && data.success) {
-                // ── Redirect to Thank You page on success ──────────────────
                 router.push('/thank-you');
             } else if (data.errors) {
                 setErrors(data.errors);
@@ -334,38 +482,38 @@ export const BookCallHero: FC = () => {
     return (
         <section
             id="book-call-hero"
-            className="relative w-full max-w-7xl mx-auto px-4 py-12 md:py-[70px] flex flex-col lg:flex-row gap-8 lg:gap-6 items-center"
+            className="relative w-full max-w-7xl mx-auto px-4 py-12 md:py-[70px] flex flex-col lg:flex-row gap-8 lg:gap-6 xl:gap-24 items-center"
         >
             {/* Left Content */}
-            <div className="flex-1 flex flex-col gap-5 items-start justify-center">
+            <div className="flex-1 flex flex-col gap-5 items-center lg:items-start justify-center text-center lg:text-left">
                 <div className="flex items-center justify-center px-[18px] py-[8px] bg-[#0E3572]/5 border border-[#0E3572]/10 rounded-[4px]">
                     <span className="font-sans font-bold text-[12px] text-regal-navy text-center uppercase tracking-wide">
                         Book a Free Discovery Call
                     </span>
                 </div>
-                <h2 className="font-headings font-normal text-2xl lg:text-3xl leading-[1.2] text-carbon-black capitalize">
+                <h2 className="font-headings font-normal text-2xl md:text-4xl xl:text-[46px] leading-[1.1] md:leading-[1.2] text-carbon-black capitalize">
                     Book A Discovery Call To Start Your Software Project The Right Way
                 </h2>
                 <div className="font-sans font-medium text-sm leading-[22px] text-charcoal">
                     <p>Not sure how to start your software project?</p>
                     <p>This free discovery call gives you clarity on scope, timeline, budget, and fit.</p>
                 </div>
-                <div className="flex flex-wrap gap-2 items-start w-full">
+                <div className="flex flex-wrap gap-2 items-start justify-center lg:justify-start w-full">
                     {FEATURES.map((feature, i) => (
                         <div key={i} className="flex items-center gap-2 bg-white border border-[#0E3572]/40 rounded-full px-3 py-1.5">
                             <Image src={iconNavyTick} alt="" className="w-6 h-6 shrink-0" />
-                            <span className="font-sans font-medium text-sm leading-[22px] text-regal-navy">{feature}</span>
+                            <span className="text-left font-sans font-medium text-sm leading-[22px] text-regal-navy">{feature}</span>
                         </div>
                     ))}
                 </div>
             </div>
 
             {/* Right Column — Form Card */}
-            <div className="flex items-center justify-center w-full lg:w-auto shrink-0">
+            <div className="w-full max-w-[424px] flex-none flex items-center justify-center w-full">
                 <div
-                    className="w-full max-w-[424px] rounded-[10px] pt-[34px] pb-[18px] px-[18px] flex flex-col gap-6 items-start"
+                    className="w-full max-wfull rounded-[10px] pt-[34px] pb-[18px] px-[18px] flex flex-col gap-6 items-start"
                     style={{
-                        background: 'linear-gradient(90deg, #fff 0%, #fff 100%), linear-gradient(90deg, rgba(14,53,114,0.05) 0%, rgba(14,53,114,0.05) 100%)',
+                        background: 'linear-gradient(90deg, #fff 0%, #fff 100%)',
                         boxShadow: '0px 8px 19px 0px rgba(0,0,0,0.05), 0px 34px 34px 0px rgba(0,0,0,0.04), 0px 76px 46px 0px rgba(0,0,0,0.03)',
                     }}
                 >
@@ -373,7 +521,6 @@ export const BookCallHero: FC = () => {
                         Request your discovery call
                     </h3>
 
-                    {/* General error banner */}
                     {submitError && (
                         <div className="w-full bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-600 font-medium">
                             ❌ {submitError}
@@ -383,33 +530,49 @@ export const BookCallHero: FC = () => {
                     <form className="flex flex-col gap-[11px] w-full" onSubmit={handleSubmit} noValidate>
 
                         {/* Name */}
-                        <div className="flex flex-col gap-1">
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Name"
-                                value={fields.name}
-                                onChange={(e) => handleChange('name', e.target.value)}
-                                className={inputClass(!!errors.name)}
-                            />
+                        <div className="flex flex-col gap-0.5">
+                            <div className="relative">
+                                <input
+                                    id="name"
+                                    type="text"
+                                    name="name"
+                                    value={fields.name}
+                                    onChange={(e) => handleChange('name', e.target.value)}
+                                    onFocus={() => setFocusedField('name')}
+                                    onBlur={() => setFocusedField(null)}
+                                    className={inputClass(!!errors.name)}
+                                    placeholder=""
+                                />
+                                <FloatingLabel htmlFor="name" hasError={!!errors.name} floated={isFloated('name', fields.name)}>
+                                    Name
+                                </FloatingLabel>
+                            </div>
                             <FieldError message={errors.name} />
                         </div>
 
                         {/* Email */}
-                        <div className="flex flex-col gap-1">
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email Address"
-                                value={fields.email}
-                                onChange={(e) => handleChange('email', e.target.value)}
-                                className={inputClass(!!errors.email)}
-                            />
+                        <div className="flex flex-col gap-0.5">
+                            <div className="relative">
+                                <input
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    value={fields.email}
+                                    onChange={(e) => handleChange('email', e.target.value)}
+                                    onFocus={() => setFocusedField('email')}
+                                    onBlur={() => setFocusedField(null)}
+                                    className={inputClass(!!errors.email)}
+                                    placeholder=""
+                                />
+                                <FloatingLabel htmlFor="email" hasError={!!errors.email} floated={isFloated('email', fields.email)}>
+                                    Email Address
+                                </FloatingLabel>
+                            </div>
                             <FieldError message={errors.email} />
                         </div>
 
-                        {/* Phone with Country Code */}
-                        <div className="flex flex-col gap-1">
+                        {/* Phone */}
+                        <div className="flex flex-col gap-0.5">
                             <div className="flex gap-2 w-full">
                                 <CountryCodeDropdown
                                     countries={countries}
@@ -417,63 +580,76 @@ export const BookCallHero: FC = () => {
                                     selected={selectedCountry}
                                     onSelect={setSelectedCountry}
                                 />
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    placeholder="Phone Number"
-                                    value={fields.phone}
-                                    onChange={(e) => handleChange('phone', e.target.value)}
-                                    className={inputClass(!!errors.phone)}
-                                />
+                                <div className="relative flex-1">
+                                    <input
+                                        id="phone"
+                                        type="tel"
+                                        name="phone"
+                                        value={fields.phone}
+                                        onChange={(e) => handleChange('phone', e.target.value)}
+                                        onFocus={() => setFocusedField('phone')}
+                                        onBlur={() => setFocusedField(null)}
+                                        className={inputClass(!!errors.phone)}
+                                        placeholder=""
+                                    />
+                                    <FloatingLabel htmlFor="phone" hasError={!!errors.phone} floated={isFloated('phone', fields.phone)}>
+                                        Phone Number
+                                    </FloatingLabel>
+                                </div>
                             </div>
                             <FieldError message={errors.phone} />
                         </div>
 
                         {/* Company Name */}
-                        <div className="flex flex-col gap-1">
-                            <input
-                                type="text"
-                                name="companyName"
-                                placeholder="Company Name"
-                                value={fields.companyName}
-                                onChange={(e) => handleChange('companyName', e.target.value)}
-                                className={inputClass(!!errors.companyName)}
-                            />
+                        <div className="flex flex-col gap-0.5">
+                            <div className="relative">
+                                <input
+                                    id="companyName"
+                                    type="text"
+                                    name="companyName"
+                                    value={fields.companyName}
+                                    onChange={(e) => handleChange('companyName', e.target.value)}
+                                    onFocus={() => setFocusedField('companyName')}
+                                    onBlur={() => setFocusedField(null)}
+                                    className={inputClass(!!errors.companyName)}
+                                    placeholder=""
+                                />
+                                <FloatingLabel htmlFor="companyName" hasError={!!errors.companyName} floated={isFloated('companyName', fields.companyName)}>
+                                    Company Name
+                                </FloatingLabel>
+                            </div>
                             <FieldError message={errors.companyName} />
                         </div>
 
                         {/* Company Website */}
-                        <div className="flex flex-col gap-1">
-                            <input
-                                type="url"
-                                name="companyWebsite"
-                                placeholder="Company Website"
-                                value={fields.companyWebsite}
-                                onChange={(e) => handleChange('companyWebsite', e.target.value)}
-                                className={inputClass(!!errors.companyWebsite)}
-                            />
+                        <div className="flex flex-col gap-0.5">
+                            <div className="relative">
+                                <input
+                                    id="companyWebsite"
+                                    type="url"
+                                    name="companyWebsite"
+                                    value={fields.companyWebsite}
+                                    onChange={(e) => handleChange('companyWebsite', e.target.value)}
+                                    onFocus={() => setFocusedField('companyWebsite')}
+                                    onBlur={() => setFocusedField(null)}
+                                    className={inputClass(!!errors.companyWebsite)}
+                                    placeholder=""
+                                />
+                                <FloatingLabel htmlFor="companyWebsite" hasError={!!errors.companyWebsite} floated={isFloated('companyWebsite', fields.companyWebsite)}>
+                                    Company Website
+                                </FloatingLabel>
+                            </div>
                             <FieldError message={errors.companyWebsite} />
                         </div>
 
-                        {/* Service Interested In */}
-                        <div className="flex flex-col gap-1">
-                            <select
-                                name="service"
-                                value={fields.service}
-                                onChange={(e) => handleChange('service', e.target.value)}
-                                className={`${inputClass(!!errors.service)} cursor-pointer appearance-none`}
-                                style={{
-                                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")`,
-                                    backgroundRepeat: 'no-repeat',
-                                    backgroundPosition: 'right 16px center',
-                                }}
-                            >
-                                <option value="" disabled>Service Interested In</option>
-                                {SERVICES.map((service, i) => (
-                                    <option key={i} value={service}>{service}</option>
-                                ))}
-                            </select>
-                            <FieldError message={errors.service} />
+                        {/* Services */}
+                        <div className="flex flex-col gap-0.5">
+                            <ServicesDropdown
+                                selected={fields.services}
+                                onChange={(services) => handleChange('services', services)}
+                                hasError={!!errors.services}
+                            />
+                            <FieldError message={errors.services} />
                         </div>
 
                         <Button

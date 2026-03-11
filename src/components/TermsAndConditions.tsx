@@ -28,8 +28,8 @@ const SECTIONS: PolicySection[] = [
                         "Disrupt or damage website functionality",
                         "Copy or distribute website content without permission",
                     ].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -47,8 +47,8 @@ const SECTIONS: PolicySection[] = [
                 </p>
                 <ul className="list-none flex flex-col gap-2 mb-4 pl-0">
                     {["Text", "Graphics", "Logos", "Visual elements", "Software descriptions", "Service content"].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -106,8 +106,8 @@ const SECTIONS: PolicySection[] = [
                         "Errors or omissions in content",
                         "Third-party links or services",
                     ].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm font-sans text-charcoal leading-[1.8]">
-                            <span className="mt-[7px] shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
+                        <li key={item} className="flex items-center gap-2 text-sm font-sans text-charcoal leading-[1.8]">
+                            <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-regal-navy/40 inline-block" />
                             {item}
                         </li>
                     ))}
@@ -240,7 +240,7 @@ export const TermsAndConditions: FC = () => {
                     Last Updated: 6 March, 2026
                 </p>
 
-                <p className="font-sans text-sm leading-[1.8] text-charcoal max-w-3xl mt-1">
+                <p className="font-sans text-sm leading-[1.8] text-charcoal mt-1">
                     These Terms and Conditions govern your use of the Netizens Technologies website and services.
                 </p>
                 <p className="font-sans text-sm leading-[1.8] text-charcoal font-medium">

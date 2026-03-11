@@ -5,7 +5,7 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: "designers.netizens@gmail.com",
+    user: "services@netizenstechnologies.com",
     pass: "qngnsihxmhtifstv",
   },
   tls: {
@@ -23,7 +23,7 @@ export interface InquiryPayload {
   phone: string;
   companyName: string;
   companyWebsite: string;
-  service: string;
+  services: string[];
 }
 
 // ─── Thank-You Email → sent to the user ──────────────────────────────────────
@@ -31,7 +31,7 @@ export interface InquiryPayload {
 async function sendThankYouEmail(payload: InquiryPayload): Promise<boolean> {
   try {
     await transporter.sendMail({
-      from: '"Netizens Technologies" <designers.netizens@gmail.com>',
+      from: '"Netizens Technologies" <services@netizenstechnologies.com>',
       to: payload.email,
       subject: "Thank you from Netizens",
       text: `Hello ${payload.name},\n\nThank you for your inquiry. Someone from our team will get back to you at the earliest.\n\nRegards,\nNetizens Technologies`,
@@ -85,9 +85,9 @@ async function sendThankYouEmail(payload: InquiryPayload): Promise<boolean> {
 async function sendAdminNotificationEmail(payload: InquiryPayload): Promise<boolean> {
   try {
     await transporter.sendMail({
-      from: '"Netizens Technologies" <designers.netizens@gmail.com>',
-      to: "rachna.s.netizens@gmail.com", // ← replace with real admin email
-      cc: ["designers.netizens@gmail.com"],
+      from: '"Netizens Technologies" <services@netizenstechnologies.com>',
+      to: "services@netizenstechnologies.com", // ← replace with real admin email
+      cc: ["services@netizenstechnologies.com"],
       subject: `New Discovery Call Request — ${payload.name} (${payload.companyName})`,
       text: `
 New inquiry received from the Book a Call form.
@@ -97,7 +97,7 @@ Email:            ${payload.email}
 Phone:            ${payload.countryCode} ${payload.phone}
 Company:          ${payload.companyName}
 Website:          ${payload.companyWebsite}
-Service:          ${payload.service}
+Service:          ${payload.services.join(", ")}
       `.trim(),
       html: `
         <!DOCTYPE html>
@@ -130,7 +130,7 @@ Service:          ${payload.service}
                 <tr><td>Phone</td><td>${payload.countryCode} ${payload.phone}</td></tr>
                 <tr><td>Company</td><td>${payload.companyName}</td></tr>
                 <tr><td>Website</td><td><a href="${payload.companyWebsite}" target="_blank" style="color:#0e3572;">${payload.companyWebsite}</a></td></tr>
-                <tr><td>Service</td><td><span class="badge">${payload.service}</span></td></tr>
+                <tr><td>Service</td><td><span class="badge">${payload.services.join(", ")}</span></td></tr>
               </table>
             </div>
             <div class="footer">

@@ -6,7 +6,7 @@ import { BlogInsights } from '@/components/BlogInsights';
 import { FAQChat } from '@/components/FAQChat';
 import { RightFit } from '@/components/RightFit';
 import { ServiceScope } from '@/components/ServiceScope';
-import heroImg from '@/assets/images/workflow-digitization-hero-img.svg';
+import heroImg from '@/assets/images/workflow-digitization-animated.svg';
 import erpCrmIcon from '@/assets/images/scope-of-services/erp-crm-custom.svg';
 import integrationHubIcon from '@/assets/images/scope-of-services/integration-hub.svg';
 import automateN8nIcon from '@/assets/images/scope-of-services/automate-n8n-zapier.svg';

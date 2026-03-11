@@ -308,7 +308,6 @@ export function OurJourneyTimeline() {
                             );
                         })}
                     </div>
-
                 </div>
             </div>
         </section>
