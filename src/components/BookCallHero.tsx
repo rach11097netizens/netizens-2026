@@ -121,7 +121,7 @@ function useCountryCodes(): { countries: Country[]; loading: boolean } {
 // ─── Shared input className ───────────────────────────────────────────────────
 
 function inputClass(hasError: boolean): string {
-    return `w-full h-[52px] px-4 pt-5 pb-2 rounded-[10px] border text-sm font-sans text-charcoal bg-white focus:outline-none focus:ring-2 transition-all ${
+    return `w-full h-[52px] px-4 py-3 rounded-[10px] border text-sm font-sans text-charcoal bg-white focus:outline-none focus:ring-2 transition-all ${
         hasError
             ? 'border-red-400 focus:ring-red-200 focus:border-red-400'
             : 'border-black/10 focus:ring-regal-navy/20 focus:border-regal-navy/30'
@@ -317,7 +317,7 @@ const ServicesDropdown: FC<ServicesDropdownProps> = ({ selected, onChange, hasEr
                     }
                 `}
             >
-                <span className={`flex-1 truncate text-charcoal transition-opacity duration-150 ${isFloated ? 'opacity-100 pt-3' : 'opacity-0'}`}>
+                <span className={`flex-1 truncate text-charcoal transition-opacity duration-150 ${isFloated ? 'opacity-100 pt-1' : 'opacity-0'}`}>
                     {displayValue}
                 </span>
                 <svg
