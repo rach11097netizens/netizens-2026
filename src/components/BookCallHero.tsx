@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef, FC, FormEvent } from 'react';
 import iconNavyTick from '../assets/images/navy-dark-tick.svg';
 import { Button } from './Button';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -52,6 +53,7 @@ interface FormFields {
     companyName: string;
     companyWebsite: string;
     services: string[];
+    recaptchaToken: string;
 }
 
 type FormErrors = Partial<Record<keyof FormFields, string>>;
@@ -121,11 +123,10 @@ function useCountryCodes(): { countries: Country[]; loading: boolean } {
 // ─── Shared input className ───────────────────────────────────────────────────
 
 function inputClass(hasError: boolean): string {
-    return `w-full h-[52px] px-4 py-3 rounded-[10px] border text-sm font-sans text-charcoal bg-white focus:outline-none focus:ring-2 transition-all ${
-        hasError
-            ? 'border-red-400 focus:ring-red-200 focus:border-red-400'
-            : 'border-black/10 focus:ring-regal-navy/20 focus:border-regal-navy/30'
-    }`;
+    return `w-full h-[52px] px-4 py-3 rounded-[10px] border text-sm font-sans text-charcoal bg-white focus:outline-none focus:ring-2 transition-all ${hasError
+        ? 'border-red-400 focus:ring-red-200 focus:border-red-400'
+        : 'border-black/10 focus:ring-regal-navy/20 focus:border-regal-navy/30'
+        }`;
 }
 
 // ─── Floating Label ───────────────────────────────────────────────────────────
@@ -419,6 +420,8 @@ export const BookCallHero: FC = () => {
     const { countries, loading: countriesLoading } = useCountryCodes();
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
 
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+
     const [fields, setFields] = useState<FormFields>({
         name: '',
         email: '',
@@ -426,6 +429,7 @@ export const BookCallHero: FC = () => {
         companyName: '',
         companyWebsite: '',
         services: [],
+        recaptchaToken: "",
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
@@ -477,6 +481,10 @@ export const BookCallHero: FC = () => {
         } finally {
             setSubmitting(false);
         }
+    };
+
+    const handleCaptchaChange = (token: string | null) => {
+        setFields((prev) => ({ ...prev, recaptchaToken: token || "" }));
     };
 
     return (
@@ -650,6 +658,15 @@ export const BookCallHero: FC = () => {
                                 hasError={!!errors.services}
                             />
                             <FieldError message={errors.services} />
+                        </div>
+
+                        <div className="w-full flex justify-center mt-2">
+                            <ReCAPTCHA
+                                ref={recaptchaRef}
+                                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                                size="normal"
+                                onChange={handleCaptchaChange}
+                            />
                         </div>
 
                         <Button

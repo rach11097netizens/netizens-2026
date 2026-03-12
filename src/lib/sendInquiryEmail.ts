@@ -1,18 +1,14 @@
-import nodemailer, { TransportOptions } from "nodemailer";
+import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
+  host: process.env.SMTP_HOST,                        // smtp.gmail.com
+  port: Number(process.env.SMTP_PORT),                // 465
+  secure: process.env.SMTP_SECURE === "true",         // true
   auth: {
-    user: "services@netizenstechnologies.com",
-    pass: "qngnsihxmhtifstv",
+    user: process.env.SMTP_USER,                      // services@netizenstechnologies.com
+    pass: process.env.SMTP_PASS,                      // wlxl nvhp ncbg ykmy
   },
-  tls: {
-    rejectUnauthorized: false,
-  },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} as any);
+});
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -31,7 +27,7 @@ export interface InquiryPayload {
 async function sendThankYouEmail(payload: InquiryPayload): Promise<boolean> {
   try {
     await transporter.sendMail({
-      from: '"Netizens Technologies" <services@netizenstechnologies.com>',
+      from: '"Netizens Technologies" <${process.env.SMTP_USER}>',
       to: payload.email,
       subject: "Thank you from Netizens",
       text: `Hello ${payload.name},\n\nThank you for your inquiry. Someone from our team will get back to you at the earliest.\n\nRegards,\nNetizens Technologies`,
@@ -85,7 +81,7 @@ async function sendThankYouEmail(payload: InquiryPayload): Promise<boolean> {
 async function sendAdminNotificationEmail(payload: InquiryPayload): Promise<boolean> {
   try {
     await transporter.sendMail({
-      from: '"Netizens Technologies" <services@netizenstechnologies.com>',
+      from: '"Netizens Technologies" <${process.env.SMTP_USER}>',
       to: "services@netizenstechnologies.com", // ← replace with real admin email
       cc: ["services@netizenstechnologies.com"],
       subject: `New Discovery Call Request — ${payload.name} (${payload.companyName})`,

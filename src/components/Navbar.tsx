@@ -331,7 +331,7 @@ const Navbar = () => {
 
                         {/* Regular Menu Items */}
                         <Link href="/how-we-work" className="text-gray-700 uppercase text-sm hover:text-black transition-colors">How We Work</Link>
-                        <Link href="#case-studies" className="text-gray-700 uppercase text-sm hover:text-black transition-colors">Case Studies</Link>
+                        <Link href="/case-studies" className="text-gray-700 uppercase text-sm hover:text-black transition-colors">Case Studies</Link>
                         <Link href="#insights" className="text-gray-700 uppercase text-sm hover:text-black transition-colors">Insights</Link>
 
                         {/* Company Dropdown */}

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendInquiryEmail, InquiryPayload } from "@/lib/sendInquiryEmail";
+import { pushToHubSpot } from "@/lib/hubspot";
 
 // ─── Validation helpers ───────────────────────────────────────────────────────
 
@@ -8,12 +9,8 @@ function isValidEmail(email: string): boolean {
 }
 
 function isValidUrl(url: string): boolean {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
+  try { new URL(url); return true; }
+  catch { return false; }
 }
 
 // ─── POST /api/send-inquiry ───────────────────────────────────────────────────
@@ -23,9 +20,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { name, email, countryCode, phone, companyName, companyWebsite, services } = body;
 
-    // ── Server-side validation ──────────────────────────────────────────────
+    // ── Server-side validation ────────────────────────────────────────
     const errors: Record<string, string> = {};
-
     if (!name?.trim()) errors.name = "Name is required.";
     if (!email?.trim()) errors.email = "Email address is required.";
     else if (!isValidEmail(email)) errors.email = "Please enter a valid email address.";
@@ -34,14 +30,13 @@ export async function POST(req: NextRequest) {
     if (!companyName?.trim()) errors.companyName = "Company name is required.";
     if (!companyWebsite?.trim()) errors.companyWebsite = "Company website is required.";
     else if (!isValidUrl(companyWebsite)) errors.companyWebsite = "Please enter a valid URL (include https://).";
-    if (!Array.isArray(services) || services.length === 0)
-      errors.services = "Please select at least one service.";
+    if (!Array.isArray(services) || services.length === 0) errors.services = "Please select at least one service.";
 
     if (Object.keys(errors).length > 0) {
       return NextResponse.json({ success: false, errors }, { status: 422 });
     }
 
-    // ── Send emails ─────────────────────────────────────────────────────────
+    // ── Build payload ─────────────────────────────────────────────────
     const payload: InquiryPayload = {
       name: name.trim(),
       email: email.trim(),
@@ -49,12 +44,25 @@ export async function POST(req: NextRequest) {
       phone: phone.trim(),
       companyName: companyName.trim(),
       companyWebsite: companyWebsite.trim(),
-      services: services.map((s: string) => s.trim()),
+      services,
     };
 
-    const { success } = await sendInquiryEmail(payload);
+    // ── Run email + HubSpot concurrently ──────────────────────────────
+    const [emailResult, hubspotResult] = await Promise.allSettled([
+      sendInquiryEmail(payload),
+      pushToHubSpot(payload),             // ← add this
+    ]);
 
-    if (!success) {
+    // Email is the critical path — fail if emails didn't send
+    const emailSuccess =
+      emailResult.status === "fulfilled" && emailResult.value.success;
+
+    // HubSpot is non-critical — log failure but don't block success
+    if (hubspotResult.status === "rejected" || !hubspotResult.value) {
+      console.warn("HubSpot push failed — form still submitted successfully");
+    }
+
+    if (!emailSuccess) {
       return NextResponse.json(
         { success: false, message: "Failed to send email. Please try again." },
         { status: 500 }
@@ -69,4 +77,4 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+}                                                                                                                                                        
