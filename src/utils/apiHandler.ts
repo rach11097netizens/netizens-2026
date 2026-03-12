@@ -29,8 +29,8 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
     }
 
     return data;
-  } catch (error: any) {
-    console.error("[apiRequest] ✗ Error:", error.message || error);
+  } catch (error: unknown) {
+    console.error("[apiRequest] ✗ Error:", error instanceof Error ? error.message : error);
     throw error;
   }
 }
