@@ -115,7 +115,7 @@ export default function AiConsultingPage() {
                     { label: 'Services', href: '/services' },
                     { label: 'AI Consulting & Automation' }
                 ]}
-                className="pt-[96px] max-w-7xl mx-auto px-4"
+                className="pt-[96px] max-w-[1400px] mx-auto px-5 md:px-10"
             />
             <main>
                 <script

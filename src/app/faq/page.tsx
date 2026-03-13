@@ -19,7 +19,7 @@ export default function FAQPage() {
                     { label: 'Home', href: '/' },
                     { label: 'FAQ' }
                 ]}
-                className="pt-[96px] max-w-7xl mx-auto px-4"
+                className="pt-[96px] max-w-[1400px] mx-auto px-5 md:px-10"
             />
             <main>
                 <FAQSection />

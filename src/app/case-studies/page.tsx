@@ -10,7 +10,7 @@ export default function CaseStudiesPage() {
                         { label: 'Home', href: '/' },
                         { label: 'Case Studies' }
                     ]}
-                    className="pt-[96px] max-w-7xl mx-auto px-4"
+                    className="pt-[96px] max-w-[1400px] mx-auto px-5 md:px-10"
                 />
                 <CaseStudiesHero />
             </div>
