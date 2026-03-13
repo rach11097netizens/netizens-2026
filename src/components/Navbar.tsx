@@ -33,7 +33,7 @@ const Navbar = () => {
 
     const company = [
         { label: "About", to: "/about-us" },
-        { label: "Careers", to: "#careers" },
+        { label: "Careers", to: "/careers" },
         { label: "FAQ", to: "/faq" },
     ]
 
